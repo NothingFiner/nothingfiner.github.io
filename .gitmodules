@@ -1,3 +1,0 @@
-[submodule "vendor/dark-forest"]
-	path = vendor/dark-forest
-	url = git@github.com:NothingFiner/dark-forest.git
