@@ -1,0 +1,541 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light theme */
+:root {
+  --color-bg: #d7fcd4;
+  --color-fg: #292E1E;
+  --color-accent-green: #3ec300;
+  --color-accent-red: #8b1e3f;
+  --color-accent-purple: #ad9b9a;
+  /* Split layout: left 25% dark, right 75% light */
+  --color-split-left: #1a1d14;
+  --color-split-right: #d7fcd4;
+  /* Lava lamp opacity: full on left, dim on right */
+  --lava-opacity-left: 1;
+  --lava-opacity-right: 0.15;
+  /* Frosted glass - light: need visible depth on light bg */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(41, 46, 30, 0.12);
+  --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --glass-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+  --glass-hover-bg: rgba(255, 255, 255, 0.65);
+  --glass-highlight: rgba(255, 255, 255, 0.85);
+}
+
+/* Dark theme */
+.dark {
+  --color-bg: #1a1d14;
+  --color-fg: #e8ebe6;
+  /* Split layout: left 25% light, right 75% dark */
+  --color-split-left: #d7fcd4;
+  --color-split-right: #1a1d14;
+  /* Lava lamp opacity: full on left, dim on right */
+  --lava-opacity-left: 1;
+  --lava-opacity-right: 0.15;
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --glass-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --glass-hover-bg: rgba(255, 255, 255, 0.12);
+  --glass-highlight: rgba(255, 255, 255, 0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-split-left);
+  color: #e8ebe6;
+  padding: 8px 16px;
+  z-index: 100;
+  text-decoration: none;
+  font-weight: 700;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--color-accent-green);
+  outline-offset: 2px;
+}
+
+/* Focus states for interactive elements */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+[contentEditable]:focus-visible {
+  outline: 2px solid var(--color-accent-green);
+  outline-offset: 2px;
+}
+
+.glass:focus-visible,
+.glass-hover:focus-visible {
+  outline: 2px solid var(--color-accent-green);
+  outline-offset: 2px;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.8s ease-out forwards;
+}
+
+/* Custom scrollbar for chat */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent-green) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--color-accent-green);
+  border-radius: 3px;
+  opacity: 0.5;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-accent-green);
+  opacity: 0.8;
+}
+
+/* Split layout styles - panels with transparency for lava lamp visibility */
+/* Base panels are transparent - color comes from overlays */
+.bg-split-left {
+  /* Transparent base - lava lamp shows through */
+  background-color: transparent;
+}
+
+.bg-split-right {
+  /* Transparent base - lava lamp shows through */
+  background-color: transparent;
+}
+
+/* Lava lamp visibility overlays */
+/* Left side: 85% opaque color, lava lamp clearly visible underneath */
+.lava-left-overlay {
+  background-color: color-mix(in srgb, var(--color-split-left) 85%, transparent);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Animate overlay out when menu opens */
+.menu-open-animate .lava-left-overlay {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+/* Right side: 70% opaque color, lava lamp dimly visible underneath */
+.lava-right-overlay {
+  background-color: color-mix(in srgb, var(--color-split-right) 70%, transparent);
+  pointer-events: none;
+}
+
+/* Left panel text - dark in light mode, light in dark mode */
+.left-panel-text {
+  color: #e8ebe6;
+  transition: color 0.3s ease;
+}
+
+/* Dark mode: left panel text is light for contrast against dark background */
+.dark .left-panel-text {
+  color: #292E1E;
+}
+
+/* Header page text - opposite of left-panel-text for pages without contrast bar */
+.header-page-text {
+  color: #292E1E;
+  transition: color 0.3s ease;
+}
+
+/* Dark mode: header text is light */
+.dark .header-page-text {
+  color: #e8ebe6;
+}
+
+/* Left panel icon buttons - reduced shadow */
+.left-panel-icon {
+  color: var(--color-split-right);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.left-panel-icon svg {
+  color: var(--color-split-right);
+}
+
+/* Dark mode: icons match the contrast bar color */
+.dark .left-panel-icon {
+  color: var(--color-split-right);
+}
+
+.dark .left-panel-icon svg {
+  color: var(--color-split-right);
+}
+
+/* Portrait wrapper */
+.portrait-wrapper {
+  transition: all 0.3s ease;
+}
+
+/* Portrait image */
+.portrait-container {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background-color: var(--color-split-left);
+}
+
+.portrait-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Menu drawer text visibility */
+.menu-drawer-text {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  color: var(--color-fg);
+}
+
+/* Menu drawer close button - uses theme color */
+.menu-drawer-close-btn {
+  color: var(--color-fg);
+}
+
+/* Menu open button - uses contrast bar color (for split layout / home page) */
+.menu-open-btn {
+  color: var(--color-split-right);
+  transition: color 0.3s ease;
+}
+
+.menu-open-btn svg {
+  stroke: var(--color-split-right);
+}
+
+/* Dark mode: menu button matches contrast bar */
+.dark .menu-open-btn {
+  color: var(--color-split-right);
+}
+
+.dark .menu-open-btn svg {
+  stroke: var(--color-split-right);
+}
+
+/* Header menu button - uses header text color (for non-home pages) */
+.header-menu-btn {
+  color: #292E1E;
+  transition: color 0.3s ease;
+}
+
+.header-menu-btn svg {
+  stroke: #292E1E;
+}
+
+/* Dark mode: header menu button is light */
+.dark .header-menu-btn {
+  color: #e8ebe6;
+}
+
+.dark .header-menu-btn svg {
+  stroke: #e8ebe6;
+}
+
+/* Learn More accent button - matches left contrast bar color */
+.btn-accent {
+  background-color: var(--color-split-left);
+  color: #e8ebe6;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.dark .btn-accent {
+  background-color: var(--color-split-left);
+  color: #292E1E;
+}
+
+.btn-accent:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Blog glass - completely opaque for better readability */
+.glass-blog {
+  position: relative;
+  background: var(--color-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+
+.glass-blog::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  box-shadow: var(--glass-shadow-inset);
+  pointer-events: none;
+}
+
+.glass-blog > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Blog content paragraph spacing */
+.blog-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.8;
+}
+
+.blog-content p:last-child {
+  margin-bottom: 0;
+}
+
+.blog-content a {
+  color: var(--color-accent-green);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.blog-content a:hover {
+  opacity: 0.8;
+}
+
+/* Theme toggle button styling */
+.theme-toggle-btn {
+  background-color: var(--glass-bg);
+  color: var(--color-fg);
+  border: 1px solid var(--glass-border);
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .split-layout-mobile {
+    flex-direction: column !important;
+    height: auto !important;
+    min-height: 100vh;
+  }
+
+  .split-layout-mobile .w-1\/4 {
+    width: 100% !important;
+    height: 25vh !important;
+    position: relative !important;
+  }
+
+  .split-layout-mobile .portrait-wrapper {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: -90px 0 20px;
+  }
+
+  .split-layout-mobile .portrait-container {
+    width: 180px;
+    height: 180px;
+  }
+
+  .split-layout-mobile .w-3\/4 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 75vh;
+    position: relative !important;
+  }
+
+  .split-layout-mobile main {
+    padding: 2rem 1.5rem !important;
+    align-items: flex-start !important;
+  }
+
+  /* Mobile: title left-aligned next to menu button */
+  .split-layout-mobile .lava-left-overlay + div h2 {
+    text-align: left !important;
+  }
+
+  /* Mobile: move icons to bottom of page */
+  .split-layout-mobile .mobile-icons-bottom {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: var(--color-split-left) !important;
+    padding: 1rem !important;
+    justify-content: center !important;
+    border-top: 1px solid var(--glass-border) !important;
+  }
+
+  /* Mobile icons: opposite colors of contrast bar */
+  .split-layout-mobile .mobile-icons-bottom .left-panel-icon {
+    color: var(--color-fg) !important;
+  }
+
+  .dark .split-layout-mobile .mobile-icons-bottom .left-panel-icon {
+    color: var(--color-fg) !important;
+  }
+
+  /* Mobile: extend lava overlays to cover full viewport */
+  .split-layout-mobile .lava-left-overlay {
+    height: 25vh !important;
+  }
+
+  .split-layout-mobile .lava-right-overlay {
+    min-height: 75vh !important;
+  }
+}
+
+/* Slide animations for chat */
+.chat-slide-in {
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+
+.chat-slide-out {
+  animation: slideOutToLeft 0.3s ease-in forwards;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+/* Liquid glass utility with SVG filters */
+@layer components {
+  .glass {
+    position: relative;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    isolation: isolate;
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    overflow: hidden;
+  }
+  
+  .glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    box-shadow: var(--glass-shadow-inset);
+    pointer-events: none;
+  }
+  
+  .glass::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    filter: url(#liquid-glass-subtle);
+    isolation: isolate;
+  }
+  
+  .glass > * {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .glass-hover:hover {
+    background: var(--glass-hover-bg);
+    transform: scale(1.03);
+  }
+  
+  .glass-hover:hover::after {
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+  }
+}

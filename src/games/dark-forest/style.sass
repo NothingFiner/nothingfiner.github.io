@@ -1,0 +1,188 @@
+@use "sass:math"
+@use "sass:string"
+@use "sass:color";
+
+// vars
+$font-url: 'https://fonts.googleapis.com/css?family=Bungee+Hairline|Raleway'
+
+@import url(#{$font-url})
+
+$neon-green: #44D62C
+$danger: #A34811
+
+.dark-forest, .dark-forest, .dark-forest img
+  margin: 0
+  padding: 0
+  background: transparent
+  border: inherit
+  color: inherit
+  font-family: inherit
+
+.dark-forest
+  font-family: 'Bungee Hairline', cursive
+  color: $neon-green
+  position: relative
+  min-height: 100vh
+  height: 100vh
+  width: 100vw
+  overflow: hidden
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%)
+
+.dark-forest canvas
+  width: 100vw
+  height: 100vh
+
+.dark-forest img
+  display: none
+
+.dark-forest .menu-container
+  position: absolute
+  width: 100vw
+  height: 100vh
+  justify-content: center
+  display: flex
+  align-items: center
+  flex-direction: column
+
+.dark-forest .menu
+  h1
+    width: 100%
+  display: flex
+  transition: opacity .25s
+  width: 80vw
+  justify-content: flex-start
+  align-items: center
+  flex-flow: wrap
+  z-index: 100
+  padding: 5vw
+  background: transparent
+  border-color: $neon-green
+  border: 1px solid
+  color: $neon-green
+  line-height: 2rem
+  font-family: 'Bungee Hairline', cursive
+  text-shadow: 0 0 1px color.adjust($neon-green, $lightness: 10%, $space: hsl)
+  box-shadow: 0 0 2px color.adjust($neon-green, $lightness: 10%, $space: hsl), inset 0 0 2px color.adjust($neon-green, $lightness: 10%, $space: hsl)
+  &.hide
+    display: none
+  section
+    line-height: 2
+    width: 50%
+    ul
+      line-height: 3rem
+  span
+    padding: .5rem
+    border: 1px solid $neon-green
+    border-radius: 2px
+
+.dark-forest .status
+  z-index: 105
+  display: none
+  justify-content: center
+  align-items: center
+  &.active
+    display: flex
+    &main
+      animation: expand_in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+  span, h1
+    margin: 0 1vw
+    background: color.adjust($danger, $alpha: -.25)
+    animation: pulse 1s linear infinite
+    height: 100%
+  span
+    width: 2vw
+  h1
+    display: flex
+    justify-content: center
+    align-items: center
+    font-size: 6rem
+    width: 60vw
+    font-family: 'Bungee Hairline', cursive
+    color: #090A0F
+  main
+    height: 10rem
+    max-width: 80vw
+    display: flex
+    text-align: center
+.button
+    border: 1px solid $neon-green
+    background: transparent
+    border-radius: 0
+    padding: 1rem
+    font-size: 1rem
+    cursor: pointer
+    &:hover
+      color: #090A0F
+      background: $neon-green
+      border-color: color.adjust($neon-green, $lightness: 10%, $space: hsl)
+      box-shadow: 1px 1px 8px color.adjust($neon-green, $lightness: 10%, $space: hsl), -1px -1px 8px color.adjust($neon-green, $lightness: 10%, $space: hsl)
+  
+.button-container
+  margin-top: 2rem
+    
+
+// n is number of stars required
+@function multiple-box-shadow ($n)
+  $value: '#{math.random(2000)}px #{math.random(2000)}px #FFF'
+  @for $i from 2 through $n
+    $value: '#{$value} , #{math.random(2000)}px #{math.random(2000)}px #FFF'
+  @return string.unquote($value)
+
+$shadows-small:  multiple-box-shadow(400)
+
+.dark-forest #dark-forest-stars
+  transition: height 1s ease
+  width: 1px
+  height: 1px
+  background: transparent
+  box-shadow: $shadows-small
+  animation: animStar 70s linear infinite
+  &.transit
+    height: 1rem
+
+  &:after
+    content: " "
+    position: absolute
+    top: 2000px
+    width: 1px
+    height: 1px
+    background: transparent
+    box-shadow: $shadows-small
+
+.dark-forest #dark-forest-container
+  transition: top 1s
+  position: absolute
+  top: -100vh
+  left: 0
+  right: 0
+  &.active
+    top: 0
+
+@keyframes animStar
+  from
+    transform: translateY(0px)
+  to
+    transform: translateY(-1000px)
+
+@keyframes pulse
+  0%
+    box-shadow: 0 0 2px color.adjust($danger, $lightness: 10%, $space: hsl), inset 0 0 2px color.adjust($danger, $lightness: 10%, $space: hsl)
+  50%
+    box-shadow: 0 0 8px color.adjust($danger, $lightness: 10%, $space: hsl), inset 0 0 8px color.adjust($danger, $lightness: 10%, $space: hsl)
+  100%
+    box-shadow: 0 0 2px color.adjust($danger, $lightness: 10%, $space: hsl), inset 0 0 2px color.adjust($danger, $lightness: 10%, $space: hsl)
+
+@keyframes expand_in
+  0%
+    opacity: 0
+    transform: scale(0.5)
+  60%
+    opacity: 1
+    transform: scale(1.05)
+  75%
+    transform: scale(1)
+  90%
+    transform: scale(1.05)
+  100%
+    transform: scale(1)
+
