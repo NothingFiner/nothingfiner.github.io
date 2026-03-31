@@ -3,7 +3,6 @@ export enum PageTitle {
   PROJECTS = 'Projects',
   PROJECT_DETAIL = 'Project Detail',
   CHAT = 'Chat',
-  ABOUT = 'About Me',
   RESUME = 'Resume',
   BLOG = 'Blog',
   BLOG_POST = 'Blog Post',
@@ -13,7 +12,6 @@ export const PAGE_PATHS: Record<string, PageTitle> = {
   '/': PageTitle.HOME,
   '/projects': PageTitle.PROJECTS,
   '/chat': PageTitle.CHAT,
-  '/about': PageTitle.ABOUT,
   '/resume': PageTitle.RESUME,
   '/blog': PageTitle.BLOG,
 };

@@ -1,4 +1,11 @@
 import { Link } from 'wouter-preact';
+import { Icon } from './Icon';
+
+interface MenuItem {
+  path: string;
+  label: string;
+  hideMobile?: boolean;
+}
 
 interface MenuDrawerProps {
   isOpen: boolean;
@@ -7,14 +14,13 @@ interface MenuDrawerProps {
 }
 
 export function MenuDrawer({ isOpen, onClose, onNavigate }: MenuDrawerProps) {
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { path: '/', label: 'Home' },
     { path: '/projects', label: 'Projects' },
-    { path: '/chat', label: 'Chat' },
+    { path: '/chat', label: 'Chat with Bot' },
     { path: '/blog', label: 'Blog' },
-    { path: '/games/dark-forest', label: 'Game - Dark Forest' },
     { path: '/resume', label: 'Resume' },
-    { path: '/about', label: 'About Me' },
+    { path: '/games/dark-forest', label: 'Game - Dark Forest', hideMobile: true },
   ];
 
   const handleNavClick = (path: string) => {
@@ -33,15 +39,13 @@ export function MenuDrawer({ isOpen, onClose, onNavigate }: MenuDrawerProps) {
           class="self-end mb-8 p-2 rounded-xl glass glass-hover transition-colors menu-drawer-close-btn"
           aria-label="Close menu"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <Icon name="close" size={24} />
         </button>
 
         <nav class="flex-1">
           <ul class="space-y-4">
             {menuItems.map((item) => (
-              <li key={item.path}>
+              <li key={item.path} class={item.hideMobile ? 'hidden md:block' : ''}>
                 <Link
                   href={item.path}
                   onClick={handleNavClick}
