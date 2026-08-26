@@ -41,7 +41,7 @@ export function Home() {
               Hello, I'm Elie
             </h1>
             <h2 class="text-lg md:text-xl text-theme/80 text-left font-light">
-              I'm a developer. Let me help you tell your story.
+              I'm a (mostly) frontend developer with 10+ years of experience. Let me help you tell your story.
             </h2>
           </div>
 
@@ -67,10 +67,10 @@ export function Home() {
             <div class="prose prose-lg max-w-none text-theme">
               <p class="mb-4">
                 I've been coding since I was a kid. The first thing I ever coded was an attempt at an asteroid clone on a casio graphing calculator.
-                I never could get it past enemy rendering: it got too slow. I'm sure I had a fundimental misunderstanding of how to institute a game loop.
+                I never could get it past enemy rendering: it got too slow. I'm sure I had a fundamental misunderstanding of how to implement a game loop.
               </p>
               <p class="mb-4">
-                I've been coding professionally since 2013. First as a contractor, before landing my first fulltime gig. I went to appacademy in 2017 and spent more than 8 years working at a consulting agency.
+                I've been coding professionally since 2013. First as a contractor, before landing my first full-time gig. I went to AppAcademy in 2017 and spent more than 8 years working in e-commerce & SaaS.
                 I built everything from webstores to custom web apps. I'm looking for my next challenge in the product space.
               </p>
             </div>

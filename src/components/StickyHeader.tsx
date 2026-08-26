@@ -44,14 +44,11 @@ export function StickyHeader({ isDrawerOpen, onMenuClick, pageTitle, showTitle =
           </button>
           {showTitle && (
             <div class={`flex items-center text-[var(--color-fg)] md:text-[${textColor}] gap-2 overflow-hidden`} style={{ lineHeight: 1 }}>
-              {/* Screen reader only - always available but never visible */}
-              <span class="sr-only">Eliot Asenoth Gaspar-Finer</span>
-              {/* Visual name that animates */}
+              <span class="sr-only">Elie Asenoth Gaspar-Finer</span>
               <div
                 class="font-heading flex items-baseline"
                 aria-hidden="true"
               >
-                {/* Eliot - shrinks to show left 5px of E */}
                 <span
                   class="transition-all duration-500 ease-in-out"
                   style={{ 
@@ -63,7 +60,7 @@ export function StickyHeader({ isDrawerOpen, onMenuClick, pageTitle, showTitle =
                     fontWeight: scrolled ? '700' : '400'
                   }}
                 >
-                  Eliot
+                  Elie
                 </span>
                 
                 {/* Asenoth - shrinks to show right portion (includes A) */}

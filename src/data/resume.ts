@@ -15,9 +15,6 @@ Instituted developer sign-off process for design approval to prevent misaligned 
 Designed and implemented custom reusable hook for mass price editing feature, increasing reliability for updates affecting potentially thousands of products, leveraging advanced state management and asynchronous data handling in React
 Introduced and championed new 'pending' state in price list workflow, resolving critical logic gaps and reducing feature bugs during QA phase, collaborating with backend team to align API and state logic
 Mentored and delegated tasks to two junior developers, resulting in smoother development process and fewer bug reports, applying leadership, mentorship, and task prioritization skills
-Designed and implemented custom reusable hook for mass price editing feature, increasing reliability for updates affecting potentially thousands of products, leveraging advanced state management and asynchronous data handling in React
-Introduced and championed new 'pending' state in price list workflow, resolving critical logic gaps and reducing feature bugs during QA phase, collaborating with backend team to align API and state logic
-Mentored and delegated tasks to two junior developers, resulting in smoother development process and fewer bug reports, applying leadership, mentorship, and task prioritization skills
 Led front-end development for e-commerce clients including Reformation, Brooks Brothers & Forever 21, delivering responsive, performant user experiences using React, Next.js, and Tailwind CSS
 Engineered Next.js 14 to 15 migration POC for ISP plan selection portal, achieving 1-8 second page load improvements and identifying additional optimization opportunities for subscription flow enhancement
 Architected batch price update solution handling thousands of SKUs by implementing job-based UI with in-progress state tracking, preventing duplicate submissions and enabling efficient bulk catalog operations

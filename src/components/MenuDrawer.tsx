@@ -23,7 +23,7 @@ export function MenuDrawer({ isOpen, onClose, onNavigate }: MenuDrawerProps) {
     { path: '/games/dark-forest', label: 'Game - Dark Forest', hideMobile: true },
   ];
 
-  const handleNavClick = (path: string) => {
+  const handleNavClick = () => {
     onNavigate();
   };
 

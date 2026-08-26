@@ -41,6 +41,8 @@ class Sun {
       shadowColor: this.rgb,
       shadowBlur: this.mass / 4,
     });
+    // paper.js accepts a gradient spec object here at runtime, though its
+    // types model `fillColor` as a `Color` instance. Cast to bridge the gap.
     this.star.fillColor = {
       gradient: {
         radial: true,
@@ -48,7 +50,7 @@ class Sun {
       },
       origin: { x: this.star.position.x - (this.mass / 3.14), y: this.star.position.y - (this.mass / 3.14) },
       destination: this.star.bounds.rightCenter,
-    };
+    } as unknown as paper.Color;
   }
 }
 

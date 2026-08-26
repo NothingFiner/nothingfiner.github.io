@@ -28,6 +28,6 @@ export function isHomePage(path: string): boolean {
 
 export function getHeaderTitle(path: string): string {
   const title = getPageTitle(path);
-  if (title === PageTitle.HOME) return 'Eliot Gaspar-Finer';
-  return `Eliot Gaspar-Finer - ${title}`;
+  if (title === PageTitle.HOME) return 'Elie Gaspar-Finer';
+  return `Elie Gaspar-Finer - ${title}`;
 }

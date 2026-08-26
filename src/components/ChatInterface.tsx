@@ -1,5 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from 'preact/hooks';
-import { useLocation } from 'wouter-preact';
+import { useState, useMemo, useRef, useLayoutEffect } from 'preact/hooks';
 import useRAG from '../hooks/useRAG';
 import ChatLog from './ChatLog';
 import StatusBar from './StatusBar';
@@ -7,11 +6,9 @@ import { RAGStatus, ChatRole, Message } from '../types';
 
 const ChatInterface = () => {
 
-  const [, navigate] = useLocation();
-  const {stream, status, progress, text} = useRAG();
+  const {stream, status, progress} = useRAG();
 
   const [inputValue, setInputValue] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
   const [conversation, setConversation] = useState<Message[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -19,9 +16,6 @@ const ChatInterface = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const isStreaming = useMemo(() => status === RAGStatus.Loading, [status]);
-  const isLoading = useMemo(() => status === RAGStatus.Loading, [status]);
-  const isReady = useMemo(() => status === RAGStatus.Ready, [status]);
-  const isError = useMemo(() => status === RAGStatus.Error, [status]);
 
   const handleSubmit = async () => {
     const newMessage = inputValue.trim();
@@ -66,10 +60,6 @@ const ChatInterface = () => {
     }
   };
 
-  const handleChatEdit = () => {
-    setIsEditing(true);
-  };
-
   const handleInput = (e: Event) => {
     const target = e.target as HTMLDivElement;
     setInputValue(target.textContent || '');
@@ -85,12 +75,9 @@ const ChatInterface = () => {
   };
 
   // Auto-scroll to bottom when conversation changes
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (chatContainerRef.current && conversation.length > 0) {
-      // Use requestAnimationFrame to ensure DOM has updated
-      requestAnimationFrame(() => {
-        chatContainerRef.current!.scrollTop = chatContainerRef.current!.scrollHeight;
-      });
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [conversation]);
 
@@ -131,14 +118,13 @@ const ChatInterface = () => {
               contentEditable={true}
               role="textbox"
               class={`w-full px-6 py-4 bg-transparent text-theme placeholder-[var(--color-fg)]/50 focus:outline-none text-lg font-body before:empty:text-gray-400 before:empty:[content:attr(data-placeholder)]`}
-              onFocus={handleChatEdit}
               onInput={handleInput}
               onKeyDown={handleKeyDown}
               data-placeholder="ask about Elie...."
             />
             <button
               type="submit"
-              disabled={isProcessing || isLoading}
+              disabled={isProcessing || isStreaming}
               class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-xl glass transition-transform hover:scale-105 transition-colors text-theme disabled:opacity-50 disabled:hover:scale-100"
               aria-label="Submit"
             >
@@ -150,7 +136,7 @@ const ChatInterface = () => {
 
           {/* Model Download Notice */}
           <div class="text-center text-xs text-theme/40 mt-3 max-w-2xl mx-auto">
-            Using the chatbot will download a quantized model onto your device to run on your GPU. The initial download will be north of half a GB.
+            {isExpanded ? 'Using the chatbot will download a quantized model onto your device to run on your GPU. The initial download will be north of half a GB.' : 'This is a very small model and therefore has all of the associated problems. For accurate information about me, please consult my resume.'}
           </div>
         </div>
     )
