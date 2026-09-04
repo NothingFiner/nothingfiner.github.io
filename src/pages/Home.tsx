@@ -1,6 +1,7 @@
 import { useLocation } from 'wouter-preact';
 import { Icon } from '../components/Icon';
 import { useRef } from 'preact/hooks';
+import { projects } from '../data/projects';
 
 const technologies = [
   { name: 'JavaScript', icon: 'javascript' },
@@ -23,8 +24,11 @@ export function Home() {
   const [, navigate] = useLocation();
 
   const aboutRef = useRef<HTMLElement | null>(null);
+  const nowRef = useRef<HTMLElement | null>(null);
   const techRef = useRef<HTMLElement | null>(null);
   const botRef = useRef<HTMLElement | null>(null);
+
+  const rite = projects.find(p => p.id === '4');
 
   return (
     <div class="w-full">
@@ -66,6 +70,13 @@ export function Home() {
           <div class="glass rounded-2xl p-8">
             <div class="prose prose-lg max-w-none text-theme">
               <p class="mb-4">
+                Senior Engineer, frontend-focused. 10+ years experience with React. 
+              </p>
+              <p class="mb-4">
+                I'm Elie. Through my formal education, I'm a trained poet. I like to joke that poetry and coding are similar in practice, but it is true: both crafts hinge upon collapsing complicated ideas into succinct patterns of symbols. A poet folds a singular human experience into as few words as possible. A programmer takes a complicated problem and reduces it to (hopefully) comprehensible code.
+                Instead of unfolding into emotion, a program ends up as streams of binary running through some device's threads. Both too often intimidate the uninitiated.      
+              </p>
+              <p class="mb-4">
                 I've been coding since I was a kid. The first thing I ever coded was an attempt at an asteroid clone on a casio graphing calculator.
                 I never could get it past enemy rendering: it got too slow. I'm sure I had a fundamental misunderstanding of how to implement a game loop.
               </p>
@@ -73,6 +84,48 @@ export function Home() {
                 I've been coding professionally since 2013. First as a contractor, before landing my first full-time gig. I went to AppAcademy in 2017 and spent more than 8 years working in e-commerce & SaaS.
                 I built everything from webstores to custom web apps. I'm looking for my next challenge in the product space.
               </p>
+            </div>
+          </div>
+        </div>
+        <button
+            onClick={() =>  nowRef.current?.scrollIntoView({behavior: 'smooth'})}
+            class="bottom-8 w-full flex justify-center mt-12 px-8 py-4 ml-auto mr-auto rounded-xl md:hidden transition-all duration-200 font-medium text-lg hover:scale-105"
+          >
+            <Icon name={'down'} size={24} class="opacity-70" />
+        </button>
+      </section>
+
+      {/* What I'm up to section */}
+      <section id="now" ref={nowRef} class="py-16 max-md:min-h-screen md:py-24 max-md:flex max-md:flex-col max-md:justify-center">
+        <div class="max-w-3xl">
+          <div class="glass rounded-2xl p-8">
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+              <div class="rounded-2xl overflow-hidden glass flex-shrink-0 w-full md:w-1/2">
+                <img src={rite?.image} alt="Rite" class="w-full h-auto" />
+              </div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-heading mb-3 text-theme">Rite</h3>
+                <p class="text-theme/80 font-body mb-6">
+                  Right now, I'm writing a novel. While writing it, I grew frustrated with Google Docs. So I decided to build my own word processor, <strong>Rite</strong> — a first of its kind integrated writing environment. It's still in development, but coming along well.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                  <button
+                    onClick={() => navigate('/projects/4')}
+                    class="px-6 py-3 rounded-xl btn-accent transition-all duration-200 font-medium hover:scale-105"
+                  >
+                    View project
+                  </button>
+                  <a
+                    href={rite?.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center gap-2 px-6 py-3 rounded-xl glass glass-hover transition-all duration-300 text-theme"
+                    aria-label="Rite on GitHub"
+                  >
+                    <Icon name={'github'} size={24} class="opacity-70" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

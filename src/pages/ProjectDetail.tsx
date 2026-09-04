@@ -2,12 +2,17 @@ import { useState, useEffect } from 'preact/hooks';
 import { useLocation } from 'wouter-preact';
 import { useRoute } from 'wouter-preact';
 import { projects } from '../data/projects';
+import { Icon } from '../components/Icon';
 
 interface Project {
   id: string;
   title: string;
   image: string;
   description: string;
+  gallery?: string[];
+  githubUrl?: string;
+  status?: string;
+  tags?: string[];
 }
 
 export function ProjectDetail() {
@@ -67,18 +72,56 @@ export function ProjectDetail() {
                 <img src={project.image} alt={project.title} class="w-full h-auto" />
               </div>
 
-              <h1
-                class="text-4xl font-heading font-heading mb-6 text-theme"
-                style={{ textShadow: '3px 3px 0px var(--color-accent-green)' }}
-              >
-                {project.title}
-              </h1>
+              <div class="flex items-center gap-4 mb-6 flex-wrap">
+                <h1
+                  class="text-4xl font-heading font-heading text-theme"
+                  style={{ textShadow: '3px 3px 0px var(--color-accent-green)' }}
+                >
+                  {project.title}
+                </h1>
+                {project.status && (
+                  <span class="glass rounded-full px-4 py-1 text-sm text-theme/80 font-mono whitespace-nowrap">
+                    {project.status}
+                  </span>
+                )}
+              </div>
+
+              {(project.githubUrl || (project.tags && project.tags.length > 0)) && (
+                <div class="flex flex-wrap items-center gap-3 mb-6">
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="flex items-center gap-2 px-4 py-2 rounded-xl glass glass-hover transition-all duration-200 text-theme font-medium"
+                    >
+                      <Icon name="github" size={20} class="opacity-70" />
+                      <span>View on GitHub</span>
+                    </a>
+                  )}
+                  {project.tags && project.tags.map((tag) => (
+                    <span key={tag} class="glass rounded-xl px-4 py-2 text-sm text-theme/80 font-mono whitespace-nowrap">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
 
               <div class="rounded-2xl glass p-8 max-h-[60vh] overflow-y-auto">
                 <div class="prose prose-lg max-w-none text-theme font-body whitespace-pre-line">
                   {project.description}
                 </div>
               </div>
+
+              {project.gallery && project.gallery.length > 0 && (
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                  {project.gallery.map((src, index) => (
+                    <div key={index} class="rounded-2xl overflow-hidden glass">
+                      <img src={src} alt={`${project.title} screenshot ${index + 1}`} class="w-full h-auto" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 

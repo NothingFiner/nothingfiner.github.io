@@ -4,6 +4,10 @@ export interface Project {
   title: string;
   image: string;
   description: string;
+  gallery?: string[];
+  githubUrl?: string;
+  status?: string;
+  tags?: string[];
 }
 
 export const projects: Project[] = [
@@ -24,5 +28,19 @@ export const projects: Project[] = [
     title: 'Resume Chatbot',
     image: './assets/chatbot.png',
     description: "Using WebLLM library, I load a model directly into the brower and use a machine's VRAM to run a chatbot locally that can answer questions about my resume. I have gone through a few approaches and you can read more about my process here."
+  },
+  {
+    id: '4',
+    title: 'Rite',
+    image: './assets/rite/rite-hero.png',
+    description: "Rite is an IWE—an integrated writing environment. It's a lightweight, distraction-free word processor I'm building as a native desktop app with Tauri. It's still in active development — what's shown here is a work in progress. The goal is a fast, focused writing tool that gets out of your way, complete with built-in support for a custom BYOK writing assistant, history diffing, and guess-free manuscript formatting.",
+    gallery: [
+      './assets/rite/rite-1.png',
+      './assets/rite/rite-2.png',
+      './assets/rite/rite-3.png',
+    ],
+    githubUrl: 'https://github.com/nothingfiner/rite',
+    status: 'In development',
+    tags: ['Tauri', 'Rust', 'TypeScript'],
   },
 ];
