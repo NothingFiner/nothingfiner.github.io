@@ -39,7 +39,7 @@ export const projects: Project[] = [
       './assets/rite/rite-2.png',
       './assets/rite/rite-3.png',
     ],
-    githubUrl: 'https://github.com/nothingfiner/rite',
+    githubUrl: 'https://github.com/NothingFiner/rite',
     status: 'In development',
     tags: ['Tauri', 'Rust', 'TypeScript'],
   },
