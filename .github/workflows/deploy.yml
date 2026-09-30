@@ -17,6 +17,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Use the Chrome preinstalled on the runner for the prerender step
+      # instead of downloading Puppeteer's bundled Chromium.
+      PUPPETEER_SKIP_DOWNLOAD: 'true'
+      PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
     steps:
       - name: Checkout
         uses: actions/checkout@v4
