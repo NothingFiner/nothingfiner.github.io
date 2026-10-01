@@ -72,7 +72,7 @@ let browser;
 try {
   browser = await launch(launchOptions);
   const page = await browser.newPage();
-  await page.goto(ORIGIN + '/', { waitUntil: 'networkidle2', timeout: 30000 });
+  await page.goto(ORIGIN + '/', { waitUntil: 'load', timeout: 30000 });
 
   // Wait for the home hero to render before capturing.
   await page.waitForSelector('#main-content h1', { timeout: 20000 });
