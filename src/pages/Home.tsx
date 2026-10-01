@@ -45,7 +45,7 @@ export function Home() {
               Hello, I'm Elie
             </h1>
             <h2 class="text-lg md:text-xl text-theme/80 text-left font-light">
-              I'm a (mostly) frontend developer with 10+ years of experience. Let me help you tell your story.
+              I'm a (mostly) frontend developer with 12+ years of experience. Let me help you tell your story.
             </h2>
           </div>
 
@@ -70,7 +70,7 @@ export function Home() {
           <div class="glass rounded-2xl p-8">
             <div class="prose prose-lg max-w-none text-theme">
               <p class="mb-4">
-                Senior Engineer, frontend-focused. 10+ years experience with React. 
+                Senior Engineer, frontend-focused. 12+ years experience with React.
               </p>
               <p class="mb-4">
                 I'm Elie. Through my formal education, I'm a trained poet. I like to joke that poetry and coding are similar in practice, but it is true: both crafts hinge upon collapsing complicated ideas into succinct patterns of symbols. A poet folds a singular human experience into as few words as possible. A programmer takes a complicated problem and reduces it to (hopefully) comprehensible code.
