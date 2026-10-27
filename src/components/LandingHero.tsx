@@ -176,10 +176,10 @@ export function LandingHero() {
           copyright parks just below it at the page top) */}
       <div class="hf-strip">
         <div class="hf-copy">
-          <h1 class="gl-title">
+          <h2 class="gl-title">
             {/* The heading's real text. It must exist at first paint: the two
                 cursor-type components below only render their string into a
-                shadow root after a typing delay, which left this h1 with an
+                shadow root after a typing delay, which left this h2 with an
                 EMPTY accessible name and empty innerText (blank to screen
                 readers, to the prerender snapshot, and to any non-JS fetcher).
                 The visible typed copies are aria-hidden because they are a
@@ -203,7 +203,7 @@ export function LandingHero() {
                 />
               </span>
             )}
-          </h1>
+          </h2>
 
           <div class="gl-lead">
             {/* same words as the h1's accessible text — hidden here so the role
