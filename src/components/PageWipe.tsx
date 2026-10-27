@@ -36,7 +36,7 @@
  * Re-enable by removing the param and calling setWipesEnabled(true).
  */
 
-import { useEffect } from 'preact/compat';
+import { useEffect } from 'preact/hooks';
 // the wipe component + its cursor-type writer, straight from the
 // library's source (the @glaphic/ui barrel already pulls it, but the
 // direct import stands on its own so this module never depends on the

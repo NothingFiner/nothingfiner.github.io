@@ -1,6 +1,9 @@
 import { Router, Route, useLocation } from 'wouter-preact';
 import { useHashLocation } from 'wouter-preact/use-hash-location';
-import { useState, useEffect, Suspense } from 'preact/compat';
+import { useState, useEffect } from 'preact/hooks';
+// Suspense comes from preact/compat only — preact's root module doesn't
+// re-export it (10.28's index.d.ts); hooks do come from preact/hooks
+import { Suspense } from 'preact/compat';
 import { MenuDrawer } from './components/MenuDrawer';
 import { StickyHeader } from './components/StickyHeader';
 import { LavaLampBackground } from './components/LavaLampBackground';
