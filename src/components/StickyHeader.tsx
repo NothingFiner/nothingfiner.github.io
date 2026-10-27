@@ -8,7 +8,6 @@ interface StickyHeaderProps {
   pageTitle?: string;
   showTitle?: boolean;
   showThemeToggle?: boolean;
-  isHomePage?: boolean;
 }
 
 export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThemeToggle = true }: StickyHeaderProps) {
@@ -25,11 +24,25 @@ export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThe
 
   return (
     <header
-      class={`fixed left-4 right-4 top-4 z-50 transition-all duration-300 rounded-xl ${
-        scrolled ? 'panel py-2 px-4' : 'py-3 px-4'
+      class={`stky fixed left-4 right-4 top-4 z-50 transition-all duration-300 rounded-xl ${
+        scrolled ? 'panel stky-shrunk py-2 px-4' : 'py-3 px-4 stky-idle'
       }`}
-      style={scrolled ? {} : { background: 'transparent', boxShadow: 'none', border: 'none', outline: 'none' }}
     >
+      <style>{`
+        /* the header's own classes: the idle state paints nothing (transparent
+           ground, no shadow); the nameplate's shrink is driven by the same
+           scrolled state class so the values live here, not in JSX */
+        .stky-idle { background: transparent; box-shadow: none; border: none; outline: none; }
+        .stky-titleline { line-height: 1; }
+        .stky .stky-name { display: inline-block; overflow: hidden; white-space: nowrap; font-weight: 400; }
+        .stky .stky-asenoth { margin-left: 4px; }
+        .stky .stky-gaspar { margin-left: 4px; }
+        .stky-shrunk .stky-name { font-weight: 700; }
+        .stky-shrunk .stky-elie { width: 6px; }
+        .stky-shrunk .stky-asenoth { width: 5.5px; margin-left: 0; transform: scaleX(-1); }
+        .stky-shrunk .stky-gaspar { width: 7px; margin-left: -4px; }
+        .stky-shrunk .stky-finer { width: 6px; }
+      `}</style>
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
           <button
@@ -40,69 +53,33 @@ export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThe
             <Icon name="menu" size={24} />
           </button>
           {showTitle && (
-            <div class={`flex items-center text-theme gap-2 overflow-hidden`} style={{ lineHeight: 1 }}>
+            <div class="stky-titleline flex items-center text-theme gap-2 overflow-hidden">
               <span class="sr-only">Elie Asenoth Gaspar-Finer</span>
               <div
                 class="font-heading flex items-baseline"
                 aria-hidden="true"
               >
                 <span
-                  class="transition-all duration-500 ease-in-out"
-                  style={{ 
-                    display: 'inline-block',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    width: scrolled ? '6px' : 'auto',
-                    opacity: 1,
-                    fontWeight: scrolled ? '700' : '400'
-                  }}
+                  class="stky-name stky-elie transition-all duration-500 ease-in-out"
                 >
                   Elie
                 </span>
                 
                 {/* Asenoth - shrinks to show right portion (includes A) */}
                 <span
-                  class="transition-all duration-500 ease-in-out"
-                  style={{ 
-                    display: 'inline-block',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    width: scrolled ? '5.5px' : 'auto',
-                    marginLeft: scrolled ? '0' : '4px',
-                    opacity: 1,
-                    fontWeight: scrolled ? '700' : '400',
-                    transform: scrolled ? 'scaleX(-1)' : 'unset'
-
-                  }}
+                  class="stky-name stky-asenoth transition-all duration-500 ease-in-out"
                 >
                   Asenoth
                 </span>
                 {/* Gaspar- - shrinks to show right portion (includes G) */}
                 <span
-                  class="transition-all duration-500 ease-in-out"
-                  style={{ 
-                    display: 'inline-block',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    width: scrolled ? '7px' : 'auto',
-                    marginLeft: scrolled ? '-4px' : '4px',
-                    opacity: 1,
-                    fontWeight: scrolled ? '700' : '400'
-                  }}
+                  class="stky-name stky-gaspar transition-all duration-500 ease-in-out"
                 >
                   Gaspar-
                 </span>
                 {/* Finer - shrinks to show left 5px of F */}
                 <span
-                  class="transition-all duration-500 ease-in-out"
-                  style={{ 
-                    display: 'inline-block',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                    width: scrolled ? '6px' : 'auto',
-                    opacity: 1,
-                    fontWeight: scrolled ? '700' : '400'
-                  }}
+                  class="stky-name stky-finer transition-all duration-500 ease-in-out"
                 >
                   Finer
                 </span>

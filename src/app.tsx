@@ -100,7 +100,6 @@ function AppContent() {
               isDrawerOpen={isDrawerOpen}
               onMenuClick={() => handleMenuToggle(true)}
               pageTitle={pageTitle}
-              isHomePage={false}
             />
           )}
           <main id="main-content" class={`relative z-10 flex-1 transition-all duration-300 ${!isDarkForest && isDrawerOpen ? 'md:ml-80 ml-0' : 'ml-0'}`}>
