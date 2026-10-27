@@ -442,7 +442,10 @@ export function LavaLampBackground({ color, palette, lamp = false }: LavaLampBac
 
     const locations = getUniformLocations(gl, program);
     if (!locations) return;
-    locationsRef.current = locations;
+    // Narrow-once local, the same boundary as glCtx/view above: the
+    // hoisted animate() closure sees the pre-guard type (typescript.md)
+    const uniformLocations = locations;
+    locationsRef.current = uniformLocations;
 
     startTimeRef.current = performance.now();
 
@@ -459,7 +462,7 @@ export function LavaLampBackground({ color, palette, lamp = false }: LavaLampBac
       if (reduced) time = 0;
 
       glCtx.viewport(0, 0, canvas.width, canvas.height);
-      setUniforms(glCtx, locations, time, canvas.width, canvas.height, window.devicePixelRatio || 1, toneGl);
+      setUniforms(glCtx, uniformLocations, time, canvas.width, canvas.height, window.devicePixelRatio || 1, toneGl);
       draw(glCtx);
     }
     animate();
