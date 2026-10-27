@@ -34,7 +34,7 @@ export function BlogPost() {
         </button>
 
         <article class="panel rounded-2xl p-8">
-          <time class="text-sm text-theme/60 font-mono block mb-4">
+          <time class="text-sm text-grey font-mono block mb-4">
             {new Date(post.date).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
@@ -47,7 +47,7 @@ export function BlogPost() {
           </h2>
 
           <div
-            class="prose prose-lg max-w-none text-theme/80 blog-content"
+            class="prose prose-lg max-w-none text-theme blog-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>

@@ -109,8 +109,8 @@ export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThe
               </div>
               {pageTitle && (
                 <>
-                  <span class="text-theme/40">/</span>
-                  <span class="text-theme/80 font-mono text-sm">{pageTitle}</span>
+                  <span class="text-grey">/</span>
+                  <span class="text-theme font-mono text-sm">{pageTitle}</span>
                 </>
               )}
             </div>

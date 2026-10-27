@@ -8,11 +8,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-light': '#FDFFFC',
-        'bg-dark': '#292E1E',
-        'accent-green': '#8B9556',
-        'accent-red': '#8C1C13',
-        'accent-purple': '#61304B',
+        'bg-light': '#F9FAF4',
+        'bg-dark': '#0D0221',
+        'grey': '#686474',
+        'accent-green': 'var(--color-accent-green)',
+        'accent-red': '#A6022A',
+        'accent-purple': '#686474',
       },
       backgroundColor: {
         'page': 'var(--color-bg)',

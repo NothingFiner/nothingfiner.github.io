@@ -4,14 +4,14 @@
 
 /* Light theme */
 :root {
-  --color-bg: #d7fcd4;
-  --color-fg: #292E1E;
-  --color-accent-green: #3ec300;
-  --color-accent-red: #8b1e3f;
-  --color-accent-purple: #ad9b9a;
-  /* Split layout: left 25% dark, right 75% light */
-  --color-split-left: #1a1d14;
-  --color-split-right: #d7fcd4;
+  --color-bg: #F2F5EB;
+  --color-fg: #0D0221;
+  --color-accent-green: #A6022A;
+  --color-accent-red: #A6022A;
+  --color-accent-purple: #686474;
+  /* the two grounds (INK / paper) the skip-link prints on */
+  --color-split-left: #0D0221;
+  --color-split-right: #F2F5EB;
   /* Lava lamp opacity: full on left, dim on right */
   --lava-opacity-left: 1;
   --lava-opacity-right: 0.15;
@@ -25,11 +25,14 @@
 
 /* Dark theme */
 .dark {
-  --color-bg: #1a1d14;
-  --color-fg: #e8ebe6;
-  /* Split layout: left 25% light, right 75% dark */
-  --color-split-left: #d7fcd4;
-  --color-split-right: #1a1d14;
+  --color-bg: #0D0221;
+  --color-fg: #F2F5EB;
+  /* the two grounds (INK / paper) the skip-link prints on; the old
+     split inversion died with the split layout itself */
+  --color-split-left: #0D0221;
+  --color-split-right: #F2F5EB;
+  /* dark work accents print fluro — the crimson accent fails on INK */
+  --color-accent-green: #14F1C8;
   /* Lava lamp opacity: full on left, dim on right */
   --lava-opacity-left: 1;
   --lava-opacity-right: 0.15;
@@ -52,7 +55,7 @@
   top: -40px;
   left: 0;
   background: var(--color-split-left);
-  color: #e8ebe6;
+  color: #F2F5EB;
   padding: 8px 16px;
   z-index: 100;
   text-decoration: none;
@@ -344,7 +347,7 @@ body {
 }
 
 .blog-content a:hover {
-  opacity: 0.8;
+  color: var(--color-fg);
 }
 
 /* Mobile layout */

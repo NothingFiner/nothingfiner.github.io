@@ -23,7 +23,7 @@ export function Blog() {
               }}
             >
               <div class="flex items-center gap-4 mb-3">
-                <time class="text-sm text-theme/60 font-mono">
+                <time class="text-sm text-grey font-mono">
                   {new Date(post.date).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -35,7 +35,7 @@ export function Blog() {
                 {post.title}
               </h2>
               <div 
-                class="text-theme/80 prose prose-sm max-w-none"
+                class="text-theme prose prose-sm max-w-none"
                 dangerouslySetInnerHTML={{ __html: post.content.replace(/<[^>]*>/g, '').trim().slice(0, 300) + '...' }}
               />
               <div class="mt-4">
