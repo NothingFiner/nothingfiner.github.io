@@ -91,6 +91,10 @@ export function LandingPanel() {
   // page 2 — and, parked, keeps covering the fold-height band for the rest
   // of the landing flow below it.
   useEffect(() => {
+    // the handle for the late fan-memory park timer — it must survive
+    // between schedules (a callback firing after teardown is a ghost
+    // write: it would setState on a dead component)
+    let parkTimer: number | undefined;
     const onScroll = () => {
       const vh = window.innerHeight;
       const top = document.querySelector('.landing-about')?.getBoundingClientRect().top;
@@ -134,7 +138,8 @@ export function LandingPanel() {
       // 0.25s delay + 0.18s stagger + 0.6s flight) — from here on a
       // switch only wipes colors
       if (nextArrived) {
-        window.setTimeout(() => {
+        window.clearTimeout(parkTimer);
+        parkTimer = window.setTimeout(() => {
           if (isArrivedNow.current) markFanned([0, 1, 2, 3]);
         }, 1100);
       }
@@ -144,6 +149,7 @@ export function LandingPanel() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
+      window.clearTimeout(parkTimer);
       window.removeEventListener('scroll', onScroll);
       /* the clock is the LANDING's journey — leaving the landing must
          hand a clean :root to the next route: a stale --ab-p=1 kept
