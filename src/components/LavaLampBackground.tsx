@@ -294,6 +294,10 @@ void main() {
       0%, 100% { transform: translate(0%, 0%) scale(1); }
       50%       { transform: translate(20%, 20%) scale(1.05); }
     }
+    /* PAINT-EXCEPTION (signed-off 2026-10-26): the lava blobs are the one
+       sanctioned soft paint. Blur and alpha print the drifting colour field;
+       every other layer stays solid. The WebGL path is unaffected by this
+       fallback's blur — it paints its own canvas. */
     .lava-fallback-blob {
       position: absolute;
       border-radius: 50%;
@@ -331,7 +335,10 @@ function CssFallback({ color, palette }: CssFallbackProps) {
             background: hex,
             top: `${8 + (i % 3) * 30}%`,
             left: `${15 + (i * 17) % 65}%`,
-            // soft prints on the paper, as the WebGL look caps them
+            /* PAINT-EXCEPTION (signed-off 2026-10-26): the lava blobs are the
+               one sanctioned soft paint. This opacity prints the drifting
+               colour field; every other layer stays solid. The WebGL path is
+               unaffected — this is the CSS fallback's blob map. */
             opacity: 0.55,
             animation: `lava-drift-${(i % 3) + 1} ${13 + i}s ease-in-out infinite`,
           }}
