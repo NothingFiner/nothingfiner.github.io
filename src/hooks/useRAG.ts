@@ -1,4 +1,9 @@
-import * as webllm from "@mlc-ai/web-llm";
+// web-llm is huge (~1MB+ of JS on the ~500MB model it fetches): it only
+// enters through a DYNAMIC import inside the loading path, so it never
+// rides the critical bundle — the module downloads when the chat first
+// asks for the engine, not on site load. Types come in type-only (they
+// are erased at build, no runtime import).
+import type { MLCEngineInterface } from "@mlc-ai/web-llm";
 import {useState, useCallback, useRef} from 'preact/hooks'
 import { RAGResult, RAGStatus } from "../types";
 import { RESUME_CONTEXT } from "../data/resume";
@@ -43,7 +48,7 @@ ${RESUME_CONTEXT}
 
 
 const useRAG = (): RAGResult => {
-    const engine = useRef<webllm.MLCEngineInterface | null>(null);
+    const engine = useRef<MLCEngineInterface | null>(null);
     const loading = useRef(false);
 
     const [status, setStatus] = useState<RAGStatus>(RAGStatus.Idle);
@@ -57,6 +62,9 @@ const useRAG = (): RAGResult => {
         setStatus(RAGStatus.Loading);
 
         try {
+            // the dynamic import — the first point of contact with the
+            // (large) engine module, off the critical bundle
+            const webllm = await import('@mlc-ai/web-llm');
             engine.current = await webllm.CreateMLCEngine(MODEL_ID, {
               initProgressCallback: (p) => {
                 setProgress(Math.round((p.progress || 0) * 100));
