@@ -172,6 +172,8 @@ const INDEX_EXIT_MS = 510;  /* the grow-head's 0.45s reverse is the
 type PageExit = (done: () => void) => void;
 let pageExit: PageExit | null = null;
 
+// a route component mounts per route — this module flag registers
+// the driver once per page run, never per mount (preact.md Routing)
 let driverOn = false;
 function startDriver(): void {
   if (driverOn) return;
@@ -251,7 +253,6 @@ function startDriver(): void {
   window.addEventListener(
     'click',
     (ev: MouseEvent): void => {
-      if (typeof window.__driver === 'undefined') window.__driver = true; else return; /* once per run */
       if (ev.defaultPrevented || ev.button !== 0) return;
       if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
       const el = ev.target instanceof Element ? ev.target : null;
