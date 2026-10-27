@@ -1,12 +1,16 @@
-export enum PageTitle {
-  HOME = '',
-  PROJECTS = 'Projects',
-  PROJECT_DETAIL = 'Project Detail',
-  CHAT = 'Chat',
-  RESUME = 'Resume',
-  BLOG = 'Blog',
-  BLOG_POST = 'Blog Post',
-}
+// a const map + union replaces the enum (typescript.md) — the member
+// values are the chrome's display strings, byte-identical
+export const PageTitle = {
+  HOME: '',
+  PROJECTS: 'Projects',
+  PROJECT_DETAIL: 'Project Detail',
+  CHAT: 'Chat',
+  RESUME: 'Resume',
+  BLOG: 'Blog',
+  BLOG_POST: 'Blog Post',
+} as const;
+
+export type PageTitle = (typeof PageTitle)[keyof typeof PageTitle];
 
 export const PAGE_PATHS: Record<string, PageTitle> = {
   '/': PageTitle.HOME,
