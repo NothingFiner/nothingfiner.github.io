@@ -1,5 +1,3 @@
-import paper from 'paper';
-
 export const getNewPosition = (position: paper.Point, vector: paper.Point): paper.Point => {
   const newPosition = position.clone();
   newPosition.x += vector.x;

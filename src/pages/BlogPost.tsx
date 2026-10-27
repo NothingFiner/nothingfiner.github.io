@@ -1,5 +1,5 @@
 import { useLocation } from 'wouter-preact';
-import { getPostById, blogPosts } from '../data/blog';
+import { getPostById } from '../data/blog';
 
 export function BlogPost() {
   const [location, navigate] = useLocation();

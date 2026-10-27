@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef, Suspense, lazy } from 'preact/compat';
+import { Suspense, lazy } from 'preact/compat';
 
 const DarkForestGame = lazy(() => import('../games/dark-forest/DarkForestGame'));
 

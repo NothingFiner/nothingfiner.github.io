@@ -11,7 +11,7 @@ interface StickyHeaderProps {
   isHomePage?: boolean;
 }
 
-export function StickyHeader({ isDrawerOpen, onMenuClick, pageTitle, showTitle = true, showThemeToggle = true, isHomePage = false }: StickyHeaderProps) {
+export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThemeToggle = true, isHomePage = false }: StickyHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

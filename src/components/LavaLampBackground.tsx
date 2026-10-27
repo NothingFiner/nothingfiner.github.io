@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'preact/hooks';
-import { JSX } from 'preact';
 
 // ---------------------------------------------------------------------------
 // WebGL Utilities
@@ -349,10 +348,6 @@ function CssFallback({ color, palette }: CssFallbackProps) {
 // plates so the lamp doesn't fight the teal/crimson bubbles)
 const DESIGN_PALETTE = ['#A6022A', '#14F1C8', '#5A1FCC', '#0D0221', '#A6022A', '#14F1C8'];
 
-// the paper ground the lamp's container paints (the composition is
-// paper-plates-on-paper — the blobs print onto the paper, never glare)
-const PAPER_GROUND = '#F2F5EB';
-
 // the ground also carries the 45deg hairline hatch (Eliot's repeating
 // diagonal lines over the lamp's light — solid 1px paints both sides of
 // the hard stop, no alpha). The paper tone fills the gaps so the lamp's
@@ -362,7 +357,6 @@ const LINE_GROUND = `repeating-linear-gradient(45deg, #E0E4D8 0px, #E0E4D8 1px, 
 interface LavaLampBackgroundProps {
   color?: string;
   palette?: string[];
-  split?: boolean;
   /**
    * the lava blobs (the WebGL canvas layer). The component's two layers
    * split here: the line-hatch GROUND (LINE_GROUND) always paints
@@ -373,15 +367,12 @@ interface LavaLampBackgroundProps {
   lamp?: boolean;
 }
 
-export function LavaLampBackground({ color, palette, split = false, lamp = false }: LavaLampBackgroundProps) {
+export function LavaLampBackground({ color, palette, lamp = false }: LavaLampBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const leftContainerRef = useRef<HTMLDivElement>(null);
-  const rightContainerRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<number>(0);
   const locationsRef = useRef<UniformLocations | null>(null);
   const startTimeRef = useRef<number>(null);
   const glRef = useRef<WebGLRenderingContext | null>(null);
-  const glRightRef = useRef<WebGLRenderingContext | null>(null);
   const webglSupportedRef = useRef(true);
 
   useEffect(() => {
@@ -395,7 +386,7 @@ export function LavaLampBackground({ color, palette, split = false, lamp = false
 
     // one tone per blob — the palette (or the legacy single `color`)
     const tones: string[] = (palette && palette.length >= 6 ? palette : DESIGN_PALETTE)
-      .map((c, i) => (color ? color : c));
+      .map((c) => (color ? color : c));
     const toneGl = new Float32Array(18);
     tones.forEach((hex, i) => {
       const gl3 = hexToGlColor(hex);

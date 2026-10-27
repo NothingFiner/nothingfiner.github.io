@@ -19,8 +19,6 @@ const PLANET_TYPES = [
   'glory',
 ] as const;
 
-type PlanetType = typeof PLANET_TYPES[number];
-
 const PLANET_SIZES = [3, 5, 8, 10, 13, 15, 18, 20, 25, 28, 30];
 
 const sample = <T>(arr: readonly T[]): T => arr[Math.floor(Math.random() * arr.length)];

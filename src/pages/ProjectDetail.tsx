@@ -93,7 +93,7 @@
 // Reduced motion: the driver skips the hold entirely (the hash applies
 // instantly) and the CSS media queries park every choreography key —
 // everything instant.
-import { useEffect, useLayoutEffect, useRef } from 'preact/hooks';
+import { useEffect, useRef } from 'preact/hooks';
 import { Fragment } from 'preact';
 import { useRoute } from 'wouter-preact';
 import { projects, type Project } from '../data/projects';

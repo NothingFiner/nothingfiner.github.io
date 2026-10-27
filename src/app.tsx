@@ -2,7 +2,6 @@ import { Router, Route, useLocation } from 'wouter-preact';
 import { useHashLocation } from 'wouter-preact/use-hash-location';
 import { useState, useEffect, Suspense } from 'preact/compat';
 import { MenuDrawer } from './components/MenuDrawer';
-import { ThemeToggle } from './components/ThemeToggle';
 import { StickyHeader } from './components/StickyHeader';
 import { LavaLampBackground } from './components/LavaLampBackground';
 import { SiteFooter } from './components/SiteFooter';
@@ -17,7 +16,6 @@ import { Chat } from './pages/Chat';
 import { Blog } from './pages/Blog';
 import { BlogPost } from './pages/BlogPost';
 import { getPageTitle, isHomePage } from './data/pages';
-import { Icon } from './components/Icon';
 import { PageWipe } from './components/PageWipe';
 
 function AppContent() {

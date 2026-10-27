@@ -37,11 +37,8 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { useLocation } from 'wouter-preact';
 import { GrowHead } from './GrowHead';
-import { rideOutUp } from './landing-shared';
 
 const INK = '#0D0221';
-const RED = '#A6022A';
-const GREY = '#686474';
 
 // the actions plate's tag-panel recipes (the mock's violet solid and
 // the red outline under it) — the stories' own Log-in pairs

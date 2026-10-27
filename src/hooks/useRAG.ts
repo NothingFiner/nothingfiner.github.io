@@ -53,7 +53,7 @@ const useRAG = (): RAGResult => {
 
     const [status, setStatus] = useState<RAGStatus>(RAGStatus.Idle);
     const [progress, setProgress] = useState(0);
-    const [text, setText] = useState('');
+    const [text] = useState('');
 
     const ensureReady = useCallback(async () => {
         if (engine.current || loading.current) return;

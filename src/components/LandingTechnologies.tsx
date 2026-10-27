@@ -23,7 +23,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { GrowHead } from './GrowHead';
 import { Icon } from './Icon';
 import { landingTechnologies as technologies } from '../data/technologies';
-import { rideOutUp, TICKER } from './landing-shared';
+import { TICKER } from './landing-shared';
 
 const INK = '#0D0221';
 const RED = '#A6022A';
@@ -40,7 +40,6 @@ const beat = (i: number) => {
 
 
 export function LandingTechnologies() {
-  const flowRef = useRef<HTMLDivElement | null>(null);
   const [inView, setInView] = useState(false);
   const marqueeRef = useRef<HTMLElement | null>(null);
   const hostRef = useRef<HTMLElement | null>(null);

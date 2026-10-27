@@ -1,31 +1,9 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { useLocation } from 'wouter-preact';
 import { GrowHead } from './GrowHead';
-import { GlaphicAccordion } from '@glaphic/ui';
 
 const INK = '#0D0221';
-const RED = '#A6022A';
-const GREY = '#686474';
-
-// the actions plate's tag-panel recipes (the mock's violet solid and
-// the red outline under it) — the stories' own Log-in pairs
-const VIOLET_SOLID = {
-  '--glaphic-button-surface': 'var(--glaphic-ink-violet, #8447ff)',
-  '--glaphic-button-border': 'var(--glaphic-ink-violet, #8447ff)',
-  '--glaphic-button-text': 'var(--glaphic-neutral-paper, #f2f5eb)',
-  '--glaphic-button-hover-surface': 'var(--glaphic-semantic-info-text, #5a1fcc)',
-  '--glaphic-button-hover-border': 'var(--glaphic-semantic-info-text, #5a1fcc)',
-};
-const RED_OUTLINE = {
-  '--glaphic-button-border': 'var(--glaphic-ink-brand-dark, #a6022a)',
-  '--glaphic-button-text': 'var(--glaphic-ink-brand-dark, #a6022a)',
-  '--glaphic-button-hover-surface': 'var(--glaphic-neutral-paper, #f2f5eb)',
-  '--glaphic-button-hover-text': 'var(--glaphic-ink-brand-dark, #a6022a)',
-  '--glaphic-button-hover-border': 'var(--glaphic-ink-brand-dark, #a6022a)',
-};
 
 export function LandingPast() {
-  const [, navigate] = useLocation();
   const [inView, setInView] = useState(false);
   const hostRef = useRef<HTMLElement | null>(null);
 
