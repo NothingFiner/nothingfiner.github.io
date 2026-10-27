@@ -11,7 +11,7 @@ interface StickyHeaderProps {
   isHomePage?: boolean;
 }
 
-export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThemeToggle = true, isHomePage = false }: StickyHeaderProps) {
+export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThemeToggle = true }: StickyHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -23,27 +23,24 @@ export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThe
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // On home page, color stays the same (split-right). On other pages, use fg color.
-  const textColor = isHomePage ? 'var(--color-split-right)' : 'var(--color-fg)';
-
   return (
     <header
       class={`fixed left-4 right-4 top-4 z-50 transition-all duration-300 rounded-xl ${
-        scrolled ? 'glass py-2 px-4' : 'py-3 px-4'
+        scrolled ? 'panel py-2 px-4' : 'py-3 px-4'
       }`}
       style={scrolled ? {} : { background: 'transparent', boxShadow: 'none', border: 'none', outline: 'none' }}
     >
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-4  md:text-[var(--color-split-right)]">
+        <div class="flex items-center gap-4">
           <button
             onClick={onMenuClick}
-            class={`p-2.5 rounded-xl transition-all text-[var(--color-fg)] md:text-[${textColor}] flex-shrink-0 focus:outline-none flex items-center`}
+            class={`p-2.5 rounded-xl transition-all text-theme flex-shrink-0 focus:outline-none flex items-center`}
             aria-label="Open menu"
           >
             <Icon name="menu" size={24} />
           </button>
           {showTitle && (
-            <div class={`flex items-center text-[var(--color-fg)] md:text-[${textColor}] gap-2 overflow-hidden`} style={{ lineHeight: 1 }}>
+            <div class={`flex items-center text-theme gap-2 overflow-hidden`} style={{ lineHeight: 1 }}>
               <span class="sr-only">Elie Asenoth Gaspar-Finer</span>
               <div
                 class="font-heading flex items-baseline"

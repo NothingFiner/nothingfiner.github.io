@@ -12,7 +12,7 @@ export function Blog() {
             <article
               key={post.id}
               onClick={() => navigate(`/blog/${post.id}`)}
-              class="glass-blog rounded-2xl p-6 cursor-pointer glass-hover transition-all duration-200 hover:scale-[1.02]"
+              class="panel rounded-2xl p-6 cursor-pointer panel-hover transition-all duration-200 hover:scale-[1.02]"
               role="article"
               tabIndex={0}
               onKeyDown={(e) => {

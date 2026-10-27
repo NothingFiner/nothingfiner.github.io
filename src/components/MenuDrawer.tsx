@@ -29,14 +29,14 @@ export function MenuDrawer({ isOpen, onClose, onNavigate }: MenuDrawerProps) {
 
   return (
     <div
-      class={`fixed left-0 top-0 h-full md:w-1/4 w-full glass transition-transform duration-300 z-[60] ${
+      class={`fixed left-0 top-0 h-full md:w-1/4 w-full panel transition-transform duration-300 z-[60] ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       <div class="p-4 md:p-8 h-full flex flex-col">
         <button
           onClick={onClose}
-          class="self-end mb-8 p-2 rounded-xl glass glass-hover transition-colors menu-drawer-close-btn"
+          class="self-end mb-8 p-2 rounded-xl panel panel-hover transition-colors menu-drawer-close-btn"
           aria-label="Close menu"
         >
           <Icon name="close" size={24} />
@@ -49,7 +49,7 @@ export function MenuDrawer({ isOpen, onClose, onNavigate }: MenuDrawerProps) {
                 <Link
                   href={item.path}
                   onClick={handleNavClick}
-                  class="block px-4 py-3 rounded-xl glass glass-hover transition-all duration-200 text-theme font-heading font-bold"
+                  class="block px-4 py-3 rounded-xl panel panel-hover transition-all duration-200 text-theme font-heading font-bold"
                 >
                   {item.label}
                 </Link>
