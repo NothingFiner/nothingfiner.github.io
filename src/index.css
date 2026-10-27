@@ -15,13 +15,12 @@
   /* Lava lamp opacity: full on left, dim on right */
   --lava-opacity-left: 1;
   --lava-opacity-right: 0.15;
-  /* Frosted glass - light: need visible depth on light bg */
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(41, 46, 30, 0.12);
-  --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --glass-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.04);
-  --glass-hover-bg: rgba(255, 255, 255, 0.65);
-  --glass-highlight: rgba(255, 255, 255, 0.85);
+  /* the solid panel chrome (plan Task 13): opaque fills from the site's
+     inks — the header/drawer/cards print dark ink text, so they take
+     paper fills in light work; the dark theme inverts. */
+  --panel-fill: #F9FAF4;
+  --panel-keyline: #0D0221;
+  --panel-hover-keyline: #A6022A;
 }
 
 /* Dark theme */
@@ -34,12 +33,11 @@
   /* Lava lamp opacity: full on left, dim on right */
   --lava-opacity-left: 1;
   --lava-opacity-right: 0.15;
-  --glass-bg: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  --glass-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  --glass-hover-bg: rgba(255, 255, 255, 0.12);
-  --glass-highlight: rgba(255, 255, 255, 0.15);
+  /* dark work: light/fluro text needs INK fills; the paper keyline is
+     what reads the panel edge off the INK ground */
+  --panel-fill: #0D0221;
+  --panel-keyline: #F9FAF4;
+  --panel-hover-keyline: #14F1C8;
 }
 
 * {
@@ -78,8 +76,8 @@ input:focus-visible,
   outline-offset: 2px;
 }
 
-.glass:focus-visible,
-.glass-hover:focus-visible {
+.panel:focus-visible,
+.panel-hover:focus-visible {
   outline: 2px solid var(--color-accent-green);
   outline-offset: 2px;
 }
@@ -329,31 +327,6 @@ body {
   opacity: 0.9;
 }
 
-/* Blog glass - completely opaque for better readability */
-.glass-blog {
-  position: relative;
-  background: var(--color-bg);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-  overflow: hidden;
-}
-
-.glass-blog::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  box-shadow: var(--glass-shadow-inset);
-  pointer-events: none;
-}
-
-.glass-blog > * {
-  position: relative;
-  z-index: 1;
-}
-
 /* Blog content paragraph spacing */
 .blog-content p {
   margin-bottom: 1.5rem;
@@ -372,13 +345,6 @@ body {
 
 .blog-content a:hover {
   opacity: 0.8;
-}
-
-/* Theme toggle button styling */
-.theme-toggle-btn {
-  background-color: var(--glass-bg);
-  color: var(--color-fg);
-  border: 1px solid var(--glass-border);
 }
 
 /* Mobile layout */
@@ -490,53 +456,21 @@ body {
   }
 }
 
-/* Liquid glass utility with SVG filters */
+/* ── the solid panel (plan Task 13): opaque fill + 1px keyline + the
+   hard shadow ladder — the same print-stack ink the landing's
+   drop-grow rides (hard offsets, no blur). This replaces the frosted
+   glass; the class names are new because the paint physics changed. ── */
 @layer components {
-  .glass {
-    position: relative;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--glass-shadow);
-    isolation: isolate;
-    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-    overflow: hidden;
+  .panel {
+    background: var(--panel-fill);
+    border: 1px solid var(--panel-keyline);
+    box-shadow: 2px 2px 0 rgba(13, 2, 33, 0.56), 4px 4px 0 rgba(13, 2, 33, 0.4), 6px 6px 0 rgba(13, 2, 33, 0.24);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  
-  .glass::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    border-radius: inherit;
-    box-shadow: var(--glass-shadow-inset);
-    pointer-events: none;
-  }
-  
-  .glass::after {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    border-radius: inherit;
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    filter: url(#liquid-glass-subtle);
-    isolation: isolate;
-  }
-  
-  .glass > * {
-    position: relative;
-    z-index: 1;
-  }
-  
-  .glass-hover:hover {
-    background: var(--glass-hover-bg);
-    transform: scale(1.03);
-  }
-  
-  .glass-hover:hover::after {
-    backdrop-filter: blur(25px) saturate(200%);
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
+
+  .panel-hover:hover {
+    border-color: var(--panel-hover-keyline);
+    box-shadow: 3px 3px 0 rgba(13, 2, 33, 0.56), 5px 5px 0 rgba(13, 2, 33, 0.4), 7px 7px 0 rgba(13, 2, 33, 0.24);
   }
 }
 
