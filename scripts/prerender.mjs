@@ -74,8 +74,11 @@ try {
   const page = await browser.newPage();
   await page.goto(ORIGIN + '/', { waitUntil: 'load', timeout: 30000 });
 
-  // Wait for the home hero to render before capturing.
-  await page.waitForSelector('#main-content h1', { timeout: 20000 });
+  // Wait for the home hero to render before capturing. The landing route has
+  // no #main-content wrapper (the chrome gate only wraps inner routes), and
+  // the app-level sr-only h1 paints before any route content — so the marker
+  // is the hero's own headline, which only exists once Landing composes it.
+  await page.waitForSelector('#app .landing-hero .gl-title', { timeout: 20000 });
   // Let fonts/layout settle.
   await new Promise((r) => setTimeout(r, 400));
 
