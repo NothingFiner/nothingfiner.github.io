@@ -62,7 +62,7 @@ export function DarkForestGame() {
 
       <div class="menu-container">
         <div class={isIdle ? 'menu' : 'menu hide'} id="dark-forest-menu">
-          <h1>The Dark Forest</h1>
+          <h2>The Dark Forest</h2>
           <section>
             Coordinates recieved for system containing dangerous life.<br />
             This system must be purged.<br />
@@ -91,7 +91,7 @@ export function DarkForestGame() {
           <main>
             <span />
             <span />
-            <h1 id="dark-forest-status-text">{gameState === GAME_STATES.won ? 'SYSTEM PURGED' : 'IN TRANSIT'}</h1>
+            <h2 id="dark-forest-status-text">{gameState === GAME_STATES.won ? 'SYSTEM PURGED' : 'IN TRANSIT'}</h2>
             <span />
             <span />
           </main>

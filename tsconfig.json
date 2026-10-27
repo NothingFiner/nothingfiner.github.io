@@ -20,7 +20,9 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@glaphic/ui": ["../glaphicUI/src/index.ts"],
+      "@glaphic/ui/*": ["../glaphicUI/src/*"]
     }
   },
   "include": ["src/**/*"],

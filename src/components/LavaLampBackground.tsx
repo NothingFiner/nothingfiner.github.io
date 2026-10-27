@@ -62,14 +62,16 @@ function createFullscreenQuad(gl: WebGLRenderingContext, program: WebGLProgram) 
 interface UniformLocations {
   u_time: WebGLUniformLocation;
   u_resolution: WebGLUniformLocation;
-  u_color: WebGLUniformLocation;
+  u_dpr: WebGLUniformLocation;
+  u_colors: WebGLUniformLocation;
 }
 
 function getUniformLocations(gl: WebGLRenderingContext, program: WebGLProgram): UniformLocations {
   return {
     u_time:       gl.getUniformLocation(program, 'u_time')!,
     u_resolution: gl.getUniformLocation(program, 'u_resolution')!,
-    u_color:      gl.getUniformLocation(program, 'u_color')!,
+    u_dpr:        gl.getUniformLocation(program, 'u_dpr')!,
+    u_colors:     gl.getUniformLocation(program, 'u_colors[0]')!,
   };
 }
 
@@ -79,11 +81,13 @@ function setUniforms(
   time: number,
   width: number,
   height: number,
-  color: { r: number; g: number; b: number }
+  dpr: number,
+  colors: Float32Array
 ) {
   gl.uniform1f(locations.u_time, time);
   gl.uniform2f(locations.u_resolution, width, height);
-  gl.uniform3f(locations.u_color, color.r, color.g, color.b);
+  gl.uniform1f(locations.u_dpr, dpr);
+  gl.uniform3fv(locations.u_colors, colors);
 }
 
 function draw(gl: WebGLRenderingContext) {
@@ -109,7 +113,8 @@ const FRAGMENT_SHADER = `
 
 uniform vec2 u_resolution;
 uniform float u_time;
-uniform vec3 u_color;
+uniform float u_dpr;
+uniform vec3 u_colors[6]; // one tone per blob — the new-design ink set
 
 const int BLOB_COUNT = 6;
 
@@ -142,7 +147,7 @@ float metaballField(vec2 coord, float time) {
   for (int i = 0; i < BLOB_COUNT; i++) {
     vec2 center = blobPosition(i, time);
     float dist = distance(coord, center);
-    field += 0.012 / (dist * dist);
+    field += 0.0085 / (dist * dist);
   }
   return field;
 }
@@ -157,102 +162,115 @@ void main() {
   float edge = 0.02;
   float surface = smoothstep(1.0 - edge, 1.0 + edge, field);
 
-  if (surface <= 0.0) {
-    gl_FragColor = vec4(0.0);
+  // ─────────────────────────────────────────────────────────────────
+  // THE GROUND: the 45deg hatch the site paints (a 1px line every
+  // 28px, #E0E4D8 on #F2F5EB, solid) — computed here so the LIQUID
+  // can WARP it: the metaball field's gradient is the warp vector.
+  // The stripes' sample point is pulled radially toward each blob —
+  // a lens whose strength rides the same field that shapes the
+  // surface, so the lines bulge in around the liquid and straighten
+  // at the field's halo before it begins.
+  // ─────────────────────────────────────────────────────────────────
+  float pitch = 28.0 * u_dpr;                 // the stripes' 28px css period
+  float lw = u_dpr;                           // a 1px css line
+  vec2 p = gl_FragCoord.xy;                   // device px
+  float eps = 0.0015;
+  float fX = metaballField(vec2(st.x + eps, st.y), time);
+  float fY = metaballField(vec2(st.x, st.y + eps), time);
+  vec2 gradUv = vec2(fX - field, fY - field) / eps;
+  // uv gradient → device-px gradient (the y span is a resolution unit;
+  // the x span rides the same span after aspect-scaling)
+  vec2 gradPx = gradUv * abs(u_resolution.y);
+  // ─────────────────────────────────────────────────────────────────
+  // THE LENS (Eliot's correction): the hatch stays STRAIGHT wherever
+  // the liquid isn't — the previous read warped a wide halo around
+  // each blob (physical flowing-around). The deformation now rides
+  // the SURFACE itself: the stripes refract only where the liquid
+  // covers them (and through its soft rim band), like glass — the
+  // outside read is the plain straight hatch.
+  // ─────────────────────────────────────────────────────────────────
+  vec2 warp = -gradPx * 220.0;
+  float warpLen = length(warp) / u_dpr;
+  if (warpLen > 26.0) warp *= 26.0 / warpLen;  // a 26 css px refraction cap
+  warp *= surface;
+
+  /* the hatch's axis matches the site's repeating-linear-gradient(45deg):
+     stripes constant along t = (x − y)·cos45 — lines run "\"-wise at the
+     28px css pitch */
+  float t = (p.x - p.y + warp.x - warp.y) / 1.41421356;
+  float s = mod(t, pitch);
+  float line = step(s, lw);
+  vec3 hatchPaint = mix(vec3(0.949, 0.961, 0.922), vec3(0.878, 0.894, 0.847), line);
+
+  if (surface > 0.0) {
+    // (the cluster/shading passes — unchanged — live inside the
+    // surface branch so the hatch stays cheap where the liquid is not
+    vec2  centers[6];
+    vec3  tones[6];
+    float contributions[6];
+    float totalContribution = 0.0;
+
+    for (int i = 0; i < BLOB_COUNT; i++) {
+      centers[i] = blobPosition(i, time);
+      tones[i] = u_colors[i];
+      float dist = distance(st, centers[i]);
+      contributions[i] = 0.0085 / (dist * dist);
+      totalContribution += contributions[i];
+    }
+
+    vec2 pixelClusterCenter = vec2(0.0);
+    float clusterWeight = 0.0;
+
+    for (int i = 0; i < BLOB_COUNT; i++) {
+      vec2  clusterCentroid = vec2(0.0);
+      float clusterMass     = 0.0;
+
+      for (int j = 0; j < BLOB_COUNT; j++) {
+        float separation = distance(centers[i], centers[j]);
+        float clusterInfluence = 1.0 - smoothstep(0.0, CLUSTER_RADIUS, separation);
+        clusterCentroid += centers[j] * contributions[j] * clusterInfluence;
+        clusterMass     += contributions[j] * clusterInfluence;
+      }
+
+      clusterCentroid /= clusterMass;
+      pixelClusterCenter += clusterCentroid * contributions[i];
+      clusterWeight      += contributions[i];
+    }
+
+    pixelClusterCenter /= clusterWeight;
+
+    vec3 colorWeighted = vec3(0.0);
+    for (int i = 0; i < BLOB_COUNT; i++) {
+      colorWeighted += tones[i] * contributions[i];
+    }
+    colorWeighted /= totalContribution;
+
+    float distFromCenter = distance(st, pixelClusterCenter);
+    float normalizedDist = clamp(distFromCenter / 0.18, 0.0, 1.0);
+    float highlight = 1.0 - smoothstep(0.0, 1.0, normalizedDist);
+    highlight = pow(highlight, 1.8);
+    float shadow = smoothstep(0.4, 1.0, normalizedDist) * 0.25;
+
+    vec3 baseColor      = colorWeighted;
+    vec3 paperColor     = vec3(0.949, 0.961, 0.922); // #F2F5EB
+    vec3 highlightColor = mix(baseColor, paperColor, 0.55);
+    vec3 shadowColor    = baseColor * 0.85;
+
+    vec3 finalColor = mix(baseColor, highlightColor, highlight);
+    finalColor      = mix(finalColor, shadowColor, shadow);
+
+    // the liquid composites over the hatch with the print's ORIGINAL
+    // softness (surface * 0.6 — the old alpha read): the refraction's
+    // the point — the lines stay VISIBLE through the liquid, bent by
+    // the lens, not buried under its fill
+    gl_FragColor = vec4(mix(hatchPaint, finalColor, surface * 0.6), 1.0);
     return;
   }
 
-  // -------------------------------------------------------------------------
-  // Pass 1: compute a cluster-weighted centroid
-  //
-  // For each blob i, we find its "cluster center" by averaging the positions
-  // of all blobs j that are within CLUSTER_RADIUS of blob i, weighted by
-  // how much each blob j contributes to the current pixel.
-  //
-  // Then we average all those per-blob cluster centers, weighted again by
-  // each blob i's contribution to the current pixel.
-  // This means blobs that barely reach this pixel have little influence on
-  // where the highlight lands.
-  // -------------------------------------------------------------------------
-
-  // Precompute each blob's position and its contribution to this pixel
-  vec2  centers[6];
-  float contributions[6];
-  float totalContribution = 0.0;
-
-  for (int i = 0; i < BLOB_COUNT; i++) {
-    centers[i] = blobPosition(i, time);
-    float dist = distance(st, centers[i]);
-    // Same falloff as the field — blobs close to this pixel contribute more
-    contributions[i] = 0.012 / (dist * dist);
-    totalContribution += contributions[i];
-  }
-
-  // For each blob, find its cluster centroid
-  vec2 pixelClusterCenter = vec2(0.0);
-  float clusterWeight = 0.0;
-
-  for (int i = 0; i < BLOB_COUNT; i++) {
-    // Find the weighted center of blob i's cluster
-    vec2  clusterCentroid = vec2(0.0);
-    float clusterMass     = 0.0;
-
-    for (int j = 0; j < BLOB_COUNT; j++) {
-      float separation = distance(centers[i], centers[j]);
-
-      // Replace the hard if-check with a smooth weight that fades to zero
-      // at CLUSTER_RADIUS. Blobs far away contribute almost nothing,
-      // blobs close together contribute fully — no snapping.
-      float clusterInfluence = 1.0 - smoothstep(0.0, CLUSTER_RADIUS, separation);
-
-      clusterCentroid += centers[j] * contributions[j] * clusterInfluence;
-      clusterMass     += contributions[j] * clusterInfluence;
-    }
-
-    clusterCentroid /= clusterMass;
-
-    // Accumulate this blob's cluster centroid into the pixel's final centroid,
-    // weighted by how much blob i itself contributes to this pixel
-    pixelClusterCenter += clusterCentroid * contributions[i];
-    clusterWeight      += contributions[i];
-  }
-
-  pixelClusterCenter /= clusterWeight;
-
-  // -------------------------------------------------------------------------
-  // Pass 2: shade based on distance from the cluster center
-  //
-  // Close to center  → bright highlight (glow fades outward)
-  // Far from center  → slightly darker than base (subsurface shadow)
-  // -------------------------------------------------------------------------
-
-  float distFromCenter = distance(st, pixelClusterCenter);
-
-  // Normalize distance — 0.0 at center, 1.0 at a "full blob radius" away.
-  // 0.18 is the approximate radius in aspect-corrected UV space — tune this
-  // if the highlight feels too wide or too tight.
-  float normalizedDist = clamp(distFromCenter / 0.18, 0.0, 1.0);
-
-  // Highlight: strong at center, fades with a smooth curve outward
-  // smoothstep gives a more organic falloff than linear
-  float highlight = 1.0 - smoothstep(0.0, 1.0, normalizedDist);
-  highlight = pow(highlight, 1.8); // shape the falloff curve — higher = tighter
-
-  // Shadow: slight darkening at the far edges
-  // Only kicks in past the midpoint of the blob
-  float shadow = smoothstep(0.4, 1.0, normalizedDist) * 0.25;
-
-  vec3 baseColor      = u_color;
-  vec3 highlightColor = mix(baseColor, vec3(1.0), 0.55); // brightened toward white
-   vec3 shadowColor    = baseColor * 0.65;                 // darkened version of base
-
-  // Blend: highlight in center, base in middle, shadow at edges
-  vec3 finalColor = mix(baseColor, highlightColor, highlight);
-  finalColor      = mix(finalColor, shadowColor, shadow);
-
-  gl_FragColor = vec4(finalColor, surface);
+  gl_FragColor = vec4(hatchPaint, 1.0);
 }
 `;
+
 
   // ---------------------------------------------------------------------------
   // CSS fallback — shown when WebGL is unavailable
@@ -284,10 +302,11 @@ void main() {
 `;
 
 interface CssFallbackProps {
-  color: string;
+  color?: string;
+  palette?: string[];
 }
 
-function CssFallback({ color }: CssFallbackProps) {
+function CssFallback({ color, palette }: CssFallbackProps) {
   // Inject the keyframe styles once
   useEffect(() => {
     if (document.getElementById('lava-fallback-styles')) return;
@@ -297,26 +316,26 @@ function CssFallback({ color }: CssFallbackProps) {
     document.head.appendChild(style);
   }, []);
 
+  const tones = palette ?? DESIGN_PALETTE;
+
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: -10, overflow: 'hidden', background: '#FDFFFC' }}>
-      <div class="lava-fallback-blob" style={{
-        width: '60vw', height: '60vw',
-        background: color,
-        top: '10%', left: '20%',
-        animation: 'lava-drift-1 14s ease-in-out infinite',
-      }} />
-      <div class="lava-fallback-blob" style={{
-        width: '50vw', height: '50vw',
-        background: color,
-        top: '40%', left: '50%',
-        animation: 'lava-drift-2 18s ease-in-out infinite',
-      }} />
-      <div class="lava-fallback-blob" style={{
-        width: '40vw', height: '40vw',
-        background: color,
-        top: '60%', left: '10%',
-        animation: 'lava-drift-3 12s ease-in-out infinite',
-      }} />
+    <div style={{ position: 'fixed', inset: 0, zIndex: -10, overflow: 'hidden', background: LINE_GROUND }}>
+      {(color ? [color, color, color] : tones).slice(0, 6).map((hex, i) => (
+        <div
+          key={i}
+          class="lava-fallback-blob"
+          style={{
+            width: `${55 - i * 5}vw`,
+            height: `${55 - i * 5}vw`,
+            background: hex,
+            top: `${8 + (i % 3) * 30}%`,
+            left: `${15 + (i * 17) % 65}%`,
+            // soft prints on the paper, as the WebGL look caps them
+            opacity: 0.55,
+            animation: `lava-drift-${(i % 3) + 1} ${13 + i}s ease-in-out infinite`,
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -325,12 +344,36 @@ function CssFallback({ color }: CssFallbackProps) {
 // Main component
 // ---------------------------------------------------------------------------
 
+// the new-design ink set — the blobs print in these (crimson carrying,
+// the fluro/violet/ink as the other tones; judged against the mocks'
+// plates so the lamp doesn't fight the teal/crimson bubbles)
+const DESIGN_PALETTE = ['#A6022A', '#14F1C8', '#5A1FCC', '#0D0221', '#A6022A', '#14F1C8'];
+
+// the paper ground the lamp's container paints (the composition is
+// paper-plates-on-paper — the blobs print onto the paper, never glare)
+const PAPER_GROUND = '#F2F5EB';
+
+// the ground also carries the 45deg hairline hatch (Eliot's repeating
+// diagonal lines over the lamp's light — solid 1px paints both sides of
+// the hard stop, no alpha). The paper tone fills the gaps so the lamp's
+// blobs still read as prints ON this ground
+const LINE_GROUND = `repeating-linear-gradient(45deg, #E0E4D8 0px, #E0E4D8 1px, #F2F5EB 1px, #F2F5EB 28px)`;
+
 interface LavaLampBackgroundProps {
   color?: string;
+  palette?: string[];
   split?: boolean;
+  /**
+   * the lava blobs (the WebGL canvas layer). The component's two layers
+   * split here: the line-hatch GROUND (LINE_GROUND) always paints
+   * site-wide, but the blobs are opt-in per route — app.tsx wires them
+   * on for /projects, /projects/:id and /chat. When false the canvas is
+   * never created (no WebGL context, no loop, no GPU work).
+   */
+  lamp?: boolean;
 }
 
-export function LavaLampBackground({ color = '#637561', split = false }: LavaLampBackgroundProps) {
+export function LavaLampBackground({ color, palette, split = false, lamp = false }: LavaLampBackgroundProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const leftContainerRef = useRef<HTMLDivElement>(null);
   const rightContainerRef = useRef<HTMLDivElement>(null);
@@ -342,8 +385,24 @@ export function LavaLampBackground({ color = '#637561', split = false }: LavaLam
   const webglSupportedRef = useRef(true);
 
   useEffect(() => {
+    // the blobs are opt-in: off, no canvas is created and the loop never
+    // runs — the fixed ground (the line hatch, painted below) is all
+    // this layer needs
+    if (!lamp) return;
+
     const container = containerRef.current;
     if (!container) return;
+
+    // one tone per blob — the palette (or the legacy single `color`)
+    const tones: string[] = (palette && palette.length >= 6 ? palette : DESIGN_PALETTE)
+      .map((c, i) => (color ? color : c));
+    const toneGl = new Float32Array(18);
+    tones.forEach((hex, i) => {
+      const gl3 = hexToGlColor(hex);
+      toneGl[i * 3] = gl3.r;
+      toneGl[i * 3 + 1] = gl3.g;
+      toneGl[i * 3 + 2] = gl3.b;
+    });
 
     // --- Create canvas and attempt WebGL context ---
     const canvas = document.createElement('canvas');
@@ -351,7 +410,10 @@ export function LavaLampBackground({ color = '#637561', split = false }: LavaLam
     canvas.height = container.clientHeight;
     container.appendChild(canvas);
 
-    const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
+    // preserveDrawingBuffer: the frame keeps its pixels readable after
+    // the pass (screenshots/pixel probes) — the paint never doubles
+    // because the loop redraws every frame anyway
+    const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false, preserveDrawingBuffer: true });
 
     // If WebGL isn't available, mark it and bail out.
     // The render below will switch to CssFallback.
@@ -362,6 +424,12 @@ export function LavaLampBackground({ color = '#637561', split = false }: LavaLam
     }
 
     glRef.current = gl;
+
+    // Narrow-once locals: the guard's narrowing doesn't survive into the
+    // closures below, and these consts are the boundary (no casts, no
+    // re-checks — typescript.md's "narrow once at the boundary")
+    const glCtx = gl;
+    const view = container;
 
     // Enable alpha blending so transparent fragments show the page behind
     gl.enable(gl.BLEND);
@@ -388,27 +456,25 @@ export function LavaLampBackground({ color = '#637561', split = false }: LavaLam
     function animate() {
       frameRef.current = requestAnimationFrame(animate);
 
-      // Elapsed time in seconds, scaled way down for slow lava movement
-      const time = (performance.now() - startTimeRef.current!) / 1000 * 0.18;
-      const glColor = hexToGlColor(color);
+      // Elapsed time in seconds, scaled way down for slow lava movement;
+      // reduced motion freezes the liquid at its first pose (the clock
+      // parks at zero — the loop still renders the static frame)
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const startedAt = startTimeRef.current ?? performance.now();
+      let time = ((performance.now() - startedAt) / 1000) * 0.18;
+      if (reduced) time = 0;
 
-      // @ts-ignore - gl is checked for null above
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      // @ts-ignore - gl is checked for null above
-      setUniforms(gl, locations, time, canvas.width, canvas.height, glColor);
-      // @ts-ignore - gl is checked for null above
-      draw(gl);
+      glCtx.viewport(0, 0, canvas.width, canvas.height);
+      setUniforms(glCtx, locations, time, canvas.width, canvas.height, window.devicePixelRatio || 1, toneGl);
+      draw(glCtx);
     }
     animate();
 
     // --- Resize handler ---
     function onResize() {
-      // @ts-ignore - container is checked in closure
-      canvas.width = container.clientWidth;
-      // @ts-ignore - container is checked in closure
-      canvas.height = container.clientHeight;
-      // @ts-ignore - gl is checked for null above
-      gl.viewport(0, 0, canvas.width, canvas.height);
+      canvas.width = view.clientWidth;
+      canvas.height = view.clientHeight;
+      glCtx.viewport(0, 0, canvas.width, canvas.height);
     }
     window.addEventListener('resize', onResize);
 
@@ -418,17 +484,18 @@ export function LavaLampBackground({ color = '#637561', split = false }: LavaLam
       cancelAnimationFrame(frameRef.current);
       if (container && canvas && container.contains(canvas)) container.removeChild(canvas);
     };
-  }, [color]);
+  }, [color, palette, lamp]);
 
-  // If WebGL failed, render the CSS fallback instead
-  if (!webglSupportedRef.current) {
+  // If WebGL failed, render the CSS fallback instead (blobs only — the
+  // lamp layer; the ground keeps its paint either way)
+  if (lamp && !webglSupportedRef.current) {
     return <CssFallback color={color} />;
   }
 
   return (
     <div
       ref={containerRef}
-      style={{ position: 'fixed', inset: 0, zIndex: -10, overflow: 'hidden' }}
+      style={{ position: 'fixed', inset: 0, zIndex: -10, overflow: 'hidden', background: LINE_GROUND }}
       aria-hidden="true"
     />
   );

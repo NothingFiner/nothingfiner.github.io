@@ -539,3 +539,27 @@ body {
     -webkit-backdrop-filter: blur(25px) saturate(200%);
   }
 }
+
+/* ── the page-change animation (glaphic-wipe, driven by PageWipe) ──
+   The overlay host: pinned over the whole viewport, ABOVE every site
+   layer. The host itself is a STACKING CONTEXT (position: fixed
+   forms one), so the plates' own z-index only competes INSIDE it —
+   the host's z is what actually faces the page, and it must sit
+   above the site's fixed chrome (the band .lf-band z 45, the
+   landing's crimson panel z 40, the chat's compose/status pieces).
+   pointer-events: none on the host — the plates take the pointer
+   themselves while they hold the page (phase covered/push).
+   Escape hatch: ?nowipe on the URL, or data-wipe="off" on <body>. */
+glaphic-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* the caption's seat is the component's own flex plate — Eliot's
+   ask sets the flex justify LEFT (flex-start, set on the host by
+   PageWipe); this gutter keeps the page names off the raw edge */
+glaphic-wipe .caption {
+  padding-inline: clamp(24px, 6vw, 96px);
+}

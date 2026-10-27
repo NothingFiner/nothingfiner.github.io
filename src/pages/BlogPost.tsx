@@ -10,7 +10,7 @@ export function BlogPost() {
     return (
       <div class="min-h-screen p-8 flex items-center justify-center">
         <div class="text-center">
-          <h1 class="text-2xl font-heading font-bold text-theme mb-4">Post not found</h1>
+          <h2 class="text-2xl font-heading font-bold text-theme mb-4">Post not found</h2>
           <button
             onClick={() => navigate('/blog')}
             class="px-6 py-3 rounded-xl glass glass-hover transition-all text-theme"
@@ -42,9 +42,9 @@ export function BlogPost() {
             })}
           </time>
 
-          <h1 class="text-3xl font-heading font-bold text-theme mb-6">
+          <h2 class="text-3xl font-heading font-bold text-theme mb-6">
             {post.title}
-          </h1>
+          </h2>
 
           <div
             class="prose prose-lg max-w-none text-theme/80 blog-content"
