@@ -3,9 +3,9 @@
 // rides the critical bundle — the module downloads when the chat first
 // asks for the engine, not on site load. Types come in type-only (they
 // are erased at build, no runtime import).
-import type { MLCEngineInterface } from "@mlc-ai/web-llm";
+import type { ChatCompletionMessageParam, MLCEngineInterface } from "@mlc-ai/web-llm";
 import {useState, useCallback, useRef} from 'preact/hooks'
-import { RAGResult, RAGStatus } from "../types";
+import { RAGResult, RAGStatus, StreamOptions } from "../types";
 import { RESUME_CONTEXT } from "../data/resume";
 
 const MODEL_ID = "Qwen2.5-0.5B-Instruct-q4f16_1-MLC";
@@ -74,21 +74,27 @@ const useRAG = (): RAGResult => {
           } catch (e) {
             setStatus(RAGStatus.Error);
             loading.current = false;
+            // the engine load failed — the operation + the model stay in
+            // the log so the failure is diagnosable; the rethrow reaches
+            // the caller (universal.md: no silent failure)
+            console.error('useRAG: web-llm engine load failed', { model: MODEL_ID }, e);
             throw e;
           }
     }, []);
 
-    const stream = useCallback(async function* (messages: any[], opts: any = {}) {
+    const stream = useCallback(async function* (
+        messages: ChatCompletionMessageParam[],
+        opts: StreamOptions = {},
+      ): AsyncGenerator<string> {
         await ensureReady();
         if (!engine.current) return;
 
         // Inject system prompt with resume context
-        const messagesWithContext = [
+        const messagesWithContext: ChatCompletionMessageParam[] = [
           { role: "system", content: SYSTEM_PROMPT },
           ...messages
         ];
 
-        // @ts-ignore - web-llm types
         const response = await engine.current.chat.completions.create({
           messages: messagesWithContext,
           stream: true,
@@ -96,7 +102,6 @@ const useRAG = (): RAGResult => {
           temperature: 0.3,
           ...opts,
         });
-        // @ts-ignore - web-llm types
         for await (const chunk of response) {
           yield chunk.choices[0]?.delta?.content || '';
         }

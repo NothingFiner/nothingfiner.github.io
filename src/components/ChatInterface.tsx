@@ -33,6 +33,7 @@ import { useState, useMemo, useRef, useLayoutEffect } from 'preact/hooks';
 import useRAG from '../hooks/useRAG';
 import ChatLog from './ChatLog';
 import { RAGStatus, ChatRole, Message } from '../types';
+import type { ChatCompletionMessageParam } from '@mlc-ai/web-llm';
 
 const INK = '#0D0221';
 const RED = '#A6022A';
@@ -96,11 +97,15 @@ const ChatInterface = () => {
     setConversation((prev) => [...prev, {role: ChatRole.Assistant, content: ''}]);
 
     try {
-      // Build messages array including the new user message
-      const messages = [...conversation, userMessage].map(m => ({
-        role: m.role,
-        content: m.content
-      }));
+      // Build messages array including the new user message — the
+      // engine's param union is discriminated by role, so each message
+      // is rebuilt with its literal role (no casts, typescript.md)
+      const messages: ChatCompletionMessageParam[] = [...conversation, userMessage].map(
+        (m): ChatCompletionMessageParam =>
+          m.role === ChatRole.User
+            ? { role: 'user', content: m.content }
+            : { role: 'assistant', content: m.content }
+      );
 
       let assistantResponse = '';
       for await (const chunk of stream(messages)) {
