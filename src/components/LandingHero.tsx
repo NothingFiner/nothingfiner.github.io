@@ -56,16 +56,13 @@ export function LandingHero() {
   }, []);
 
   return (
-    <section class="landing-hero relative w-full overflow-hidden" style={{ color: INK }}>
+    <section class="landing-hero relative w-full overflow-hidden">
       {/* the ride group: everything inside rides up on the section's exit.
           THE RIDE GROUP IS THE GRID: the hero's grid placement (the
           glyph band's grid-area, the strip's rows) needs a grid parent —
           this wrapper carries the same 12×8 tracks + full height, so
           the placements stay live while the wrapper's transform rides */}
-      <div
-        ref={heroRideRef}
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gridTemplateRows: 'repeat(8, minmax(0, 1fr))', gridArea: '1 / 1 / 9 / 13', height: '100%' }}
-      >
+      <div ref={heroRideRef} class="hf-ride">
       <style>{`
         .landing-hero {
           display: grid;
@@ -73,6 +70,8 @@ export function LandingHero() {
           grid-template-rows: repeat(8, minmax(0, 1fr));
           /* definite height: fr rows need one to resolve to viewport eighths */
           height: 100vh;
+          /* the section's ink — the fold's copy prints INK on the hatch */
+          color: ${INK};
         }
         @media (max-width: 767px) {
           .landing-hero {
@@ -80,6 +79,19 @@ export function LandingHero() {
             flex-direction: column;
             justify-content: space-between;
             position: relative; }
+        }
+
+        /* the ride wrapper: THE RIDE GROUP IS THE GRID — the hero's grid
+           placements (the glyph band's grid-area, the strip's rows) need a
+           grid parent, so this wrapper carries the same 12×8 tracks + full
+           height and the placements stay live while the wrapper's transform
+           rides (see the JSX comment) */
+        .hf-ride {
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          grid-template-rows: repeat(8, minmax(0, 1fr));
+          grid-area: 1 / 1 / 9 / 13;
+          height: 100%;
         }
 
         /* ── the fold's own lower strip (grid rows 6-8) ───────────── */
@@ -142,6 +154,42 @@ export function LandingHero() {
           font-family: var(--f-body, sans-serif);
           font-size: clamp(13px, 1.15vw, 17px);
         }
+
+        /* the typed cuts — the two headline mounts ("Hi," in cyan,
+           " I'm Elie." in crimson) and the lead's typed line print at the
+           same display/body voice their row already carries; the wraps
+           hold the ink, the cursor-type hosts ride as inline-block cuts
+           of the line (their block cursors print the copy's own ink) */
+        .hf-type-hi, .hf-type-elie {
+          font-family: var(--f-disp, sans-serif);
+          font-size: 1em;
+        }
+        .hf-type-hi { color: ${CYAN}; }
+        .hf-type-elie { color: ${CRIMSON}; }
+        .hf-type-lead { color: ${INK}; font-weight: 600; }
+        .hf-type-hi > glaphic-cursor-type,
+        .hf-type-elie > glaphic-cursor-type,
+        .hf-type-lead > glaphic-cursor-type {
+          font-size: 1em;
+          font-weight: 700;
+          display: inline-block;
+          line-height: 1;
+        }
+        .hf-type-hi > glaphic-cursor-type {
+          color: ${CYAN};
+          font-family: var(--f-disp, sans-serif);
+          --glaphic-cursor-type-cursor-ink: ${CYAN};
+        }
+        .hf-type-elie > glaphic-cursor-type {
+          color: ${CRIMSON};
+          font-family: var(--f-disp, sans-serif);
+          --glaphic-cursor-type-cursor-ink: ${CRIMSON};
+        }
+        .hf-type-lead > glaphic-cursor-type {
+          color: ${INK};
+          font-family: var(--f-body, sans-serif);
+          font-weight: 600;
+        }
         /* the grey '////' copyright IS here now — the HERO's own
            from-load instance (Eliot's redraw: the landing's legal reads
            ONLY at the top (this one; inside the hero's flow, so it
@@ -185,21 +233,19 @@ export function LandingHero() {
                 The visible typed copies are aria-hidden because they are a
                 performance of these same words. */}
             <span class="sr-only">Elie Gaspar-Finer — frontend-focused senior engineer</span>
-            <span aria-hidden="true" class="gl-typewrap" style={{ color: CYAN, fontFamily: 'var(--f-disp, sans-serif)', fontSize: '1em' }}>
+            <span aria-hidden="true" class="gl-typewrap hf-type-hi">
               <glaphic-cursor-type
                 text="Hi,"
                 speed={chHi}
                 cursor-vanish
-                style={{ color: CYAN, fontFamily: 'var(--f-disp, sans-serif)', fontWeight: 700, fontSize: '1em', display: 'inline-block', lineHeight: 1, '--glaphic-cursor-type-cursor-ink': CYAN }}
               />
             </span>
             {showElie && (
-              <span aria-hidden="true" class="gl-typewrap" style={{ color: CRIMSON, fontFamily: 'var(--f-disp, sans-serif)', fontSize: '1em' }}>
+              <span aria-hidden="true" class="gl-typewrap hf-type-elie">
                 <glaphic-cursor-type
                   text=" I'm Elie."
                   speed={chElie}
                   cursor-vanish
-                  style={{ color: CRIMSON, fontFamily: 'var(--f-disp, sans-serif)', fontWeight: 700, fontSize: '1em', display: 'inline-block', lineHeight: 1, '--glaphic-cursor-type-cursor-ink': CRIMSON }}
                 />
               </span>
             )}
@@ -217,11 +263,11 @@ export function LandingHero() {
             {/* always mounted: keeps the line box stable so the column doesn't
                 shift up when the line starts typing; text="" -> re-types on
                 change is the component's documented behavior */}
-            <div class="gl-typewrap" style={{ color: INK, fontWeight: 600 }}>
+            <div class="gl-typewrap hf-type-lead">
               <glaphic-cursor-type
                 text={copyIn ? 'Let me help you tell your story.' : ' '}
                 speed={28}
-                style={{ color: INK, fontFamily: 'var(--f-body, sans-serif)', fontWeight: 600, fontSize: '1em', display: 'inline-block', lineHeight: 1, '--glaphic-cursor-type-cursor-ink': copyIn ? INK : 'transparent' }}
+                style={{ '--glaphic-cursor-type-cursor-ink': copyIn ? INK : 'transparent' }}
               />
             </div>
           </div>
