@@ -65,13 +65,15 @@ interface UniformLocations {
   u_colors: WebGLUniformLocation;
 }
 
-function getUniformLocations(gl: WebGLRenderingContext, program: WebGLProgram): UniformLocations {
-  return {
-    u_time:       gl.getUniformLocation(program, 'u_time')!,
-    u_resolution: gl.getUniformLocation(program, 'u_resolution')!,
-    u_dpr:        gl.getUniformLocation(program, 'u_dpr')!,
-    u_colors:     gl.getUniformLocation(program, 'u_colors[0]')!,
-  };
+function getUniformLocations(gl: WebGLRenderingContext, program: WebGLProgram): UniformLocations | null {
+  const u_time = gl.getUniformLocation(program, 'u_time');
+  const u_resolution = gl.getUniformLocation(program, 'u_resolution');
+  const u_dpr = gl.getUniformLocation(program, 'u_dpr');
+  const u_colors = gl.getUniformLocation(program, 'u_colors[0]');
+  // a missing location means a uniform name drifted from the shader
+  // source — bail instead of feeding nulls to the setters below
+  if (!u_time || !u_resolution || !u_dpr || !u_colors) return null;
+  return { u_time, u_resolution, u_dpr, u_colors };
 }
 
 function setUniforms(
@@ -439,6 +441,7 @@ export function LavaLampBackground({ color, palette, lamp = false }: LavaLampBac
     createFullscreenQuad(gl, program);
 
     const locations = getUniformLocations(gl, program);
+    if (!locations) return;
     locationsRef.current = locations;
 
     startTimeRef.current = performance.now();
