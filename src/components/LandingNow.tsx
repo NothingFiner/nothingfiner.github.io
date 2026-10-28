@@ -91,15 +91,8 @@ export function LandingNow() {
         }
         .landing-now * { margin: 0; box-sizing: border-box; }
 
-        /* ── the padded flow grid (content gets the gutter) ──────── */
-        .ln-flow {
-          position: relative;
-          display: grid;
-          grid-template-columns: repeat(12, 1fr);
-          column-gap: 1.1vw;
-          padding-inline: 3.9vw;
-        }
-        .ln-head { grid-column: 1 / -1; padding-top: 3.6vh; }
+        /* the shared flow grid + head slot print from landing.css's
+           shared layer (this block keeps only this section's privates) */
 
         /* ── the card strip ────────────────────────────────────────
            the mock's strip: full-bleed from the screen's LEFT edge,
@@ -127,8 +120,7 @@ export function LandingNow() {
         /* ── mobile: the flow stacks (as the sections above) ─────── */
         @media (max-width: 899px) {
           .landing-now { height: auto; order: 2; }
-          .ln-flow { display: flex; flex-direction: column; padding-inline: 6vw; }
-          .ln-head { margin-bottom: 24px; padding-top: 44px; }
+          /* the shared flow/head variants print from landing.css */
           .ln-strip { margin-inline: -6vw 0; margin-top: 8vh; }
         }
       `}</style>

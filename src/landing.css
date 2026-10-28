@@ -558,3 +558,32 @@
    box-shadow: 1px 1px 0 rgba(13, 2, 33, 0.64), 2px 2px 0 rgba(13, 2, 33, 0.56), 4px 4px 0 rgba(13, 2, 33, 0.48), 7px 7px 0 rgba(13, 2, 33, 0.40), 12px 12px 0 rgba(13, 2, 33, 0.32);
   }
 }
+/* ── the landing sections' shared flow layer ─────────────────────
+   LandingPast and LandingNow co-use the padded flow grid and the
+   grow headline's slot (both sections' style blocks used to carry
+   identical copies). They live here ONCE: the blocks are the
+   landing's class layer (nothingfiner.md Anatomy); each section's
+   own style block keeps only its private rules (LandingNow's strip,
+   its root reset). */
+.ln-flow {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 1.1vw;
+  padding-inline: 3.9vw;
+}
+/* the head slot is scoped to the two sections that share it. LandingNow's
+   private `.landing-now * { margin: 0 }` reset prints LATER in document
+   order (its style block lives in the markup, after this stylesheet), so
+   at equal (0,1,0) it zeroed the head's mobile margin-bottom out from
+   under #now. Scoping lifts the shared rules to (0,2,0), which wins the
+   cascade regardless of document order. `.ln-flow`'s variants set no
+   margins, so the reset cannot touch them and they stay unscoped. */
+.landing-now .ln-head,
+.landing-past .ln-head { grid-column: 1 / -1; padding-top: 3.6vh; }
+
+@media (max-width: 899px) {
+  .ln-flow { display: flex; flex-direction: column; padding-inline: 6vw; }
+  .landing-now .ln-head,
+  .landing-past .ln-head { margin-bottom: 24px; padding-top: 44px; }
+}
