@@ -11,6 +11,8 @@ import { SiteFooter } from './components/SiteFooter';
 import { Landing } from './pages/Landing';
 import { Projects } from './pages/Projects';
 import { ProjectDetail } from './pages/ProjectDetail';
+import { PastWork } from './pages/PastWork';
+import { PastDetail } from './pages/PastDetail';
 import { About } from './pages/About';
 import { Resume } from './pages/Resume';
 import { DarkForest } from './pages/DarkForest';
@@ -36,6 +38,11 @@ function AppContent() {
     if (location.startsWith('/projects/') && location !== '/projects') {
       setIsDrawerOpen(false);
     }
+    // the past details join: a deep link into an agency plate should
+    // never arrive with the drawer parked open (the projects mirror)
+    if (location.startsWith('/past/') && location !== '/past') {
+      setIsDrawerOpen(false);
+    }
   }, [location]);
 
   const handleMenuToggle = (open: boolean) => {
@@ -50,22 +57,25 @@ function AppContent() {
   // landing footer band carry the page) — the legacy sticky header is
   // gone from every projects route (Eliot: no old menu bar on detail).
   const isProjects = currentPath === '/projects' || currentPath.startsWith('/projects/');
+  // the past family: the bands page (/past) + the agency detail
+  // plates (/past/:tag) — the new-design bare stage's fourth member
+  const isPast = currentPath === '/past' || currentPath.startsWith('/past/');
   const isBlog = currentPath === '/blog' || currentPath.startsWith('/blog/');
   const isResume = currentPath === '/resume';
   /* the new-design bare stage: no legacy sticky header over the shared
-     band (Eliot: the old header/menu bar is gone from projects, blog
-     and resume — the band's pool menu is the chrome) */
-  const isBareStage = isChat || isProjects || isBlog || isResume;
+     band (Eliot: the old header/menu bar is gone from projects, the
+     past family, blog and resume — the band's pool menu is the chrome) */
+  const isBareStage = isChat || isProjects || isPast || isBlog || isResume;
   const isSplitLayout = isHome && !isChat;
   const pageTitle = getPageTitle(currentPath);
 
   // the background's two layers are split: the LINE-GROUND hatch paints
   // site-wide (it is LavaLampBackground's own fixed layer), but the lava
-  // BLOBS are opt-in per route — on (projects + project detail + chat,
-  // whose stages read as clear paper over the lamp) and OFF on the
-  // landing (lines only) and every legacy page. DarkForest mounts
-  // neither layer.
-  const lampOn = !isDarkForest && (isProjects || isChat);
+  // BLOBS are opt-in per route — on (projects + project detail + chat +
+  // the past family, whose stages read as clear paper over the lamp)
+  // and OFF on the landing (lines only) and every legacy page. DarkForest
+  // mounts neither layer.
+  const lampOn = !isDarkForest && (isProjects || isChat || isPast);
 
   return (
     <div class="flex min-h-screen relative">
@@ -107,6 +117,8 @@ function AppContent() {
               <Suspense fallback={<div class="min-h-screen flex items-center justify-center text-theme">Loading...</div>}>
                 <Route path="/projects" component={Projects} />
                 <Route path="/projects/:id" component={ProjectDetail} />
+                <Route path="/past" component={PastWork} />
+                <Route path="/past/:id" component={PastDetail} />
                 <Route path="/chat" component={Chat} />
                 <Route path="/blog" component={Blog} />
                 <Route path="/blog/:id" component={BlogPost} />

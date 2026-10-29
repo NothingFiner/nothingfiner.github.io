@@ -68,12 +68,16 @@ type WipeDirection = 'left' | 'right' | 'up' | 'down';
 const NAV_ORDER: [RegExp, number][] = [
   [/^\/$/, 0],
   [/^\/projects(\/|$)/, 1],
-  [/^\/chat$/, 2],
-  [/^\/blog(\/|$)/, 3],
-  [/^\/resume$/, 4],
-  [/^\/about$/, 5],
-  [/^\/games\/dark-forest$/, 6],
-  [/^\/components$/, 7],
+  /* the past family slots right after the projects one (the bands +
+     the /past/:id details ride one slot); no existing pair's relative
+     order changes, so no existing route pair flips direction */
+  [/^\/past(\/|$)/, 2],
+  [/^\/chat$/, 3],
+  [/^\/blog(\/|$)/, 4],
+  [/^\/resume$/, 5],
+  [/^\/about$/, 6],
+  [/^\/games\/dark-forest$/, 7],
+  [/^\/components$/, 8],
 ];
 
 const orderIndex = (path: string): number | null => {
@@ -103,6 +107,7 @@ function captionFor(path: string): string | null {
   }
   const table: [RegExp, string][] = [
     [/^\/projects\/?$/, 'Projects'],
+    [/^\/past\/?$/, 'Past Work'],
     [/^\/chat\/?$/, 'Chat'],
     [/^\/blog\/?$/, 'Blog'],
     [/^\/blog\/[^/?#]+$/, 'Blog'],
@@ -170,9 +175,11 @@ export function PageWipe(): null {
 
     const startWipe = (toPath: string, fromPath: string, preSwapped: boolean): void => {
       console.log('WIPE startWipe to=' + toPath + ' from=' + fromPath + ' pre=' + preSwapped + ' disabled=' + wipesDisabled());
-      /* the detail choreography owns every nav touching /projects/:id —
-         the overlay never arms for those routes */
+      /* the detail choreography owns every nav touching /projects/:id
+         or /past/:id — the detail drivers' own held-swap protocols
+         hold those routes; the overlay never arms for them */
       if (toPath.startsWith('/projects/') || fromPath.startsWith('/projects/')) return;
+      if (toPath.startsWith('/past/') || fromPath.startsWith('/past/')) return;
       if (!isKnown(toPath) || (!preSwapped && !isKnown(fromPath))) return;
       if (toPath === fromPath) return;
       if (wipesDisabled()) {
@@ -234,10 +241,11 @@ export function PageWipe(): null {
       const toPath = parseHash(href);
       if (toPath === currentPath || !isKnown(toPath)) return;
       /* Eliot: the detail pages' transitions are NOT wipes — any nav
-         touching a /projects/:id route returns UNTOUCHED (no overlay,
-         no preventDefault): that page's own driver holds the swap and
-         plays the entrance/exit choreography */
+         touching a /projects/:id or /past/:id route returns UNTOUCHED
+         (no overlay, no preventDefault): that page's own driver holds
+         the swap and plays the entrance/exit choreography */
       if (toPath.startsWith('/projects/') || currentPath.startsWith('/projects/')) return;
+      if (toPath.startsWith('/past/') || currentPath.startsWith('/past/')) return;
       ev.preventDefault();
       ev.stopPropagation();
       const fromPath = currentPath;

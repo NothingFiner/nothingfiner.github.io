@@ -117,9 +117,9 @@ body {
 }
 
 /* ── the solid panel (plan Task 13): opaque fill + 1px keyline + the
-   hard shadow ladder — the same print-stack ink the landing's
-   drop-grow rides (hard offsets, no blur). This replaces the frosted
-   glass; the class names are new because the paint physics changed. ── */
+   hard shadow ladder (hard offsets, no blur — the site's print-stack
+   ink). This replaces the frosted glass; the class names are new
+   because the paint physics changed. ── */
 @layer components {
   .panel {
     background: var(--panel-fill);

@@ -8,16 +8,19 @@
 // the detail content must not trust. projects.ts itself is the index
 // page's domain (edited in parallel) — never touched from here.
 //
-// AGENCY WORKS SEAM — the coming agency-works page will mount this
-// same corner composition with an extra section in the crimson plate:
-// put a `responsibilities: string[]` on an entry (see the interface
-// below; the plate renders it as its own label + list when present)
-// and add the agency entries keyed the same way. No agency route or
-// data exists yet on purpose — this file only leaves the shape ready.
+// AGENCY WORKS SEAM — the past-work page (src/pages/PastDetail.tsx)
+// mounts this same corner composition with an extra section in the
+// crimson plate: a `responsibilities: string[]` on an entry renders
+// as its own label + list (the regular projects never set it). The
+// four agency entries — Brooks Brothers, Forever 21, Batesville,
+// Reformation — are keyed the same way (the tags pastWork.ts's bands
+// navigate by and duplicate the stream lists of). The agency routes
+// live at /past/:id, not /projects/:id.
 //
-// Copy: the descriptions are the index array's own text (real copy).
-// `draft` flags copy written for this page and awaiting Eliot — the
-// plate prints a small DRAFT tag so it can't pass as real.
+// Copy: the live entries' descriptions are the index array's own text
+// (real copy); the agency seam's lines are DRAFTED placeholders
+// awaiting Eliot — agency entries carry `copy: 'draft'` and the plate
+// prints a small DRAFT tag so it can't pass as real.
 
 export interface ProjectDetailContent {
   /** the fluro title block's paragraph (the index's `description`
@@ -98,6 +101,66 @@ const details: ProjectDetailEntry[] = [
     images: ['./assets/darkforest.png'],
     links: [{ label: 'Play the game', href: '#/games/dark-forest' }],
     copy: 'live',
+  },
+  // the four agency seam entries (the /past family). The streams
+  // duplicate pastWork.ts's lists (the bands' data home); no
+  // rows/status/githubUrl: agency works carry none of those, the
+  // plate's absence-conditionals render the seam sections only.
+  {
+    title: 'Brooks Brothers',
+    description:
+      "A merchandised storefront build for the Brooks Brothers web shop — the listing layer: category chips, filter and sort controls, a product grid with color swatches, ratings and quick-add, and promotional tiles slotted into the grid.",
+    technologies: ['Responsive storefront', 'PLP merchandising', 'Quick-add commerce'],
+    images: ['./assets/brooksbrothers.png'],
+    responsibilities: [
+      'Category navigation and the shirts listing hierarchy',
+      'Filter, chip and sort controls across the listing',
+      'Product grid: color swatches, ratings badges, quick-add',
+      'Promotional tiles riding the grid',
+    ],
+    copy: 'draft',
+  },
+  {
+    title: 'Forever 21',
+    description:
+      'Responsive storefront build for Forever 21 — the Late Night Edit campaign home and the product-detail template: gallery, color and size selectors, add-to-cart with express-payment and installment modules.',
+    technologies: ['Responsive storefront', 'Express checkout (Shop Pay, Klarna)', 'PDP commerce modules'],
+    images: ['./assets/forever21.jpg', './assets/forever21-detail.png'],
+    responsibilities: [
+      'The Late Night Edit campaign home and its nav over the hero',
+      'Product-detail template: gallery, color and size selectors, quantity stepper',
+      'Commerce modules: add-to-cart, Shop Pay and Klarna installments',
+      'Promo banner and breadcrumb trail on the PDP',
+    ],
+    copy: 'draft',
+  },
+  {
+    title: 'Batesville',
+    description:
+      "A guided purchase flow for Batesville's funeral-home storefront ecosystem — the six-panel Family Choices journey: story capture, curated selections, real-time personalization, remembrance items, the Living Memorial tree donation and the Batesville Connect order hand-off.",
+    technologies: ['Guided purchase flow', 'Funeral-home storefront', 'Connected cart (Batesville Connect)'],
+    images: ['./assets/batesville.png'],
+    responsibilities: [
+      'The six-step Family Choices guided flow (the slide panel set)',
+      'The Tell Their Story conversational capture feeding curated selections',
+      'Real-time personalization surfaces: urn engraving previewed on screen',
+      'Living Memorial tree-seedling submission and the Batesville Connect cart hand-off',
+    ],
+    copy: 'draft',
+  },
+  {
+    title: 'Reformation',
+    description:
+      'Responsive e-commerce build for Reformation — the collection page with its oversized brand print and quick-add grid, and the product template with colorways, size guide and Apple Pay add-to-bag.',
+    technologies: ['Responsive storefront', 'Quick-add PLP', 'Apple Pay PDP'],
+    images: ['./assets/reformation.jpg', './assets/reformation-detail.jpg'],
+    responsibilities: [
+      'Responsive e-commerce storefront build (PLP and PDP surfaces)',
+      'Collection grid with the quick-add size row and show-more paging',
+      'Product template: colorways, size guide, Apple Pay add-to-bag',
+      'The oversized brand print section and the newsletter signup',
+    ],
+    copy: 'draft',
   },
 ];
 

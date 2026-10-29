@@ -4,6 +4,8 @@ export const PageTitle = {
   HOME: '',
   PROJECTS: 'Projects',
   PROJECT_DETAIL: 'Project Detail',
+  PAST: 'Past Work',
+  PAST_DETAIL: 'Past Work Detail',
   CHAT: 'Chat',
   RESUME: 'Resume',
   BLOG: 'Blog',
@@ -15,6 +17,7 @@ export type PageTitle = (typeof PageTitle)[keyof typeof PageTitle];
 export const PAGE_PATHS: Record<string, PageTitle> = {
   '/': PageTitle.HOME,
   '/projects': PageTitle.PROJECTS,
+  '/past': PageTitle.PAST,
   '/chat': PageTitle.CHAT,
   '/resume': PageTitle.RESUME,
   '/blog': PageTitle.BLOG,
@@ -22,6 +25,7 @@ export const PAGE_PATHS: Record<string, PageTitle> = {
 
 export function getPageTitle(path: string): PageTitle {
   if (path.startsWith('/projects/')) return PageTitle.PROJECT_DETAIL;
+  if (path.startsWith('/past/')) return PageTitle.PAST_DETAIL;
   if (path.startsWith('/blog/')) return PageTitle.BLOG_POST;
   return PAGE_PATHS[path] ?? PageTitle.HOME;
 }
