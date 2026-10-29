@@ -37,6 +37,18 @@
   --panel-hover-keyline: #14F1C8;
 }
 
+/* the site DEFINES the glaphic mono token (Decision 10's wired half):
+   IBM Plex Mono serves the Latin/digit run, and Menlo rescues the glyphs
+   Plex lacks (the ticker's block █, the burst's spacing ˙) on a true
+   monospaced advance — verified uniform 28.898px vs ch's 28.8px — before
+   any proportional generic can absorb the missing-glyph cascade (the
+   tokens sheet's current sans-serif companion routes the exotics to a
+   1.67x-the-column face: the Oct-29 ticker bleed). html:root outranks
+   the tokens sheet's own :root regardless of bundle order */
+html:root {
+  --glaphic-font-family-mono: "IBM Plex Mono", Menlo, monospace;
+}
+
 * {
   margin: 0;
   padding: 0;
