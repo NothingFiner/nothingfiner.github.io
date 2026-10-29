@@ -7,10 +7,17 @@ $font-url: 'https://fonts.googleapis.com/css?family=Bungee+Hairline|Raleway'
 
 @import url(#{$font-url})
 
-$neon-green: #44D62C
-$danger: #A34811
+// the game's own inks — the neon idiom is deliberate and the game's
+// own; it lives under the site's one paint law (solid paints, no
+// alpha, no blur). These are not site inks, so they stay named here:
+$neon-green: #44D62C   // HUD/player ink: everything the player reads is this green
+$danger: #A34811       // warn ink: the status plate and its pulse
+$neon-bloom: color.adjust($neon-green, $lightness: 10%, $space: hsl)  // the halo frame read against the dark ground (solid, no blur)
+$danger-bloom: color.adjust($danger, $lightness: 10%, $space: hsl)    // the pulse's lighter frame on the warn ink (solid, no blur)
+$deep-void: #090A0F    // the near-black space ground the starfield and canvas paint over
+$star-white: #FFF      // the starfield's pinholes — pure white by design
 
-.dark-forest, .dark-forest, .dark-forest img
+.dark-forest, .dark-forest img
   margin: 0
   padding: 0
   background: transparent
@@ -26,7 +33,7 @@ $danger: #A34811
   height: 100vh
   width: 100vw
   overflow: hidden
-  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%)
+  background: $deep-void
 
 .dark-forest canvas
   width: 100vw
@@ -61,8 +68,8 @@ $danger: #A34811
   color: $neon-green
   line-height: 2rem
   font-family: 'Bungee Hairline', cursive
-  text-shadow: 0 0 1px color.adjust($neon-green, $lightness: 10%, $space: hsl)
-  box-shadow: 0 0 2px color.adjust($neon-green, $lightness: 10%, $space: hsl), inset 0 0 2px color.adjust($neon-green, $lightness: 10%, $space: hsl)
+  text-shadow: 1px 1px 0 $neon-bloom
+  box-shadow: 0 0 0 1px $neon-bloom, inset 0 0 0 1px $neon-bloom
   &.hide
     display: none
   section
@@ -86,7 +93,7 @@ $danger: #A34811
       animation: expand_in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
   span, h1
     margin: 0 1vw
-    background: color.adjust($danger, $alpha: -.25)
+    background: $danger
     animation: pulse 1s linear infinite
     height: 100%
   span
@@ -98,7 +105,7 @@ $danger: #A34811
     font-size: 6rem
     width: 60vw
     font-family: 'Bungee Hairline', cursive
-    color: #090A0F
+    color: $deep-void
   main
     height: 10rem
     max-width: 80vw
@@ -112,10 +119,10 @@ $danger: #A34811
     font-size: 1rem
     cursor: pointer
     &:hover
-      color: #090A0F
+      color: $deep-void
       background: $neon-green
-      border-color: color.adjust($neon-green, $lightness: 10%, $space: hsl)
-      box-shadow: 1px 1px 8px color.adjust($neon-green, $lightness: 10%, $space: hsl), -1px -1px 8px color.adjust($neon-green, $lightness: 10%, $space: hsl)
+      border-color: $neon-bloom
+      box-shadow: 1px 1px 0 $neon-bloom, -1px -1px 0 $neon-bloom
   
 .button-container
   margin-top: 2rem
@@ -123,9 +130,9 @@ $danger: #A34811
 
 // n is number of stars required
 @function multiple-box-shadow ($n)
-  $value: '#{math.random(2000)}px #{math.random(2000)}px #FFF'
+  $value: '#{math.random(2000)}px #{math.random(2000)}px #{$star-white}'
   @for $i from 2 through $n
-    $value: '#{$value} , #{math.random(2000)}px #{math.random(2000)}px #FFF'
+    $value: '#{$value} , #{math.random(2000)}px #{math.random(2000)}px #{$star-white}'
   @return string.unquote($value)
 
 $shadows-small:  multiple-box-shadow(400)
@@ -164,13 +171,15 @@ $shadows-small:  multiple-box-shadow(400)
   to
     transform: translateY(-1000px)
 
+// the pulse is a hard ladder: the ring's thickness steps 1px -> 2px ->
+// 1px — the frames grow by spread, never by blur (same law as the rest)
 @keyframes pulse
   0%
-    box-shadow: 0 0 2px color.adjust($danger, $lightness: 10%, $space: hsl), inset 0 0 2px color.adjust($danger, $lightness: 10%, $space: hsl)
+    box-shadow: 0 0 0 1px $danger-bloom, inset 0 0 0 1px $danger-bloom
   50%
-    box-shadow: 0 0 8px color.adjust($danger, $lightness: 10%, $space: hsl), inset 0 0 8px color.adjust($danger, $lightness: 10%, $space: hsl)
+    box-shadow: 0 0 0 2px $danger-bloom, inset 0 0 0 2px $danger-bloom
   100%
-    box-shadow: 0 0 2px color.adjust($danger, $lightness: 10%, $space: hsl), inset 0 0 2px color.adjust($danger, $lightness: 10%, $space: hsl)
+    box-shadow: 0 0 0 1px $danger-bloom, inset 0 0 0 1px $danger-bloom
 
 @keyframes expand_in
   0%
@@ -185,4 +194,3 @@ $shadows-small:  multiple-box-shadow(400)
     transform: scale(1.05)
   100%
     transform: scale(1)
-

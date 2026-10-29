@@ -1,5 +1,5 @@
 import './style.sass';
-import { GameState } from '../../pages/DarkForest';
+import { GAME_STATES, GameState } from '../../pages/DarkForest';
 
 export const startGameLoop = async (stateCallback: (state: GameState) => void, canvas: HTMLCanvasElement | null) => {
   if (!canvas) return () => {};
@@ -35,7 +35,7 @@ export const startGameLoop = async (stateCallback: (state: GameState) => void, c
   };
 
   const won = () => {
-    stateCallback('won' as GameState);
+    stateCallback(GAME_STATES.won);
   };
 
   weapon.gestate();
