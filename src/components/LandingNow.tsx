@@ -37,6 +37,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { useLocation } from 'wouter-preact';
 import { GrowHead } from './GrowHead';
+import { projectByTitle } from '../data/projects';
 
 const INK = '#0D0221';
 
@@ -117,6 +118,21 @@ export function LandingNow() {
           .ln-strip { transition: none; transform: none; }
         }
 
+        /* the draft tag on the card's copy (mirrors the detail plate's
+           pd-draft: honest provenance printed so draft copy can't pass
+           as sourced). Block display: it owns its line above the copy.
+           Its margins beat the root's * reset — same block, later. */
+        .ln-draft {
+          display: block;
+          margin: 0 0 10px;
+          border: 2px solid ${INK};
+          font-family: var(--f-mono, 'IBM Plex Mono', monospace);
+          font-size: 9px;
+          font-weight: 600;
+          letter-spacing: 0.14em;
+          padding: 3px 8px;
+        }
+
         /* ── mobile: the flow stacks (as the sections above) ─────── */
         @media (max-width: 899px) {
           .landing-now { height: auto; order: 2; }
@@ -146,7 +162,7 @@ export function LandingNow() {
               <glaphic-button
                 variant="solid"
                 style={VIOLET_SOLID}
-                onClick={() => navigate('/projects/1')}
+                onClick={() => navigate('/projects/' + projectByTitle('Rite').id)}
               >
                 View project
               </glaphic-button>
@@ -165,8 +181,11 @@ export function LandingNow() {
               stands until he writes the real lines) */}
           <glaphic-card-slide label="The novel">
             <img src="./assets/novel.png" alt="The novel's manuscript" />
+            {/* the novel has no index entry — its card copy is draft
+                in place, so the tag prints regardless */}
             <p slot="description">
-              The novel itself — the writing Rite is being built for. Draft copy.
+              <span class="ln-draft">DRAFT COPY — AWAITING ELIOT</span>
+              The novel itself — the writing Rite is being built for.
             </p>
             <div slot="actions">
               <glaphic-button
@@ -183,9 +202,17 @@ export function LandingNow() {
           </glaphic-card-slide>
           <glaphic-card-slide label="glaphic">
             <img src="./assets/glaphicUI.png" alt="glaphic UI, the web-component library" />
+            {/* the tag BINDS to the index's provenance flag: flip
+                glaphicUI's copy to live in src/data/projects.ts (when
+                Eliot's real line lands — the entry's comment points
+                there) and the tag unpints itself. The slide's copy
+                above swaps for the real line at the same moment. */}
             <p slot="description">
+              {projectByTitle('glaphicUI').copy === 'draft' && (
+                <span class="ln-draft">DRAFT COPY — AWAITING ELIOT</span>
+              )}
               glaphic — the web-component library this landing is built from,
-              growing component by component. Draft copy.
+              growing component by component.
             </p>
             <div slot="actions">
               <glaphic-button
