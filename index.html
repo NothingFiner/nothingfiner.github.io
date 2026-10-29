@@ -3,10 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <script>
+      // prepaint: apply the stored theme before first paint so a dark
+      // visitor never sees the light flash. Storage access can throw
+      // (blocked, private mode, sandboxed iframe) — the page must still
+      // paint, so log and fall through to the default theme.
       try {
         var t = localStorage.getItem('portfolio-theme');
         if (t === 'dark') document.documentElement.classList.add('dark');
-      } catch (e) {}
+      } catch (e) {
+        console.error('prepaint theme: reading portfolio-theme from localStorage failed (' + String(e) + '); painting the default theme');
+      }
     </script>
     <link rel="icon" type="image/svg+xml" href="./assets/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

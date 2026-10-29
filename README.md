@@ -1,30 +1,49 @@
-# Portfolio Site
+# nothingfiner.github.io
 
-A portfolio website built with Preact and Tailwind CSS, designed with a neo-skeuomorphic aesthetic.
+Eliot Asenoth Gaspar-Finer's portfolio site: Preact + TypeScript + Tailwind
++ Vite, hash-routed via `wouter-preact` for GitHub Pages compatibility.
+The interactive components come from the glaphicUI web-component library,
+consumed by source through a Vite alias to a sibling checkout
+(`../glaphicUI/src`) — never copied into this repo.
 
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 yarn install
 ```
 
-2. Run development server:
+2. Run the dev server (sibling checkout paths must exist):
+
 ```bash
 yarn dev
 ```
 
-3. Build for production:
+3. Production build (runs Vite, then the prerender pass populates
+   `dist/index.html` for non-JS fetchers):
+
 ```bash
 yarn build
 ```
 
-## GitHub Pages Deployment
+## Structure
 
-The site uses hash-based routing (`#/path`) for GitHub Pages compatibility. After building, deploy the `dist` folder to GitHub Pages.
+- `src/pages/` — route components (`*.tsx`, lazy-loaded in `app.tsx`)
+- `src/components/` — the landing's section components and shared pieces
+- `src/landing.css` — the landing's shared class layer (band, marquee, reveals)
+- `src/lib/` — in-site infrastructure (incl. the glaphic element registrar)
+- `public/assets/` — project images, logo, resume PDF
+- `design/` — mockups referenced during build-out
 
-## Assets
+## Content and copy
 
-Place your resume PDF at `public/assets/resume.pdf` (or update the path in `src/pages/Resume.jsx`).
+Project copy carries a provenance flag (`'live' | 'draft'`, see
+`src/data/projects.ts` and `src/data/projectDetails.ts`): draft copy
+prints a visible `DRAFT COPY — AWAITING ELIOT` tag so it never passes
+as sourced. Flip a project's flag to `'live'` when its copy is real.
 
-Replace placeholder project images and data in `src/pages/Projects.jsx` and `src/pages/ProjectDetail.jsx` with your actual projects.
+## Deployment
+
+Deploy the built `dist/` folder to GitHub Pages (hash routing keeps
+deep links one path).
