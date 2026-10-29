@@ -34,6 +34,8 @@ import { rideOutUp, TICKER } from './landing-shared';
 const INK = '#0D0221';
 const RED = '#A6022A';
 
+/* the widgets' frame content (multi-line ASCII, real newlines): what the
+   two glaphic-ascii cycles show — data, not machinery */
 const FRAMES = [
   " o\n\n   \n    ^  ",
   "  o\n\n   |\n   ^   ",
@@ -80,40 +82,6 @@ const JOB_FRAMES = [
  " 2014\n J0B\n\n\n"
 ]
 
-/* the ABOUT's spark widgets: two text-frame runs (the burst's shell and
-   the job's ticker). Both ride ONE mechanic: every frame's span owns one
-   step of a shared cycle — its delay is its index × the step, and the
-   keyframe pair hides at 1/n of the cycle, so the span shows for its own
-   step; the LAST span runs the hold pair, so the final spark lingers two
-   extra steps. The keyframes are GENERATED per widget: a 9-frame burst
-   and a 30-frame ticker can't share hardcoded percentages (the shared
-   set desynced the job's loop) */
-const sparkAnim = (count: number, tag: string) => {
-  const n = count + 2; // the hold rides two extra steps
-  const hide = (100 / n).toFixed(3);
-  const holdHide = ((3 / n) * 100).toFixed(3);
-  return `
-    @keyframes spark-flip-${tag} {
-      0% { visibility: visible; }
-      ${hide}% { visibility: hidden; }
-    }
-    @keyframes spark-hold-${tag} {
-      0% { visibility: visible; }
-      ${holdHide}% { visibility: hidden; }
-    }
-    .spark-${tag} > span {
-      animation-name: spark-flip-${tag};
-      animation-duration: calc(var(--sb-step) * ${n});
-      animation-delay: calc(var(--i) * var(--sb-step));
-      animation-timing-function: step-end;
-      animation-iteration-count: infinite;
-    }
-    .spark-${tag} > span:last-child {
-      animation-name: spark-hold-${tag};
-    }`;
-};
-const BURST_ANIM = sparkAnim(FRAMES.length, 'burst');
-const JOB_ANIM = sparkAnim(JOB_FRAMES.length, 'job');
 
 export function LandingAbout() {
   const [inView, setInView] = useState(false);
@@ -124,6 +92,8 @@ export function LandingAbout() {
   // reads as the previous one leaving up), reversing on the way back
   const flowRef = useRef<HTMLDivElement | null>(null);
 
+  const burstRef = useRef<HTMLElement | null>(null);
+  const jobRef = useRef<HTMLElement | null>(null);
   // the marquee takes array properties, which JSX attributes can't carry
   // reliably to Lit — set them imperatively once
   useEffect(() => {
@@ -131,6 +101,15 @@ export function LandingAbout() {
     if (!el) return;
     el.strings = TICKER;
     el.speed = 26;
+  }, []);
+
+  // the ascii widgets take the FRAMES arrays (content staying with the
+  // page) — these are array properties too, so they set imperatively once
+  useEffect(() => {
+    const burst = burstRef.current as unknown as { frames: string[] } | null;
+    const job = jobRef.current as unknown as { frames: string[] } | null;
+    if (burst) burst.frames = FRAMES;
+    if (job) job.frames = JOB_FRAMES;
   }, []);
 
   // the ride-out wiring
@@ -334,37 +313,6 @@ export function LandingAbout() {
           .ab-spark { text-align: left; }
           .ab-story { margin-bottom: 48px; }
         }
-        .spark-burst {
-          --sb-step: 0.16s;                 /* time per frame; the loop is 11 steps */
-          display: inline-grid;
-          align-items: end;
-          width: 7ch;
-          font-family: ui-monospace, "SF Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
-          line-height: 1.3;
-          color: inherit;                  /* takes the surrounding text color */
-          vertical-align: bottom;
-          font-size: 48px;
-          border-radius: 2px;
-          border: 2px solid #A6022A;
-          background-color: #14F1C8;
-          mix-blend-mode: multiply;
-          color: white
-        }
-        .spark-burst > span {
-          grid-area: 1 / 1;                /* all frames share one cell */
-          align-self: end;                 /* the ^ row always sits on the bottom */
-          white-space: pre;
-          visibility: hidden;
-        }
-        /* the per-widget timing: generated keyframes + rules, one set
-           per ride (the burst's 9 frames, the ticker's 30) */
-        ${BURST_ANIM}
-        ${JOB_ANIM}
-
-        @media (prefers-reduced-motion: reduce) {
-          .spark-burst > span { animation: none; }
-          .spark-burst > span:last-child { visibility: visible; }
-        }
       `}</style>
 
       {/* the nav tool panel is LandingPanel (a component alongside this
@@ -384,8 +332,9 @@ export function LandingAbout() {
         {/* the two story rows: each story's text on one side of the
             ink divider, ITS spark widget on the other (the asteroid
             shell's rise/burst; the 2012→C0DE ticker). The rows map the
-            landing's tracks (4 · rule · 3, mirrored), the sparks' cycles
-            generated per frame count */}
+            landing's tracks (4 · rule · 3, mirrored); the spark cycles
+            live in the glaphic-ascii element now — the page feeds
+            frames and reads nothing else */}
         <div class="ab-cols">
           <div class="ab-row ab-row-a">
             <div class="ab-colA ab-fade" style={{ '--ab-d': '0.2s' }}>
@@ -399,34 +348,20 @@ export function LandingAbout() {
             </div>
             <div class="ab-rule" />
             <div class="ab-spark ab-fade" style={{ '--ab-d': '0.3s' }}>
-              <span
-                class="spark-burst spark-burst grow-drop"
-                style={{ '--sb-step': '0.2s' }}
+              <glaphic-ascii
+                ref={burstRef}
                 role="img"
-                aria-label="A shell rises, flashes, and bursts into sparks"
-              >
-                {FRAMES.map((text, i) => (
-                  <span key={i} style={{ '--i': i }}>
-                    {text}
-                  </span>
-                ))}
-              </span>
+                label="A shell rises, flashes, and bursts into sparks"
+              />
             </div>
           </div>
           <div class="ab-row ab-row-b">
             <div class="ab-spark ab-fade" style={{ '--ab-d': '0.3s' }}>
-              <span
-                class="spark-burst spark-job grow-drop"
-                style={{ '--sb-step': '0.2s' }}
+              <glaphic-ascii
+                ref={jobRef}
                 role="img"
-                aria-label="A year types out, glitches, and resolves a job started"
-              >
-                {JOB_FRAMES.map((text, i) => (
-                  <span key={i} style={{ '--i': i }}>
-                    {text}
-                  </span>
-                ))}
-              </span>
+                label="A year types out, glitches, and resolves a job started"
+              />
             </div>
             <div class="ab-rule" />
             <div class="ab-colB ab-fade" style={{ '--ab-d': '0.2s' }}>

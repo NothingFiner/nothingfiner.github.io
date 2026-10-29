@@ -23,6 +23,7 @@
 
 import { GlaphicAccordion } from '@glaphic/ui/components/glaphic-accordion/glaphic-accordion.js';
 import { GlaphicAccordionItem } from '@glaphic/ui/components/glaphic-accordion/glaphic-accordion-item.js';
+import { GlaphicAscii } from '@glaphic/ui/components/glaphic-ascii/glaphic-ascii.js';
 import { GlaphicBand } from '@glaphic/ui/components/glaphic-band/glaphic-band.js';
 import { GlaphicButton } from '@glaphic/ui/components/glaphic-button/glaphic-button.js';
 import { GlaphicCard } from '@glaphic/ui/components/glaphic-card/glaphic-card.js';
@@ -48,6 +49,7 @@ import { GlaphicWipe } from '@glaphic/ui/components/glaphic-wipe/glaphic-wipe.js
 
 void GlaphicAccordion; // <glaphic-accordion>
 void GlaphicAccordionItem; // <glaphic-accordion-item>
+void GlaphicAscii; // <glaphic-ascii>
 void GlaphicBand; // <glaphic-band>
 void GlaphicButton; // <glaphic-button>
 void GlaphicCard; // <glaphic-card>

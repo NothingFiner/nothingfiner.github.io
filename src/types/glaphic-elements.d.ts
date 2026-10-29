@@ -22,6 +22,7 @@ declare module 'preact' {
       'glaphic-band': GlaphicEl;
       'glaphic-marquee': GlaphicEl;
       'glaphic-tape': GlaphicEl;
+      'glaphic-ascii': GlaphicEl;
       'glaphic-corners': GlaphicEl;
       'glaphic-crumbs': GlaphicEl;
       'glaphic-crumb': GlaphicEl;
