@@ -178,7 +178,7 @@ export function LandingNow() {
 
           {/* DRAFT slides two + three — placeholder copy awaiting the
               real write-ups(Eliot's images are in; the draft copy
-              stands until he writes the real lines) */}
+              stands until she writes the real lines) */}
           <glaphic-card-slide label="The novel">
             <img src="./assets/novel.png" alt="The novel's manuscript" />
             {/* the novel has no index entry — its card copy is draft
