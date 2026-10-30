@@ -358,12 +358,37 @@ Amends the Phase-2 build in place; scope stays `src/components/LandingNow.tsx` O
 
 **Files:** `src/pages/Landing.tsx`, `src/components/LandingPanel.tsx`.
 
-- [ ] Pre-capture FIRST (the speed-up's evidence): at the Phase-3 build, measure the scroll distance for the full --ab-p ride (0→1) at 1440×900 — record the px.
-- [ ] `src/pages/Landing.tsx`: compose in the new order — Hero → About → **Now** → **Past** → Panel → Technologies → Band (panel before band holds). Rewrite the JSX comments that encode the order contract (the band's "rides LAST" comment gains the new order read; the panel's comment unchanged except its neighbors' names).
-- [ ] `src/components/LandingPanel.tsx`: the NAV per Decision 2 (five links; targets: about / now / past / technologies); index constants ABOUT/NOW/PAST/TECHNOLOGIES (+HOME); the active-follow want-logic reads `.landing-about`/`.landing-now`/`.landing-past`/`.landing-tech` tops vs `vh*0.5` in the new order; D10's fan ladders (`--afo` reshape + the park timer) ; D9's clock divisor (`vh*0.55`); the fan comment's arithmetic mentions the new step counts; the fan's `--fd = active - i` pattern is unchanged.
-- [ ] The mobile order map re-derived ONCE in the sections' ≤899px blocks (Phase 1-3 files get their order values here — the ONLY edits to those files in this phase): hero -1 → band 0 (its fold slot, today's intended read) → about 1 → now 2 → past 3 → tech 4. LandingPast's missing order rule (today's live gap) closes.
-- [ ] **Verify:** the FULL journey at all three widths: active link follows about → now → past → tech (REAL scroll, assert the class per stretch); the fan-out with five links (assert every `--afo` computed delay ≥ 0 — no negative delays); park timer sanity (the re-fan still resets after the settled flight); every sidebar link scrolls to its anchor (REAL clicks); the clock: post-edit ride length measured — shorter than the pre-capture px (record both); the band's crossfade + the foot still ride correctly at the faster clock (the icons' ink switch + the foot reveal at page end); the pool-menu hand-back still works (the band is still the later sibling); LEARN MORE scrolls to #about. 0 errors; overflow clean everywhere. Screenshots nf31p4-*.
-- [ ] Tick + commit: "the journey reorders — About, What I'm up to, Past Work, Technologies; the sidebar grows the fifth link and rides the faster clock".
+- [x] Pre-capture FIRST (the speed-up's evidence): at the Phase-3 build, measure the scroll distance for the full --ab-p ride (0→1) at 1440×900 — record the px. **620px** (p first >0.005 at y 280 → p ≥ 0.999 at y 900; the 10px/8px sweeps' granularity included).
+- [x] `src/pages/Landing.tsx`: compose in the new order — Hero → About → **Now** → **Past** → Panel → Technologies → Band (panel before band holds). Rewrite the JSX comments that encode the order contract (the band's "rides LAST" comment gains the new order read; the panel's comment gains the want-logic's journey-order read).
+- [x] `src/components/LandingPanel.tsx`: the NAV per Decision 2 (five links; targets: about / now / past / technologies); index constants ABOUT/NOW/PAST/TECHNOLOGIES (+HOME — one INDEX object); the active-follow want-logic reads `.landing-about`/`.landing-now`/`.landing-past`/`.landing-tech` tops vs `vh*0.5` in the new order (the deepest crossing wins); D10's fan ladders (`--afo` reshape + the park timer 1100 → 1250ms, markFanned to five); D9's clock divisor (`vh*0.55`); the fan comment's arithmetic mentions the new step counts; the fan's `--fd = active - i` pattern is unchanged.
+- [x] The mobile order map re-derived ONCE in the sections' ≤899px blocks (Phase 1-3 files get their order values here — the ONLY edits to those files in this phase): hero -1 → band 0 (its fold slot, today's intended read) → about 1 → now 2 → past 3 → tech 4. LandingPast's missing order rule (today's live gap) closes; the now/tech blocks' map comments updated in the same passes.
+- [x] **Verify:** the FULL journey at all three widths: active link follows about → now → past → tech (REAL scroll, assert the class per stretch); the fan-out with five links (assert every `--afo` computed delay ≥ 0 — no negative delays); park timer sanity (the re-fan still resets after the settled flight); every sidebar link scrolls to its anchor (REAL clicks); the clock: post-edit ride length measured — shorter than the pre-capture px (record both); the band's crossfade + the foot still ride correctly at the faster clock (the icons' ink switch + the foot reveal at page end); the pool-menu hand-back still works (the band is still the later sibling); LEARN MORE scrolls to #about. 0 errors; overflow clean everywhere. Screenshots nf31p4-*.
+- [x] Tick + commit: "the journey reorders — About, What I'm up to, Past Work, Technologies; the sidebar grows the fifth link and rides the faster clock".
+
+>> (Phase-4 run — 2026-10-30 ~19:2x: driver /tmp/nf31p4-driver.mjs, results
+>> /tmp/nf31p4-results.json, the :4178 preview rebuilt + reused. K1 the
+>> CLOCK: post-edit ride 496px (y0 408 -> y1 904, 900vh) vs the pre-capture
+>> 620 — D9's 0.55 divisor, ~1px over the 495 model, SHORTER as briefed,
+>> both recorded. P1 THE FOLLOW (REAL scroll, the .active class per
+>> stretch): About. / What I'm up to. / Past Work. / Technologies. in the
+>> journey's order, and the chain reverses on the way up (Past. / What. /
+>> About.) — at BOTH 1440 and 1024. P2 THE FAN: the in-ladder 0 / .09 /
+>> .18 / .27s by distance; --afo all >= 0 (0.27 / 0.36 / 0.27 / 0.18 /
+>> 0.09 — the old 2-dist ladder's -0.09s at dist 3 is gone); the 1250ms
+>> park settles all five .fanned; the full scroll-out resets the memory
+>> (0 remaining) and the re-arrival re-fans them. P3 THE LINKS: every
+>> anchor click lands its section at top == 0 exactly, Home. -> scrollY 0.
+>> P4 THE HAND-BACK: the pool menu opens (the nav's links fade to 0),
+>> closes, and the links re-fan (mid-flight opacity ramps sampled).
+>> P5 THE FASTER CLOCK's riders: the .lf-social ink INK #0D0221 at the
+>> page top -> warm-white F2F5EB parked (the crossfade rides --ab-p
+>> unchanged); the page-end: the band bottom at the viewport's floor in
+>> flow (docH 7250/7191), the brand mark opacity 1. P6 LEARN MORE ->
+>> #about top == 0. P7 MOBILE at 390: the computed orders -1/0/1/2/3/4
+>> and the RENDERED sequence hero, band, about, now, past, tech (the
+>> past's live gap closed). 0 console/page errors at all widths; overflow
+>> clean at every stop. Captures nf31p4-*: now-parked/past-parked/
+>> about-parked/pageend-1440 + -1024, the 390 map print in the results.)
 
 ## Phase 5 — the final record
 
