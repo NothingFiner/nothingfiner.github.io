@@ -62,12 +62,12 @@ Every value is the research's proportional interpolation (× 0.7173, 24 / 33.47)
 
 **Files:** `src/components/LandingTechnologies.tsx`, `src/components/LandingNow.tsx`.
 
-- [ ] `LandingTechnologies.tsx:151` `.lt-marquee` right: `33.47vw` → `24vw` (the ticker stops at the panel's NEW edge; the band's `top: 16vh`/`height: 48px` hold).
-- [ ] `LandingNow.tsx:109` `.ln-strip` margin-inline: `-3.9vw 29.6vw` → `-3.9vw 20.1vw` (the strip ends flush at the panel's new edge; `margin-top: 12.6vh` holds).
-- [ ] The comments: neither cites the literal — verify nothing went stale (`LandingNow.tsx:6-10` "flush to the sidebar's left edge" is number-free; add no numbers to comments per WHY-only).
-- [ ] **Verify (1440×900):** scroll — the about's marquee still runs full-bleed under the panel (unchanged pose); the TECH marquee's right end kisses the panel's left edge (screenshot); the now strip ends flush at that edge (no gutter, no underhang); the carousel's 303px depth + wider slides read (three visible, no squash); the card-mode compose still sits inside the widened strip.
-- [ ] Standing verification incl. 1024×900 (the strip's flush read is the most vw-sensitive there) + 390×844 (mobile: `.lt-marquee { right: 0; margin-inline: -6vw }` and `-6vw 0` poses hold).
-- [ ] Tick + commit (`the edge-locked riders follow the panel: tech marquee 24vw, now strip 20.1vw`).
+- [x] `LandingTechnologies.tsx:151` `.lt-marquee` right: `33.47vw` → `24vw` (the ticker stops at the panel's NEW edge; the band's `top: 16vh`/`height: 48px` hold).
+- [x] `LandingNow.tsx:109` `.ln-strip` margin-inline: `-3.9vw 29.6vw` → `-3.9vw 20.1vw` (the strip ends flush at the panel's new edge; `margin-top: 12.6vh` holds).
+- [x] The comments: neither cites the literal — verify nothing went stale (`LandingNow.tsx:6-10` "flush to the sidebar's left edge" is number-free; add no numbers to comments per WHY-only).
+- [x] **Verify (1440×900):** scroll — the about's marquee still runs full-bleed under the panel (unchanged pose); the TECH marquee's right end kisses the panel's left edge (screenshot); the now strip ends flush at that edge (no gutter, no underhang); the carousel's 303px depth + wider slides read (three visible, no squash); the card-mode compose still sits inside the widened strip.
+- [x] Standing verification incl. 1024×900 (the strip's flush read is the most vw-sensitive there) + 390×844 (mobile: `.lt-marquee { right: 0; margin-inline: -6vw }` and `-6vw 0` poses hold).
+- [x] Tick + commit (`the edge-locked riders follow the panel: tech marquee 24vw, now strip 20.1vw`).
 
 ## Phase 3 — the below-fold compositions widen one track
 

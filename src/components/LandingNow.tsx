@@ -106,7 +106,7 @@ export function LandingNow() {
            same trap the pool plates hit in the footer band) */
         .ln-strip {
           grid-column: 1 / -1;
-          margin-inline: -3.9vw 29.6vw;
+          margin-inline: -3.9vw 20.1vw;
           margin-top: 12.6vh;
           transform: translateY(14vh);
           transition: transform 0.7s cubic-bezier(0.25, 1, 0.4, 1) 0.1s;

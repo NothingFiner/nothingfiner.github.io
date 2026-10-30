@@ -148,7 +148,7 @@ export function LandingTechnologies() {
         .lt-marquee {
           position: absolute;
           left: 0;
-          right: 33.47vw;
+          right: 24vw;
           /* the band IS the 48px zone; its own rails sit at the edges */
           top: 16vh;
           height: 48px;
