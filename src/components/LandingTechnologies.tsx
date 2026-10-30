@@ -148,7 +148,8 @@ export function LandingTechnologies() {
         .lt-marquee {
           position: absolute;
           left: 0;
-          right: 24vw;
+          /* full bleed like the about's band (Eliot 10-30): the panel rides over the right run — an edge stop against the sidebar's slide reads odd */
+          right: 0;
           /* the band IS the 48px zone; its own rails sit at the edges */
           top: 16vh;
           height: 48px;
@@ -235,7 +236,7 @@ export function LandingTechnologies() {
         </div>
       </div>
 
-      {/* decorative full-bleeds: the ticker band keeps its own edges */}
+      {/* decorative full-bleed: the band extends to the page's edge so the read stays good as the crimson sidebar slides over it — the marquee runs the full viewport, the panel riding on top of its right end */}
       <glaphic-marquee
         ref={marqueeRef}
         class="lt-marquee"
