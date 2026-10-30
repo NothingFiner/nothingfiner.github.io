@@ -384,10 +384,10 @@ export function LandingNow() {
 
         /* mobile: the bands become stacked cards (photo title-card,
            copy, CTA — the DOM order reads it in one flex column); the
-           order:2 rule rides (the journey's mobile order map is
-           Phase 4's) */
+           order value = the Phase-4 map's now slot (the journey's 3rd
+           section) */
         @media (max-width: 899px) {
-          .landing-now { height: auto; order: 2; }
+          .landing-now { height: auto; /* the Phase-4 map's now slot (the journey's 3rd section) */ order: 2; }
           .ln-header-strip,
           .ln-band { margin-inline: -6vw 0; }
           .ln-header-strip { margin-top: 8vh; padding-block: 2.6vh; }

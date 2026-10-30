@@ -775,6 +775,9 @@ export function LandingAbout() {
         @media (max-width: 899px) {
           .landing-about {
             height: auto;
+            /* the Phase-4 map's about slot (hero -1, band 0, about 1,
+               now 2, past 3, tech 4) — re-derived once, here */
+            order: 1;
             /* the same F5 spacer math, with the seat recomputed to FIT
                the column: the art is 90 columns at the mono advance
                (0.6em, so the fitting type is 54em wide ÷ the column),

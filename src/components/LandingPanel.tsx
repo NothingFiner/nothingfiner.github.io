@@ -12,9 +12,10 @@
 // enters — in paper, the others idle in ink, fanning out from the active
 // link's spot (each starting there, overshooting slightly, snapping back
 // into place) once the panel has arrived, and turning fluro on hover.
-// The active link follows the scroll — the about ("About.") while the
-// story section is the stretch on screen, switching to the technologies
-// ("Tools I've used.") once that section takes over past it, and back.
+// The active link follows the scroll along the journey's order (about →
+// what-i'm-up-to → past-work → technologies) — the deepest section whose
+// top has crossed the viewport's middle owns the link, and back on the
+// way up.
 // A switch is a COLOR WIPE, not a drop: the old one used to re-trigger
 // its fan (and vanish into the delay's backwards fill first) — now both
 // links wipe color in the same instant, the new active's ink lifting to
@@ -38,26 +39,26 @@ const RED = '#A6022A';
 const ECHO = '#14F1C8';
 const WHITE = '#F2F5EB';
 
-// the panel's nav — the active index follows the scroll (see the
-// journey clock). The idle/active/hover inks live in CSS (idle ink,
-// active paper, hover fluro)
+// the panel's nav — the five links in the journey's order (the Phase-4
+// decision); the active index follows the scroll (see the journey
+// clock). The idle/active/hover inks live in CSS (idle ink, active
+// paper, hover fluro)
 const NAV: { label: string; target: string | null }[] = [
   { label: 'Home.', target: null }, // scroll to page top
   { label: 'About.', target: 'about' }, // the story section
-  { label: 'Technologies.', target: 'technologies' },
   { label: "What I'm up to.", target: 'now' },
+  { label: 'Past Work.', target: 'past' },
+  { label: 'Technologies.', target: 'technologies' },
 ];
-const ABOUT = 1;
-const TECHNOLOGIES = 2;
-const NOW = 3;
+const INDEX = { HOME: 0, ABOUT: 1, NOW: 2, PAST: 3, TECHNOLOGIES: 4 };
 
 export function LandingPanel() {
   const [arrived, setArrived] = useState(false);
   const [leaving, setLeaving] = useState(false);
   // which nav link is active (About. by default; switches with the
   // scroll — ref keeps the scroll handler closure-free)
-  const [active, setActive] = useState(ABOUT);
-  const activeRef = useRef(ABOUT);
+  const [active, setActive] = useState(INDEX.ABOUT);
+  const activeRef = useRef(INDEX.ABOUT);
   // the hand-over wipe: on a switch BOTH links play it — the class
   // clears once the 0.4s sweep completes
   const [wipe, setWipe] = useState<{ gain: number | null; was: number | null }>({
@@ -86,10 +87,11 @@ export function LandingPanel() {
 
   // the journey clock: as the about section ("I've been Coding.") travels
   // up from the viewport bottom, --ab-p runs 0→1 and the panel translates
-  // from fully off-screen right; the slide completes while the section's
-  // top is still ~30vh high, so the sidebar arrives between page 1 and
-  // page 2 — and, parked, keeps covering the fold-height band for the rest
-  // of the landing flow below it.
+  // from fully off-screen right. D9's divisor: the slide starts while the
+  // about's top is still at 55vh (the run = the about's top's last 0.55vh
+  // of viewport), so the sidebar finishes moving into position a little
+  // more quickly — and, parked, keeps covering the fold-height band for
+  // the rest of the landing flow below it.
   useEffect(() => {
     // the handle for the late fan-memory park timer — it must survive
     // between schedules (a callback firing after teardown is a ghost
@@ -99,18 +101,21 @@ export function LandingPanel() {
       const vh = window.innerHeight;
       const top = document.querySelector('.landing-about')?.getBoundingClientRect().top;
       if (top === undefined) return;
-      const p = Math.min(1, Math.max(0, 1 - top / (vh * 0.7)));
+      const p = Math.min(1, Math.max(0, 1 - top / (vh * 0.55)));
       document.documentElement.style.setProperty('--ab-p', String(p));
 
-      // the active link follows the stretch on screen: about until the
-      // technologies section takes over past it (its top crosses the
-      // viewport's vertical middle), then the now section — and back on
-      // the way up
-      const techTop = document.querySelector('.landing-tech')?.getBoundingClientRect().top;
+      // the active link follows the stretch on screen along the
+      // journey's order: about until a later section's top crosses the
+      // viewport's middle, the deepest crossing owns the link — now,
+      // then past work, then technologies (the Phase-4 order) — and
+      // back on the way up
       const nowTop = document.querySelector('.landing-now')?.getBoundingClientRect().top;
-      let want = ABOUT;
-      if (techTop !== undefined && techTop <= vh * 0.5) want = TECHNOLOGIES;
-      if (nowTop !== undefined && nowTop <= vh * 0.5) want = NOW;
+      const pastTop = document.querySelector('.landing-past')?.getBoundingClientRect().top;
+      const techTop = document.querySelector('.landing-tech')?.getBoundingClientRect().top;
+      let want = INDEX.ABOUT;
+      if (nowTop !== undefined && nowTop <= vh * 0.5) want = INDEX.NOW;
+      if (pastTop !== undefined && pastTop <= vh * 0.5) want = INDEX.PAST;
+      if (techTop !== undefined && techTop <= vh * 0.5) want = INDEX.TECHNOLOGIES;
       if (want !== activeRef.current) {
         const was = activeRef.current;
         activeRef.current = want;
@@ -135,13 +140,14 @@ export function LandingPanel() {
       }
       if (nextArrived) wasArrived.current = true;
       // park the fan memory once the flight settles (the farthest link:
-      // 0.25s delay + 0.18s stagger + 0.6s flight) — from here on a
-      // switch only wipes colors
+      // 0.25s delay + 4 x 0.09s stagger (0.36) + 0.6s flight = 1.21s, the
+      // 1250ms timer carries the margin) — from here on a switch only
+      // wipes colors
       if (nextArrived) {
         window.clearTimeout(parkTimer);
         parkTimer = window.setTimeout(() => {
-          if (isArrivedNow.current) markFanned([0, 1, 2, 3]);
-        }, 1100);
+          if (isArrivedNow.current) markFanned([0, 1, 2, 3, 4]);
+        }, 1250);
       }
       // a whole scroll-out parks the memory so a re-arrival re-fans
       if (p <= 0.06 && fannedRef.current.length) resetFanned();
@@ -318,9 +324,9 @@ export function LandingPanel() {
         /* the pool menu (the sticky footer band's) owns the corner while
            it's open — the big links disappear (and re-fan when the menu
            closes: re-applying the animation restarts it from the active
-           link's spot) — the general-sibling ~, because LandingPast rides
-           between the panel and the band in the flow, so the adjacent
-           sibling is never the .lf-band */
+           link's spot) — the general-sibling ~, because the technologies
+           section rides between the panel and the band in the flow (the
+           Phase-4 order), so the adjacent sibling is never the .lf-band */
         .landing-panel:has(~ .lf-band glaphic-pool-menu[open]) .ab-nav a {
           animation: none !important;
           opacity: 0 !important;
@@ -359,8 +365,12 @@ export function LandingPanel() {
               class={cls}
               style={{
                 '--fd': fd,
+                /* D10's ladders: the in-flight staggers by distance
+                   (dist x 0.09s); the out-fan's (4-dist) x 0.09s — the
+                   farthest leaves first, no negative delays at the five
+                   links (the old 2-dist pushed -0.09s at dist 3) */
                 '--afd': `${dist * 0.09}s`,
-                '--afo': `${(2 - dist) * 0.09}s`,
+                '--afo': `${(4 - dist) * 0.09}s`,
               }}
               onClick={() => go(n.target)}
               onKeyDown={(e: KeyboardEvent) => {

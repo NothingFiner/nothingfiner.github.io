@@ -250,7 +250,12 @@ export function LandingPast() {
         /* mobile: the two bands stack full width; each becomes the
            card read (photo title-card over its bullets) */
         @media (max-width: 899px) {
-          .landing-past { padding-bottom: calc(37.5vh + 8vh); }
+          /* the tail reserves the sticky band's page-end slot */
+          .landing-past {
+            /* the Phase-4 map's past slot (the journey's 4th section) */
+            order: 3;
+            padding-bottom: calc(37.5vh + 8vh);
+          }
           .lp-bands { margin-inline: -6vw 0; flex-direction: column; gap: 2.2vh; }
           /* the column's % bases fight the explicit heights: the
              auto bases and the heights drive (the now cards' fix;

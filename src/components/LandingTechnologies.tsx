@@ -201,7 +201,7 @@ export function LandingTechnologies() {
 
         /* ── mobile: the flow stacks (as the about) ── */
         @media (max-width: 899px) {
-          .landing-tech { height: auto; order: 2; }
+          .landing-tech { height: auto; /* the Phase-4 map's tech slot (the last mobile stop) */ order: 4; }
           .lt-flow { display: flex; flex-direction: column; padding-inline: 6vw; }
           .lt-head { margin-bottom: 24px; padding-top: 44px; }
           .lt-marquee { position: static; }
