@@ -318,8 +318,10 @@ export function LandingPanel() {
         /* the pool menu (the sticky footer band's) owns the corner while
            it's open — the big links disappear (and re-fan when the menu
            closes: re-applying the animation restarts it from the active
-           link's spot) */
-        .landing-panel:has(+ .lf-band glaphic-pool-menu[open]) .ab-nav a {
+           link's spot) — the general-sibling ~, because LandingPast rides
+           between the panel and the band in the flow, so the adjacent
+           sibling is never the .lf-band */
+        .landing-panel:has(~ .lf-band glaphic-pool-menu[open]) .ab-nav a {
           animation: none !important;
           opacity: 0 !important;
           pointer-events: none;
