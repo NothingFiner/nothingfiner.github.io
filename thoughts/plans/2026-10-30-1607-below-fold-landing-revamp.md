@@ -150,10 +150,75 @@ Amends round A in place; scope stays `src/components/LandingAbout.tsx` ONLY. Pha
 - B5 **"It started with cloning asteroids…" tabs over** — a text-indent (default 3ch) on that line.
 - B6 **All the About bands need MORE room — the section breathes**: inter-band spacing up from 6vh to ~12vh (the section's spacing constant).
 
-- [ ] B1-B5 applied and verified at 1440/1024 (the plate's float width, the grow headline's return, both beside-texts typing with cursors, the fluro-green phrase, the mirrored adjacency, the indent).
-- [ ] B6: the breathing spacing measured at all widths.
-- [ ] Standing verification (3 widths, 0 errors, overflow clean; the reverse marquee + the park-pairing still holding); captures nf31p2c-* vp-suffixed.
-- [ ] Commit: "About feedback round B: the floating plate, the grow header back, the beside-texts type in, the fluro-green phrase, the mirrored panels, room to breathe".
+- [x] B1-B5 applied and verified at 1440/1024 (the plate's float width, the grow headline's return, both beside-texts typing with cursors, the fluro-green phrase, the mirrored adjacency, the indent).
+- [x] B6: the breathing spacing measured at all widths.
+- [x] Standing verification (3 widths, 0 errors, overflow clean; the reverse marquee + the park-pairing still holding); captures nf31p2c-* vp-suffixed.
+- [x] Commit: "About feedback round B: the floating plate, the grow header back, the beside-texts type in, the fluro-green phrase, the mirrored panels, room to breathe".
+
+>> (Round-B run — 2026-10-30 ~17:5x: TWO driver passes (run 1 measured a
+>> WRONG VOICE on the typed beside-lines — the shadow's mono default
+>> reflowed the asteroid line to 4 lines/193px at 1440 — fixed mid-round
+>> with the hero-lead's body-voice font override; run 2 = the landed
+>> state; the supervisor's earlier "1440/1024 done" had left no
+>> artifacts on disk, so the full pass re-ran with the fix in).
+>> RECORDED — B1: the plate floats STRIP-CENTERED (the vetoable read:
+>> ~8vw inside the strip's edges, left inset measured off the viewport,
+>> right inset off the parked panel — an offset read is the one-line
+>> margin tweak): computed margins 59.04px/404.64px (the --ab-plate-float
+>> 8vw converted by the 3.9vw flow pad / the 20.1vw standoff), box
+>> 115.19→979.22 = 864.03px (60vw) with the parked panel's edge at
+>> 1094.41 — clearance 115.19 (8vw); 1024: margins 41.98px/287.74px, box
+>> 81.89→696.34 = 614.45px, clearance 81.91; the chamfer clip-path + the
+>> fluro paint rgb(20,241,200) unchanged; 390: the float is a desktop
+>> strip read — the stacked plate spans the mobile column (343.22px at
+>> margin 0/0). B2: the headline is back in the grow voice at BOTH
+>> widths (.grow-head-in.grow-on, animationName gl-grow, shadow
+>> ladder(5), rgb(242,245,235), ZERO cursor-type children, left-aligned
+>> Δ0, text "I've been Coding.") and the typing MOVED onto the two
+>> beside-lines — the catch loads fired straight at band-2's own gate:
+>> PRE-fire both mounts SILENT (text ' ', cursor-ink knob transparent,
+>> cursors already vanished after the 1-space mount's print), MID-PRINT
+>> at ~680ms: "It started with cloning a" (25/73 chars) AND "Since then
+>> things have go" (25/38), both knobs at #0D0221, cursor blocks live;
+>> SETTLED full (73/38) with cursor-vanish holding ([hidden]); the walk's
+>> band2-fire step itself caught both typings at 2 chars (aLen 2/bLen 2).
+>> The scripts are pre-broken (\n) against the .row's pre-wrap; box
+>> reserves HOLD pre→mid→settled: 96px/48px at 1440 (= 2.4em/1.2em),
+>> 68.81/34.41 at 1024. B3: "Trained Poet;" computes rgb(20,241,200) at
+>> both widths, the band-1 head has NO grow animation (animationName
+>> none — F6 holds) and the flash settles crimson rgb(166,2,42). B4: the
+>> mirror rows measured at 1440 — rowA widget 56.16→190.55 · copy
+>> 226.55→~880 (gap 36 = 2.5vw, vertical centers Δ0, adjacent true);
+>> rowB copy 56.16→879.38 (its own box 657.79) · widget 915.38→1049.77
+>> flush at the band's 1049.76 right edge (Δ0); 1024: rowAGap 25.59
+>> (= 2.5vw), both rows adjacent, the squeeze tracks still capped. B5:
+>> the 3ch tab lands ONLY on the asteroid line: 73.59px at 1440
+>> (3 × 24.53, the ch of the body voice), 53.03px at 1024, 41.12px at
+>> 390 — the serious line's text-indent reads 0px. B6: the breathing —
+>> computed margin-top 108px AND rect gaps 108/108 at 1440 (12vh of
+>> 900), 108px at 1024, 101.28px at the 844-height 390 (= 12vh there);
+>> band-1's own total (586px: 48 + 490 + 48) is untouched by the retune.
+>> PARK PAIRING RE-VERIFIED after B6: IDENTICAL to round A — band-1
+>> fires at scroll 736 (@ --ab-p 0.7397) and the sidebar parks at 904
+>> (@ 1) at BOTH desktop widths, band-1's center at the park step =
+>> 446px (the 900-viewport middle, one 8px step shy), the F5 spacer
+>> computed 157px; band-2 fires at 1432 (both widths) and band-3 at
+>> 2152 (1440)/2128 (1024) — shifted only by the B6 deltas as designed.
+>> STANDING: the reverse marquee holds (dirs normal/reverse/normal;
+>> drift −100.01/+100.01/−100.01 over ~1.1s), the portraits cycle
+>> distinct frames, the journey's 160ms ladder + the plate's chained
+>> delay ride unchanged, the paragraph is verbatim (464 chars). 0
+>> console errors / 0 pageerrors across ALL loads (1440, 1024, 390 +
+>> the two catch loads); scrollWidth===clientWidth at every stop,
+>> including 390's three stops (the pool-menu patch keeps the squeezed
+>> rowB clear). Captures nf31p2c-*: band1-park-1440 (the parked band-1,
+>> the fluro phrase + the settled crimson + the no-plate portraits),
+>> band2-typed-mid-1440 + band2-typed-settled-1440 (the mid-print catch
+>> + the settled mirror), band3-plate-1440 (the floating plate at the
+>> journey's foot), band2-1024 + plate-1024, band2-typed-mid-1024 +
+>> band2-typed-settled-1024, stack-stop1/stop2/stop3-390; numbers in
+>> /tmp/nf31p2c-results.json (drivers nf31p2c-driver.mjs,
+>> nf31p2c-catch.mjs); the :4178 preview reused alive throughout.)
 
 ## Phase 3 — Past Work: joins the landing
 

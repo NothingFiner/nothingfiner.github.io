@@ -1,36 +1,44 @@
 // New-design landing section two — the About rebuilt as Eliot's three
 // bands (the 2026-10-30 revamp brief; the Figma-mock era's story rows
 // and its old reading retired), amended in place by feedback round A
-// (2026-10-30 ~16:57, decisions F1-F11):
+// (2026-10-30 ~16:57, F1-F11) and feedback round B (2026-10-30 ~17:32,
+// B1-B6):
 //   band 1  a TICKER above the ~490px portrait seat — the headline
-//           "Trained Poet; Experienced Developer" PLAIN INK (F6: the
-//           grow shadow print retired here; the second phrase keeps its
-//           one-shot crimson flash span) with no column reserve from the
-//           art (F4: the head's track ends at the art's left edge, and
-//           a line may stride across it) — and the ASCII-portraits
-//           cycler right, now CONSUMER-STYLEd: ink glyphs straight on
-//           the page's hatch, no surface/border/blend (F1's per-instance
-//           part overrides — the burst widget's library plate is left
-//           untouched), sized 2× (F2) and holding each frame twice as
-//           long (F3) — then a second TICKER whose track runs the
-//           OPPOSITE direction; the whole band leads the section with a
-//           spacer that seats band-1 at the viewport's middle exactly
-//           when the sidebar parks (F5)
-//   band 2  "I've been Coding." typES IN, justified right (F7: the
-//           hero's cursor-type composition — real text in the sr-only
-//           span, the typed copy aria-hidden behind the cursor knobs)
-//           and the body splits into two rows (F8): the widget-1 spark
-//           (library plate intact) with the asteroid line starting at
-//           the same left x, then "Since then things have gotten
-//           serious." left of the restored JOB_FRAMES cycle, the pair
-//           hugged right
+//           "Trained Poet; Experienced Developer" keeps its shadow-less
+//           read (F6) but "Trained Poet;" now paints the FLURO GREEN
+//           (B3) while the second phrase keeps its one-shot crimson
+//           flash, with no column reserve from the art (F4: the head's
+//           track ends at the art's left edge, and a line may stride
+//           across it) — and the ASCII-portraits cycler right, still
+//           CONSUMER-STYLEd: ink glyphs straight on the page's hatch,
+//           no surface/border/blend (F1's per-instance part overrides —
+//           the widgets' library plates are left untouched), sized 2×
+//           (F2) and holding each frame twice as long (F3) — then a
+//           second TICKER whose track runs the OPPOSITE direction; the
+//           whole band leads the section with a spacer that seats
+//           band-1 at the viewport's middle exactly when the sidebar
+//           parks (F5, re-verified after the B6 retune)
+//   band 2  "I've been Coding." is BACK IN THE GROW HEADER treatment
+//           (B2 — round A's typed headline retired with its
+//           composition) and the cursor-typing MOVED onto the two
+//           beside-lines (the hero's exact idiom: real text in the
+//           sr-only span, the aria-hidden typed copies, the cursor-ink
+//           knob = each line's ink), both typing as THIS band's own
+//           gate lands; the two widget pairs MIRROR (B4 — round A's
+//           above/below start-pairing yields): the asteroid shell LEFT
+//           of its line, then "Since then things have gotten serious."
+//           LEFT of the restored JOB_FRAMES cycle; the asteroid line
+//           opens on a 3ch tab (B5)
 //   band 3  a third TICKER + "My professional Journey." grow-head + the
-//           seven-node journey timeline, then the chamfered fluro plate
-//           whose copy breathes 8vh/8vw from the field's edges (F9)
+//           seven-node journey timeline, then the chamfered fluro
+//           plate — no longer the strip's full span: it FLOATS ~8vw
+//           inside the strip on both sides (B1) — whose copy still
+//           breathes 8vh/8vw from the field's edges (F9)
 // Every band's animations trigger only when THAT band enters the
 // viewport — one latched IntersectionObserver watching all three band
 // wrappers, each latching its own flag (F11; the section's own .ab-in
-// latch and the rideOutUp stay). Bands breathe +6vh apart (F10).
+// latch and the rideOutUp stay). Bands breathe 12vh apart (B6, up from
+// round A's 6vh).
 // The portraits are REAL art: thirty text frames dropped into
 // public/assets/ascii-portraits/ by Eliot — every frame exactly 49 lines
 // x 90 columns, numbering skipping 4 and 9. The frames fetch at runtime
@@ -43,6 +51,7 @@ import { rideOutUp, TICKER } from './landing-shared';
 
 const INK = '#0D0221';
 const RED = '#A6022A'; // dark brand crimson — the flash + the ticker inks
+const FLURO = '#14F1C8'; // the site's fluro green — B3's band-1 lead phrase
 
 /* the portraits' frame numbers in NUMERIC order: the export's own gaps at
    4 and 9 (no files) — a lexicographic sort would strand 10..32 after 5..8
@@ -131,10 +140,14 @@ const FADE_TAIL_MS = 700;
    the plate */
 const PLATE_DELAY_MS = (JOURNEY.length - 1) * NODE_STEP_MS + FADE_TAIL_MS + 240;
 
-/* band 2's typed headline: the hero's own cut pacing (55ms/char) — the
-   17-character script prints in ~0.94s */
-const CODE_CHAR_MS = 55;
-const CODE_SCRIPT = "I've been Coding.";
+/* band 2's typed beside-lines (B2): the hero's lead's own pacing —
+   28ms/char, the body-copy pace the hero's typed lead types at; the
+   scripts are PRE-BROKEN with hard breaks (the element's .row is
+   pre-wrap) so the desktop never re-flows mid-print — every line box
+   holds its place; the cursor-ink knob carries each line's ink */
+const COPY_CHAR_MS = 28;
+const ASTEROID_SCRIPT = 'It started with cloning asteroids\non my middle school graphic calculator.';
+const SERIOUS_SCRIPT = 'Since then things have gotten serious.';
 
 export function LandingAbout() {
   // the section's own arrival latch (stays per F11's contract) — the
@@ -333,9 +346,10 @@ export function LandingAbout() {
           --ab-band1-mid: 490px;
           /* the ticker bands' own height (the seat math above counts it) */
           --ab-marquee-h: 48px;
-          /* F10, the bands' breathing: +~6vh between every band, as the
-             band wrappers' leading margins */
-          --ab-band-gap: 6vh;
+          /* B6, the bands' breathing: round A's +6vh felt tight — the
+             section breathes at 12vh between every band (the band
+             wrappers' leading margins) */
+          --ab-band-gap: 12vh;
           /* band 1's crimson flash: one-shot ~1.2s after the band's own
              reveal — the band's drop (0.7s) has settled and a beat
              passes, so the crimson lands as a second, deliberate mark
@@ -351,6 +365,13 @@ export function LandingAbout() {
           /* F3, the portrait's slower cycle: the frame hold doubles —
              31 steps (30 frames + 2 hold steps) at 0.4s ≈ 12.8s/loop */
           --ab-ascii-step: 0.4s;
+          /* B1: the plate's float inset — ~8vw measured off the strip's
+             inner edges BOTH sides (the 3.9vw flow padding and the
+             20.1vw panel standoff below convert it in place) */
+          --ab-plate-float: 8vw;
+          /* B5: the asteroid line's opening tab — 3ch, the round-B
+             default */
+          --ab-copy-indent: 3ch;
         }
         .landing-about * { margin: 0; box-sizing: border-box; }
 
@@ -458,10 +479,11 @@ export function LandingAbout() {
           column-gap: 0;
           align-items: center;
         }
-        /* the headline: plain ink both phrases (F6) — the shadow-print
-           grow retired here (the shared .grow-head class now carries
-           only the type voice; the ink comes straight from the section
-           and the crimson flash span is the headline's one animation) */
+        /* the headline: shadow-less still (F6 — the shared .grow-head
+           class here carries only the type voice; no .grow-head-in
+           mount, so the grow shadow ladder never plays on this h2).
+           B3 paints the lead phrase fluro green; the one-shot crimson
+           flash span stays the headline's only animation */
         .ab-band1-head {
           min-width: 0;
           /* the overlapping word reads whole: its ink sits over the
@@ -469,6 +491,7 @@ export function LandingAbout() {
           position: relative;
           z-index: 1;
         }
+        .ab-phrase { color: ${FLURO}; }
         .ab-flash {
           /* starts at the headline's own plain ink; when band 1 latches,
              the transition's delay holds the flip ~1.2s — the band's own
@@ -515,48 +538,34 @@ export function LandingAbout() {
           justify-self: center;
         }
 
-        /* ── band 2: the cursor-typed headline + the two widget rows ── */
-        /* the band's content keeps its old standoff: the parked panel's
-           edge (20.1vw) + the headline's old ~3vw clear of it — the
-           cursor's block never kisses the panel */
+        /* ── band 2: the grow headline + the two widget rows ───────── */
+        /* the band's content keeps its round-A standoff: the parked
+           panel's edge (20.1vw) + ~3vw clear of it — the right-hugged
+           widget pair never kisses the panel */
         .ab-band2 {
           margin-inline: 0 var(--ab-band2-inset);
           --ab-band2-inset: calc(20.1vw + 3.1vw);
         }
-        /* F7: the hero's exact typed-head pattern — the real text rides
-           the sr-only span, the typed copy is aria-hidden behind the
-           cursor knobs, the line box held stable while it prints.
-           Right-justified inside the band's content box */
-        .ab-code-head {
-          padding-top: 3.6vh;
-          text-align: right;
-          /* the typed line's seat: a nowrap line + a definite height so
-             mounting and typing never shift the box */
-          white-space: nowrap;
-          min-height: 1.05em;
-        }
-        .ab-code-head .ab-typewrap > glaphic-cursor-type {
-          font-size: 1em;
-          font-weight: 700;
-          display: inline-block;
-          line-height: 1;
-          font-family: var(--f-disp, 'Space Grotesk', sans-serif);
-        }
-        /* the two rows (F8): widget-1 with the asteroid line sharing ONE
-           left x (the pair stacked at the row's start edge), then the
-           serious line LEFT of the job widget, the pair hugged right */
+        /* B2: the headline is the shared grow voice again (GrowHead's
+           own markup, band 3's .ab-head twin) — left-aligned like
+           band 3's, the shadow ladder keyed to THIS band's flag; only
+           its standoff pad rides here (round A's right-justified
+           typed-head rules retired with it) */
+        .ab-code-head { padding-top: 3.6vh; }
+        /* B4: the two rows mirror — row A is panel LEFT · line RIGHT,
+           row B is line LEFT · panel RIGHT (round A's above/below
+           start-pairing yields to adjacency), each pair centered on
+           its row line */
         .ab-code-rows {
           margin-top: 4.4vh;
           display: grid;
           row-gap: 4.4vh;
         }
         .ab-row-a {
-          display: grid;
-          grid-template-columns: max-content;
-          justify-content: start;
-          /* the widget plate above, the line under it — one shared left
-             edge: the text's start sits at the plate's left */
-          row-gap: 1.6vh;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          column-gap: 2.5vw;
         }
         .ab-row-b {
           display: flex;
@@ -572,13 +581,35 @@ export function LandingAbout() {
              widgets — band 2 keeps the component's own look (F1's
              isolation is band-1's only) */
         }
+        /* B2: the beside-lines now type (see the JSX idiom note): the
+           cursor-type host rides as an inline-block cut of the row (the
+           hero's lead cut), voiced by the body type; the scripts'
+           hard-broken lines own their widths (the round-A 34ch cap
+           retired — the typed line is the arrival now, no .ab-fade
+           mount, and its inline --ab-d delays left with the fades) */
         .ab-code-copy {
-          /* the opening line: a clear notch under the headline's clamp
-             scale (34-70px) so the rows read headline-then-lines */
           font-size: clamp(22px, 2.8vw, 40px);
           line-height: 1.2;
-          max-width: 34ch;
         }
+        .ab-code-copy glaphic-cursor-type {
+          display: inline-block;
+          font-size: 1em;
+          line-height: 1.2;
+          /* the body voice: the shadow :host's mono default is the
+             terminal machine's, not these lines' voice — the hero's
+             typed LEAD cut (their model) overrides it to the body face
+             the same way; the desktop then holds exactly the scripts'
+             2/1 pre-broken line boxes */
+          font-family: var(--f-body, 'Inter', sans-serif);
+        }
+        /* the typed boxes' line reserves: the pre-broken scripts print a
+           known line count desktop, so the <p> holds that height from
+           mount — the widget beside it never shifts while it types */
+        .ab-dent { min-height: 2.4em; }
+        /* B5: the asteroid line opens on a 3ch tab — the indent rides on
+           the host itself, inheriting into the shadow's first row (a
+           light-DOM wrapper would shift the whole pre-broken block) */
+        .ab-dent glaphic-cursor-type { text-indent: var(--ab-copy-indent); }
 
         /* ── band 3: the journey timeline + the chamfered plate ──── */
         /* full non-sidebar width (the strip grammar); the rail spans the
@@ -635,7 +666,13 @@ export function LandingAbout() {
            would drop under a plain block otherwise); the glaphic-plate
            paints the surface, the paragraph prints ink on it */
         .ab-plate {
-          margin-inline: -3.9vw 20.1vw;
+          /* B1: the plate FLOATS — no longer the strip's full span: ~8vw
+             inside the strip's edges BOTH sides (the 3.9vw flow padding
+             and the 20.1vw panel standoff convert the left/right wants:
+             left edge at 8vw, right edge 8vw shy of the parked panel —
+             the centered read is the default; an offset read is a
+             one-line margin tweak) */
+          margin-inline: calc(var(--ab-plate-float) - 3.9vw) calc(20.1vw + var(--ab-plate-float));
           margin-top: 4.4vh;
           position: relative;
           isolation: isolate;
@@ -696,14 +733,18 @@ export function LandingAbout() {
              stand off on mobile) */
           .ab-band2 { margin-inline: 0; }
           .ab-code-head { padding-top: 44px; }
-          /* the column caps both rows: the copies run max-content here
-             (their 34ch cap rides the desktop's wider box), so the
-             tracks must clamp or every row's width runs max-content
-             past the 390 column and the right-hugged widget paints
-             off-viewport, clipped by the section's overflow */
+          /* the column caps the rows: the pairs must clamp or the
+             copies' typed blocks run max-content past the 390 column
+             and the right-hugged widget paints off-viewport, clipped by
+             the section's overflow */
           .ab-code-rows { grid-template-columns: minmax(0, 1fr); }
-          .ab-row-a { grid-template-columns: minmax(0, 1fr); }
-          .ab-code-copy { max-width: none; }
+          /* row A stacks on mobile (B4's mirror is a desktop read):
+             the widget above its line; the p's typed reserve holds
+             through the print either way */
+          .ab-row-a { flex-direction: column; align-items: start; row-gap: 10px; }
+          /* B1's float is a desktop strip read — the stacked mobile
+             plate spans the column again */
+          .ab-plate { margin-inline: 0; }
           /* the timeline reads as a strip along a vertical rail: the
              nodes stack, the ticks ride the left line — a horizontal
              ladder can't cross into wrapped rows */
@@ -756,30 +797,26 @@ export function LandingAbout() {
           />
         </div>
 
-        {/* ── band 2: the typed headline + the split body rows ────── */}
+        {/* ── band 2: the grow headline + the mirrored typed rows ── */}
         <div class={`ab-band ab-band2 ${in2 ? 'ab-on' : ''}`} ref={band2Ref}>
-          {/* F7: the hero's typed-head composition. The h2's real text
-              must exist at first paint (the cursor-type renders into its
-              shadow root on a print timer — an empty accessible name
-              broke the hero's h2 until the sr-only span carried the
-              words); the typed copy below is a performance of the same
-              words, hidden, and it types the instant this band's flag
-              lands (the ' ' mount keeps the line box stable; the
-              element's documented re-types-on-change does the rest) */}
-          <h2 class="ab-code-head grow-head">
-            <span class="sr-only">I've been Coding.</span>
-            <span aria-hidden="true" class="ab-typewrap">
-              <glaphic-cursor-type
-                text={in2 ? CODE_SCRIPT : ' '}
-                speed={CODE_CHAR_MS}
-                cursor-vanish
-                style={{ '--glaphic-cursor-type-cursor-ink': in2 ? INK : 'transparent' }}
-              />
-            </span>
-          </h2>
-          {/* the body split (F8): the asteroid line starts AT widget-1's
-              plate left edge (one shared left x); then the restored job
-              cycle right-hugged with the serious line at its left */}
+          {/* B2: "I've been Coding." back in the shared grow voice — the
+              GrowHead band 3's journey head composes too (the stepped
+              shadow ladder plays once when THIS band's flag lands).
+              Round A's typed headline retired alongside its right-justify
+              rules; the cursor typing moved onto the two beside-lines
+              below (their idiom note carries the whys) */}
+          <GrowHead text="I've been Coding." inView={in2} class="ab-code-head" />
+          {/* B2/B4: the mirrored rows — each widget sits BESIDE its line
+              (round A's above/below start-pairing yields). The typing is
+              the hero's exact idiom: the real text rides the sr-only
+              span (it must exist at first paint — the cursor-type prints
+              into a shadow root on a timer, which left the hero's h2
+              with an empty accessible name until the span carried the
+              words), the aria-hidden typed copy is a performance of the
+              same words, the ' ' mount keeps the box, the element's
+              documented re-types-on-change fires the print the moment
+              THIS band's flag lands, and the cursor block paints each
+              line's own ink */}
           <div class="ab-code-rows">
             <div class="ab-row-a">
               <glaphic-ascii
@@ -788,13 +825,32 @@ export function LandingAbout() {
                 role="img"
                 label="A shell rises, flashes, and bursts into sparks"
               />
-              <p class="ab-code-copy ab-fade" style={{ '--ab-d': '1.15s' }}>
-                It started with cloning asteroids on my middle school graphic calculator.
+              {/* the asteroid line: the B5 tab rides the typed host's own
+                  first row (.ab-dent) — the scripts are pre-broken so
+                  desktop line boxes hold stable while it prints */}
+              <p class="ab-code-copy ab-dent">
+                <span class="sr-only">It started with cloning asteroids on my middle school graphic calculator.</span>
+                <span aria-hidden="true">
+                  <glaphic-cursor-type
+                    text={in2 ? ASTEROID_SCRIPT : ' '}
+                    speed={COPY_CHAR_MS}
+                    cursor-vanish
+                    style={{ '--glaphic-cursor-type-cursor-ink': in2 ? INK : 'transparent' }}
+                  />
+                </span>
               </p>
             </div>
             <div class="ab-row-b">
-              <p class="ab-code-copy ab-fade" style={{ '--ab-d': '2.3s' }}>
-                Since then things have gotten serious.
+              <p class="ab-code-copy">
+                <span class="sr-only">Since then things have gotten serious.</span>
+                <span aria-hidden="true">
+                  <glaphic-cursor-type
+                    text={in2 ? SERIOUS_SCRIPT : ' '}
+                    speed={COPY_CHAR_MS}
+                    cursor-vanish
+                    style={{ '--glaphic-cursor-type-cursor-ink': in2 ? INK : 'transparent' }}
+                  />
+                </span>
               </p>
               <glaphic-ascii
                 ref={jobRef}
@@ -836,11 +892,12 @@ export function LandingAbout() {
               ))}
             </ol>
           </div>
-          {/* the chamfered fluro plate: the paint is the glaphic-plate tone;
-              the paragraph (verbatim from the old .ab-story, the lead line
-              retired) prints ink on it; the reveal chain: the plate's fade
-              delay = the ladder's settle + beat (PLATE_DELAY_MS), counted
-              from band 3's own fire */}
+          {/* the chamfered fluro plate (B1: it floats ~8vw inside the
+              strip on both sides — no longer its full span): the paint is
+              the glaphic-plate tone; the paragraph (verbatim from the old
+              .ab-story, the lead line retired) prints ink on it; the
+              reveal chain: the plate's fade delay = the ladder's settle +
+              beat (PLATE_DELAY_MS), counted from band 3's own fire */}
           <div class="ab-plate ab-fade" style={{ '--ab-d': `${PLATE_DELAY_MS}ms` }}>
             <glaphic-plate class="ab-plate-paint" tone="cyan" aria-hidden="true" />
             <p class="ab-plate-copy">
