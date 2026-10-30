@@ -175,9 +175,9 @@ export function LandingTechnologies() {
 
         /* ── the chip cloud ────────────────────────────────────────
            wraps like a scatter on the same grid span the about's story
-           uses (1-8); the cascade staggers each chip a beat apart */
+           uses (1-9); the cascade staggers each chip a beat apart */
         .lt-cloud {
-          grid-column: 1 / span 8;
+          grid-column: 1 / span 9;
           display: flex;
           flex-wrap: wrap;
           align-content: flex-start;

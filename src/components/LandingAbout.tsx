@@ -202,7 +202,7 @@ export function LandingAbout() {
              glyphs sit left, but the box stays separate like the rest
              of the content — nothing of the section reads under the
              sidebar at desktop) */
-          grid-column: 1 / -5;
+          grid-column: 1 / -4;
           padding-top: 3.6vh;
         }
         /* the headline's type/ink treatment + the stepped shadow-print
@@ -259,9 +259,9 @@ export function LandingAbout() {
           /* the story CONTENT stays separate from the crimson sidebar
              (Eliot: nothing rides under the panel at desktop) — the
              rows stop at the panel's edge like the band and the story
-             block: cols 1..8 of the 12-track flow (the panel = the
-             last four); mobile flows full-width anyway */
-          grid-column: 1 / -5;
+             block: cols 1..9 of the 12-track flow (the panel = the
+             last three); mobile flows full-width anyway */
+          grid-column: 1 / -4;
           /* the story rows sit BELOW the flow's band (the columns' mock read: ~26vh from the section's top — the band eats the old 13.8vh gap) */
           margin-top: 4.4vh;
           margin-bottom: 5.9vh;
@@ -290,9 +290,9 @@ export function LandingAbout() {
         }
 
         /* the poetry/programmer block — crimson lead, ink body; ends at
-           the panel's left edge (grid span 8), as in the mock */
+           the panel's left edge (grid span 9), as in the mock */
         .ab-story {
-          grid-column: 1 / span 8;
+          grid-column: 1 / span 9;
           padding-top: 0.5vh;
         }
         .ab-lead { color: ${RED}; }

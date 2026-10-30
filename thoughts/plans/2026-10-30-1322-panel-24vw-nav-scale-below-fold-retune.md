@@ -73,15 +73,15 @@ Every value is the research's proportional interpolation (× 0.7173, 24 / 33.47)
 
 **Files:** `src/components/LandingAbout.tsx`, `src/components/LandingTechnologies.tsx`.
 
-- [ ] `LandingAbout.tsx:205` `.ab-head`: `1 / -5` → `1 / -4`.
-- [ ] `:264` `.ab-cols`: `1 / -5` → `1 / -4`.
-- [ ] `:295` `.ab-story`: `1 / span 8` → `1 / span 9`.
-- [ ] `:262-263` the cols comment says "cols 1..8 … the panel = the last four" → update to cols 1..9 / the panel = the last three (the comment's numbers MUST follow the spans it explains).
-- [ ] `LandingTechnologies.tsx:180` `.lt-cloud`: `1 / span 8` → `1 / span 9`; `max-width: 52vw` HOLDS; the cloud's span comment (if any cites 1-8) updates likewise.
-- [ ] Touch NOTHING else: row fr ratios, `.ab-rule`, type clamps, all vertical margins (the defaults table above).
-- [ ] **Verify (1440×900):** about — headline box, the two story rows, and the story block each end ~3vw shy of the panel (the old flush tolerance, one track wider); text lines measure ~12% longer — read them (story paragraph, both rows) and screenshot for the line-length check; tech — the chip cloud keeps its 52vw cap exactly (wrap count UNCHANGED vs a pre-phase-3 capture — take that capture first); the marquee/head positions unchanged.
-- [ ] Standing verification (incl. 1024×900: spans + 24vw bar leave the least slack there; 390×844: mobile `flex` pose untouched).
-- [ ] Tick + commit (`the panel-era spans widen one track; the panel reads as the last three columns`).
+- [x] `LandingAbout.tsx:205` `.ab-head`: `1 / -5` → `1 / -4`.
+- [x] `:264` `.ab-cols`: `1 / -5` → `1 / -4`.
+- [x] `:295` `.ab-story`: `1 / span 8` → `1 / span 9`.
+- [x] `:262-263` the cols comment says "cols 1..8 … the panel = the last four" → update to cols 1..9 / the panel = the last three (the comment's numbers MUST follow the spans it explains).
+- [x] `LandingTechnologies.tsx:180` `.lt-cloud`: `1 / span 8` → `1 / span 9`; `max-width: 52vw` HOLDS; the cloud's span comment (if any cites 1-8) updates likewise.
+- [x] Touch NOTHING else: row fr ratios, `.ab-rule`, type clamps, all vertical margins (the defaults table above).
+- [x] **Verify (1440×900):** about — headline box, the two story rows, and the story block each end ~3vw shy of the panel (the old flush tolerance, one track wider); text lines measure ~12% longer — read them (story paragraph, both rows) and screenshot for the line-length check; tech — the chip cloud keeps its 52vw cap exactly (wrap count UNCHANGED vs a pre-phase-3 capture — take that capture first); the marquee/head positions unchanged.
+- [x] Standing verification (incl. 1024×900: spans + 24vw bar leave the least slack there; 390×844: mobile `flex` pose untouched).
+- [x] Tick + commit (`the panel-era spans widen one track; the panel reads as the last three columns`).
 
 ## After all phases
 
