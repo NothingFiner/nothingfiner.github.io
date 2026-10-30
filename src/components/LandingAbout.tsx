@@ -1,31 +1,48 @@
 // New-design landing section two — the About rebuilt as Eliot's three
 // bands (the 2026-10-30 revamp brief; the Figma-mock era's story rows
-// and its old reading retired):
-//   band 1  a TICKER above a 245px-tall middle row — the headline
-//           "Trained Poet; Experienced Developer" on the left (the
-//           section-header grow/print voice; the second phrase flashing
-//           one-shot to the dark brand crimson once the reveal settles)
-//           and the ASCII-portraits cycler on the right — then a second
-//           TICKER whose track runs the OPPOSITE direction
-//   band 2  "I've been Coding." grow-head + the row: the shell/burst
-//           glaphic-ascii widget left of the asteroid opening line
+// and its old reading retired), amended in place by feedback round A
+// (2026-10-30 ~16:57, decisions F1-F11):
+//   band 1  a TICKER above the ~490px portrait seat — the headline
+//           "Trained Poet; Experienced Developer" PLAIN INK (F6: the
+//           grow shadow print retired here; the second phrase keeps its
+//           one-shot crimson flash span) with no column reserve from the
+//           art (F4: the head's track ends at the art's left edge, and
+//           a line may stride across it) — and the ASCII-portraits
+//           cycler right, now CONSUMER-STYLEd: ink glyphs straight on
+//           the page's hatch, no surface/border/blend (F1's per-instance
+//           part overrides — the burst widget's library plate is left
+//           untouched), sized 2× (F2) and holding each frame twice as
+//           long (F3) — then a second TICKER whose track runs the
+//           OPPOSITE direction; the whole band leads the section with a
+//           spacer that seats band-1 at the viewport's middle exactly
+//           when the sidebar parks (F5)
+//   band 2  "I've been Coding." typES IN, justified right (F7: the
+//           hero's cursor-type composition — real text in the sr-only
+//           span, the typed copy aria-hidden behind the cursor knobs)
+//           and the body splits into two rows (F8): the widget-1 spark
+//           (library plate intact) with the asteroid line starting at
+//           the same left x, then "Since then things have gotten
+//           serious." left of the restored JOB_FRAMES cycle, the pair
+//           hugged right
 //   band 3  a third TICKER + "My professional Journey." grow-head + the
-//           seven-node journey timeline (a 1px ink rail, nodes printing
-//           on the 160ms ladder), then the chamfered fluro plate holding
-//           the poetry/programming paragraph verbatim
+//           seven-node journey timeline, then the chamfered fluro plate
+//           whose copy breathes 8vh/8vw from the field's edges (F9)
+// Every band's animations trigger only when THAT band enters the
+// viewport — one latched IntersectionObserver watching all three band
+// wrappers, each latching its own flag (F11; the section's own .ab-in
+// latch and the rideOutUp stay). Bands breathe +6vh apart (F10).
 // The portraits are REAL art: thirty text frames dropped into
 // public/assets/ascii-portraits/ by Eliot — every frame exactly 49 lines
 // x 90 columns, numbering skipping 4 and 9. The frames fetch at runtime
-// and set on the element's ref only when ALL resolve; array properties
-// can't carry to Lit from JSX attributes (the marquee precedent). Until
-// they're in, the slot sits empty by design.
+// and set on the element's ref only when ALL resolve AND band 1 has
+// fired (the cycle is a band-gated animation); array properties can't
+// carry to Lit from JSX attributes (the marquee precedent).
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { GrowHead } from './GrowHead';
 import { rideOutUp, TICKER } from './landing-shared';
 
 const INK = '#0D0221';
 const RED = '#A6022A'; // dark brand crimson — the flash + the ticker inks
-const PAPER = '#F2F5EB'; // the grow-heads' warm-white fill
 
 /* the portraits' frame numbers in NUMERIC order: the export's own gaps at
    4 and 9 (no files) — a lexicographic sort would strand 10..32 after 5..8
@@ -48,6 +65,46 @@ const FRAMES = [
   "   \n ·:˙:·\n   ˙\n\n    ^  ",
   " . · .\n˙·   ·˙ \n   ˙\n\n     ^"
 ];
+
+/* RESTORED for band 2's second instance (F8) — the job ticker the first
+   About rebuild retired with the old story rows: 2012 NYC types out,
+   glitches, prints C0DE, then dissolves through job codes into a wall of
+   currency. It told exactly this story, so it is back to tell the new
+   line ("Since then things have gotten serious.") — verbatim from the
+   pre-rebuild file (git e9525d8), nothing re-authored. */
+const JOB_FRAMES = [
+ "█\n\n       \n\n",
+ "2█\n\n       \n\n",
+ "20█\n\n       \n\n",
+ "201█\n\n       \n\n",
+ "2012█\n\n       \n\n",
+ "2012\n█\n       \n\n",
+ "2012\nN█\n       \n\n",
+ "2012\nNY█\n       \n\n",
+ "2012\nNYC█\n       \n\n",
+ "2012\nNYC \n       \n\n",
+ "2X12\nNYB \n       \n\n",
+ "2X0*\nN8B \n       \n\n",
+ "2█0*\nC8█3 \n       \n\n",
+ "201█\nC█D3\n       \n\n",
+ "2013\nC0D3 \n       \n$  $\n",
+ "2013\nCoDE \n       \n$$ $$ $\n$  $",
+ "2013\nC0DE \n       \n$$ $$ $\n$ $$ $$",
+ "2$1$ $$\nC0DE \n       \n$$ $$ $\n$ $$ $",
+ "$$1$ $\nC$$$  $\n $   $ \n$$$$$$$\n$$$$ $$",
+ "$$1$$$$\nJ$$$$$$\n $ $ $ \n$$$$$$$\n$$$$$$$",
+ "$█$$$$$\n$$$$$$$\n$$$$$$$\n$$$$$$$\n$$$$$$$",
+ "$██$$$$\n$$$$$$$\n$$$$$$$\n$$$$$$$\n$$$$$$$",
+ "$███$$$\n$$$$$$$\n$$$$$$$\n$   $  \n$$$$$$$",
+ "$████$$\n$$$$$$$\n$$$$$$$\n       \n$  $",
+ "$2███$$\n$$$$$$$\n$$$$$$$\n       \n$  $",
+ "$20██$$\n$$$$$$$\n$$$$$$$\n       \n  ",
+ " 201█\n$J$$$$$\n$$$$$$$\n       \n  ",
+ " 201█\n$JX$$  \n$$$$$$$\n       \n  ",
+ " 201█\n J08\n$$$$$$ \n       \n  ",
+ " 2014\n JOb\n$ $$$$ \n       \n  ",
+ " 2014\n J0B\n\n\n"
+]
 
 /* the journey's nodes (Eliot's copy): each node's readout splits the
    two parts — the year/period, then what happened — so the strip reads
@@ -74,8 +131,23 @@ const FADE_TAIL_MS = 700;
    the plate */
 const PLATE_DELAY_MS = (JOURNEY.length - 1) * NODE_STEP_MS + FADE_TAIL_MS + 240;
 
+/* band 2's typed headline: the hero's own cut pacing (55ms/char) — the
+   17-character script prints in ~0.94s */
+const CODE_CHAR_MS = 55;
+const CODE_SCRIPT = "I've been Coding.";
+
 export function LandingAbout() {
+  // the section's own arrival latch (stays per F11's contract) — the
+  // per-band flags below now own every animation's gate
   const [inView, setInView] = useState(false);
+  // the three bands' latched reveals (F11): each flips once, in its own
+  // observer entry, and never again
+  const [in1, setIn1] = useState(false);
+  const [in2, setIn2] = useState(false);
+  const [in3, setIn3] = useState(false);
+  // the portraits' resolved art (null until every fetch lands) — the set
+  // onto the element waits for BOTH this and band 1's fire
+  const [portraitFrames, setPortraitFrames] = useState<string[] | null>(null);
   // three ticker instances (band 1 top, band 1's reversed runner, band
   // 3) — all one voice, each needing its own ref for the imperative set
   const marqueeLeadRef = useRef<HTMLElement | null>(null);
@@ -83,7 +155,12 @@ export function LandingAbout() {
   const marqueeTailRef = useRef<HTMLElement | null>(null);
   const portraitsRef = useRef<HTMLElement | null>(null);
   const burstRef = useRef<HTMLElement | null>(null);
+  const jobRef = useRef<HTMLElement | null>(null);
   const hostRef = useRef<HTMLElement | null>(null);
+  // the bands are the observer targets AND the spacing spines (F10/F11)
+  const band1Ref = useRef<HTMLDivElement | null>(null);
+  const band2Ref = useRef<HTMLDivElement | null>(null);
+  const band3Ref = useRef<HTMLDivElement | null>(null);
   // the content's ride-out: as the section leaves the viewport its
   // content translates up with the scroll (the next section's arrival
   // reads as the previous one leaving up), reversing on the way back
@@ -103,15 +180,13 @@ export function LandingAbout() {
   }, []);
 
   // the portraits' load: 30 runtime fetches from public/assets; the slot
-  // stays empty (no frames set) until every one of them resolves — a
-  // half-set cycle would print torn frames, and a caught failure is
-  // logged with its URL rather than silently skipped. The array property
-  // set ONCE all resolve — never as JSX attributes. Async outliving the
-  // render must cancel: the alive flag + an AbortController stop ghost
-  // writes after teardown.
+  // stays empty (no frames set) until every one of them resolves AND the
+  // band has fired — a half-set cycle would print torn frames, and a
+  // caught failure is logged with its URL rather than silently skipped.
+  // The array property set once both facts hold — never as JSX
+  // attributes. Async outliving the render must cancel: the alive flag +
+  // an AbortController stop ghost writes after teardown.
   useEffect(() => {
-    const el = portraitsRef.current as unknown as { frames: string[] } | null;
-    if (!el) return undefined;
     let alive = true;
     const controller = new AbortController();
     const load = async () => {
@@ -134,7 +209,7 @@ export function LandingAbout() {
       if (!alive) return;
       // a miss leaves the slot empty; the error logged above — the every-
       // predicate narrows the nulls into real strings without a cast
-      if (frames.every((f): f is string => f !== null)) el.frames = frames;
+      if (frames.every((f): f is string => f !== null)) setPortraitFrames(frames);
     };
     void load();
     return () => {
@@ -143,21 +218,36 @@ export function LandingAbout() {
     };
   }, []);
 
-  // the ascii widget takes the FRAMES array (content staying with the
-  // page) — an array property too, so it sets imperatively once
+  // the portraits' cycle is band 1's animation (F11): the frames land on
+  // the element only once the band's own reveal fired AND the art
+  // resolved — the cycle starts with the band, not at page mount. The
+  // empty-length read makes the write idempotent (the property never
+  // re-sets and the cycle never restarts mid-view).
   useEffect(() => {
+    const el = portraitsRef.current as unknown as { frames: string[] } | null;
+    if (in1 && portraitFrames && el && el.frames.length === 0) el.frames = portraitFrames;
+  }, [in1, portraitFrames]);
+
+  // the ascii widgets take their FRAMES arrays (content staying with the
+  // page) — array properties too, so they set imperatively — and their
+  // cycles are band 2's animations (F11): nothing cycles until band 2's
+  // own reveal fires. widget-1 = the asteroid shell; widget-2 = the
+  // restored JOB_FRAMES (the 2012→C0DE→jobs ticker IS the serious line)
+  useEffect(() => {
+    if (!in2) return;
     const burst = burstRef.current as unknown as { frames: string[] } | null;
-    if (burst) burst.frames = FRAMES;
-  }, []);
+    const job = jobRef.current as unknown as { frames: string[] } | null;
+    if (burst && burst.frames.length === 0) burst.frames = FRAMES;
+    if (job && job.frames.length === 0) job.frames = JOB_FRAMES;
+  }, [in2]);
 
   // the ride-out wiring
   useEffect(() => rideOutUp(hostRef, flowRef, 0.5), []);
 
-  // Reveal the fades when the section scrolls into view — and LATCH it.
-  // A plain boolean flips back to false once the section's intersection ratio
-  // drops below the threshold (i.e. when you scroll past it), which faded the
-  // body copy back to opacity 0 behind the reader and left it invisible on
-  // anchor jumps and restored scroll positions. Once seen, it stays seen.
+  // the section's own latched arrival latch (kept per F11) — with the
+  // F5 leading spacer its -64% line now crosses the spacer, so it fires
+  // a little ahead of band 1's own gate; the bands' flags below do the
+  // animation gating
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => {
@@ -166,24 +256,49 @@ export function LandingAbout() {
           io.disconnect();
         }
       },
-      /* the reveal fires when the section's TOP reaches the viewport's
-         UPPER area (top 36% of the screen). Both reads are
-         viewport-proportional: the hero is 100vh, so the section's top
-         enters at the screen's bottom and climbs; the reveal must land
-         with band 1 playable on screen — the ticker's drop, the headline's
-         grow print and, a beat later, the crimson flash all under it
-         (the journey's ladder + the plate then print on the same flag).
-         Two earlier gates failed in opposite directions — the plain
-         25%-of-section threshold fired ~550px deep (the build played
-         off-screen on arrival) and the -30% lower-third margin fired
-         with the headline still at ~73% of the viewport (the build
-         played in the screen's bottom sliver, half-lost under the hero).
-         Headline lands at ~40% vh at fire on every viewport height: this
-         margin and the reveals' inner spacing are both vh units */
+      /* the LATCHED idiom: this one means once — the disconnect in the
+         callback is its whole point (sticky reveal). The -64% band is
+         the site's section-arrival gate: the observed top must reach the
+         viewport's upper 36%; earlier gates failed in opposite
+         directions (the plain 25% threshold fired ~550px deep, the
+         -30% lower-third margin played the build in the screen's
+         bottom sliver). The BANDS' gates carry the same band below */
       { rootMargin: '0px 0px -64% 0px' },
     );
     const host = hostRef.current;
     if (host) io.observe(host);
+    return () => io.disconnect();
+  }, []);
+
+  // the bands' latched reveals (F11): all the animations keyed above
+  // wait for their OWN wrapper's entry. One observer watches all three
+  // wrappers through the same -64% band (each fires as its TOP clears
+  // the viewport's upper 36% — band 1's fire lands just before the
+  // sidebar's park, the F5 pairing), latching each band's flag once and
+  // disconnecting entirely only when all three have fired.
+  useEffect(() => {
+    const bands = [
+      [band1Ref, setIn1],
+      [band2Ref, setIn2],
+      [band3Ref, setIn3],
+    ] as const;
+    const latched = new Set<Element>();
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting || latched.has(entry.target)) continue;
+        latched.add(entry.target);
+        for (const [ref, set] of bands) {
+          if (ref.current === entry.target) set(true);
+        }
+        // all three seen → the observer's job is done (the per-band
+        // latch's shared hang-up)
+        if (latched.size === bands.length) io.disconnect();
+      }
+    }, { rootMargin: '0px 0px -64% 0px' });
+    for (const [ref] of bands) {
+      const el = ref.current;
+      if (el) io.observe(el);
+    }
     return () => io.disconnect();
   }, []);
 
@@ -201,25 +316,55 @@ export function LandingAbout() {
              tail keeps the sticky band's resting slot (its last 37.5vh)
              clear of the plate */
           height: auto;
+          /* F5, the leading spacer: band-1 seats MID-viewport the exact
+             moment the sidebar parks (--ab-p hits 1 when this section's
+             top reaches 0) — the spacer holds half of band-1 (the two
+             48px ticker bands + the seat) above and below the 50vh line
+             at that scroll point */
+          padding-top: calc(50vh - (var(--ab-band1-mid) + 2 * var(--ab-marquee-h)) / 2);
           padding-bottom: calc(37.5vh + 8vh);
           overflow: hidden;
           font-family: var(--f-body, 'Inter', sans-serif);
-          /* band 1's middle row: D8's 245px as the ROW's height — the two
-             48px ticker bands sandwich it, so band 1 totals ~341px. The
-             veto read (245px = the whole band) swaps this seat for
-             calc(245px - 96px); everything under this var follows */
-          --ab-band1-mid: 245px;
-          /* the headline's crimson flash: one-shot ~1.2s after the reveal
-             latch — the grow print (0.45s + its 0.15s beat) has settled
-             by then, so the crimson lands as a second, deliberate mark
-             on the finished headline */
+          /* F2, the portrait's seat ≈ 2×: the mid row's height — and the
+             art's own box follows it exactly (the frame's borders are
+             retired on this instance, so the 49-type-line column fills
+             the seat with no border accounting); everything under this
+             var (the art's font-size, line-height, height) follows it */
+          --ab-band1-mid: 490px;
+          /* the ticker bands' own height (the seat math above counts it) */
+          --ab-marquee-h: 48px;
+          /* F10, the bands' breathing: +~6vh between every band, as the
+             band wrappers' leading margins */
+          --ab-band-gap: 6vh;
+          /* band 1's crimson flash: one-shot ~1.2s after the band's own
+             reveal — the band's drop (0.7s) has settled and a beat
+             passes, so the crimson lands as a second, deliberate mark
+             on the finished plain-ink headline */
           --ab-flash-delay: 1.2s;
+          /* F8, the widget pair's print size: 32px ≈ two-thirds of the
+             library's 48px default — the pair reads junior to the
+             headline while staying legible on the mono grid */
+          --ab-code-ascii-type: 32px;
+          /* F9, the plate copy's margin: ~8vh block / ~8vw inline from
+             the fluro field's edges */
+          --ab-plate-pad: 8vh 8vw;
+          /* F3, the portrait's slower cycle: the frame hold doubles —
+             31 steps (30 frames + 2 hold steps) at 0.4s ≈ 12.8s/loop */
+          --ab-ascii-step: 0.4s;
         }
         .landing-about * { margin: 0; box-sizing: border-box; }
 
+        /* the bands: one flow box each (the observer targets + the
+           spacing spines); bands 2 and 3 lead with the F10 gap — band 1
+           leads with the section's F5 spacer instead */
+        .ab-band { grid-column: 1 / -1; }
+        .ab-band2, .ab-band3 { margin-top: var(--ab-band-gap); }
+
         /* ── reveal ─────────────────────────────────────────────── */
+        /* the fades + drops + flash key off each band's own ab-on flag
+           (F11): the section's .ab-in latch no longer fires these */
         .ab-fade { opacity: 0; }
-        .landing-about.ab-in .ab-fade {
+        .ab-band.ab-on .ab-fade {
           opacity: 1;
           transition: opacity 0.7s ease-out;
           transition-delay: var(--ab-d, 0s);
@@ -228,8 +373,8 @@ export function LandingAbout() {
            immediately (the marquee's own reduce overrides sit below the
            drop rule, where they win the cascade) */
         @media (prefers-reduced-motion: reduce) {
-          .ab-fade { opacity: 1; transition: none; }
-          .ab-flash { transition: none; }
+          .ab-band .ab-fade { opacity: 1; transition: none; }
+          .ab-band .ab-flash { transition: none; }
         }
 
         /* the nav tool panel is LandingPanel now (a component alongside
@@ -251,14 +396,14 @@ export function LandingAbout() {
            extends to the page's edge so the read stays good as the
            crimson sidebar slides over it — the marquee runs the full
            viewport, the panel riding on top of its right end as it
-           arrives). On reveal each band rides down into place (no
-           fade): held up off the section's top by the base transform,
-           the shared gl-marquee-drop drops them in together */
+           arrives). In-band the marquee leads at zero (the band's own
+           wrapper owns the spacing); on the band's reveal each band
+           rides down into place (no fade): held up off the section's
+           top by the base transform, the shared gl-marquee-drop drops
+           them in together */
         .ab-marquee {
-          grid-column: 1 / -1;
           margin-inline: -3.9vw -3.9vw;
-          margin-top: 4.4vh;
-          height: 48px;
+          height: var(--ab-marquee-h);
           z-index: 2;
           mix-blend-mode: multiply;
           --glaphic-marquee-rule-size: 4px; /* the rules are the COMPONENT'S — no overlays */
@@ -269,7 +414,7 @@ export function LandingAbout() {
           transform: translateY(-22vh);
         }
         /* the print-in: the band drops whole (its rules ride with it) */
-        .landing-about.ab-in .ab-marquee {
+        .ab-band.ab-on .ab-marquee {
           animation: gl-marquee-drop 0.7s cubic-bezier(0.25, 1, 0.4, 1) both;
         }
         /* reduced motion: no drop — the band seats instantly (the base
@@ -278,13 +423,12 @@ export function LandingAbout() {
            AFTER the drop rule so they win the cascade */
         @media (prefers-reduced-motion: reduce) {
           .landing-about .ab-marquee { transform: none; }
-          .landing-about.ab-in .ab-marquee { animation: none; }
+          .ab-band.ab-on .ab-marquee { animation: none; }
         }
 
         /* band 1's sandwich reads TIGHT: the middle row hugs the leader
-           band above it, and the reversed runner hugs the row below */
-        .ab-band1-mid { margin-top: 0; }
-        .ab-band1-mid + .ab-marquee { margin-top: 0; }
+           band above it, and the reversed runner hugs the row below (the
+           wrapper owns every other gap) */
 
         /* the second instance's track runs the OPPOSITE direction — D1's
            one-liner on the library's EXPOSED part: the shadow's scroll
@@ -298,71 +442,139 @@ export function LandingAbout() {
            AT the parked panel's edge — the phase-1 bands' settled read);
            the headline keeps the flow's gutter inside */
         .ab-band1-mid {
-          grid-column: 1 / -1;
           margin-inline: -3.9vw 20.1vw;
           padding-left: 3.9vw;
-          /* the small inset right: the portrait's print shadow breathes
-             off the parked panel's edge instead of painting over it */
+          /* the small inset right: the portrait keeps its own breath off
+             the parked panel's edge instead of painting over it */
           padding-right: 2.2vw;
           height: var(--ab-band1-mid);
           display: grid;
           grid-template-columns: minmax(0, 1fr) auto;
-          column-gap: 2.5vw;
+          /* F4, NO column reserve: the head's track ends AT the art's
+             left edge — a headline line longer than its track paints
+             across the art's left edge ("Developer" may overlap the
+             image at the edge); the capture + the driver's edge pair
+             gate what actually happens at these metrics */
+          column-gap: 0;
           align-items: center;
         }
-        /* the headline rides the shared grow/print treatment (the
-           grow-head clamp scale + the shadow-stack grow live in
-           landing.css); only its seat + the flash are this section's */
-        .ab-band1-head { min-width: 0; }
+        /* the headline: plain ink both phrases (F6) — the shadow-print
+           grow retired here (the shared .grow-head class now carries
+           only the type voice; the ink comes straight from the section
+           and the crimson flash span is the headline's one animation) */
+        .ab-band1-head {
+          min-width: 0;
+          /* the overlapping word reads whole: its ink sits over the
+             art's glyphs at the edge */
+          position: relative;
+          z-index: 1;
+        }
         .ab-flash {
-          /* the second phrase starts at the headline's own warm-white
-             fill; when .ab-in latches, the transition's delay holds the
-             flip ~1.2s — the latch makes it ONE-SHOT by construction
-             (the class never leaves again) */
-          color: ${PAPER};
+          /* starts at the headline's own plain ink; when band 1 latches,
+             the transition's delay holds the flip ~1.2s — the band's own
+             class makes it ONE-SHOT by construction (the flag never
+             leaves again) */
+          color: ${INK};
           transition: color 0.25s ease-out var(--ab-flash-delay);
         }
-        .landing-about.ab-in .ab-flash { color: ${RED}; }
+        .ab-band.ab-on .ab-flash { color: ${RED}; }
 
-        /* the portraits' real grid. The .frame's boxes-era fixed width
-           (7ch) opens through the exposed part to hold the art at its
-           own size — 90 columns x 49 lines, every frame identical. The
-           type derives from the SEAT: the row's height minus the
-           frame's own 4px of 2px borders (border-box), split over the
-           49 lines; the shadow's 1.3 line-height would push the art
-           taller than the seat, so the part pins line-height 1. The
-           width is the 90-column run plus the borders' 4px — without
-           the add the 90th column clips under the right border */
+        /* the portraits: F1 — the frame-style isolation lives on THIS
+           instance only, via the parts the library exposes. The phase-2
+           driver established the cascade fact in this Chrome (document
+           ::part rules beat the shadow's plain .frame rules: the size
+           rules landed as written) — these overrides retire the whole
+           frame look on this instance: no fluro surface, no ink border,
+           no multiply (the glyphs then color straight — ink on the
+           page's hatch), no drop-ladder shadow. The burst widget below
+           keeps every one of them: the isolation is per-instance,
+           consumer-side, no library ask. The spans (part="frame") take
+           the ink by inheritance and keep their own flip sheet — no
+           ::part(frame) rule, the machine's animation is untouched. */
+        .ab-portraits {
+          /* F3, the slower hold lives on the instance's knob */
+          --glaphic-ascii-step: var(--ab-ascii-step);
+        }
         .ab-portraits::part(box) {
+          /* F1: the library's frame look retires here (see above) */
+          color: ${INK};
+          background: none;
+          border: none;
+          mix-blend-mode: normal;
+          box-shadow: none;
+          animation: none;
+          /* F2: the seat's exact fill — the type is the seat ÷ 49 lines
+             (borders gone, no −4 accounting); width is the 90-column
+             run (every frame is 90 columns × 49 lines) */
           height: var(--ab-band1-mid);
-          font-size: calc((var(--ab-band1-mid) - 4px) / 49);
+          font-size: calc(var(--ab-band1-mid) / 49);
           line-height: 1;
-          width: calc(90ch + 4px);
+          width: 90ch;
           /* centered in its track at the mobile stack (a no-op at the
              desktop auto track) */
           justify-self: center;
         }
 
-        /* ── band 2: "I've been Coding." + the widget/copy row ───── */
-        .ab-head {
-          /* the headline's box also stops at the panel's edge (its
-             glyphs sit left, but the box stays separate like the rest of
-             the content — nothing of the section reads under the sidebar
-             at desktop) */
-          grid-column: 1 / -4;
-          padding-top: 3.6vh;
+        /* ── band 2: the cursor-typed headline + the two widget rows ── */
+        /* the band's content keeps its old standoff: the parked panel's
+           edge (20.1vw) + the headline's old ~3vw clear of it — the
+           cursor's block never kisses the panel */
+        .ab-band2 {
+          margin-inline: 0 var(--ab-band2-inset);
+          --ab-band2-inset: calc(20.1vw + 3.1vw);
         }
-        .ab-coding {
-          grid-column: 1 / -4;
+        /* F7: the hero's exact typed-head pattern — the real text rides
+           the sr-only span, the typed copy is aria-hidden behind the
+           cursor knobs, the line box held stable while it prints.
+           Right-justified inside the band's content box */
+        .ab-code-head {
+          padding-top: 3.6vh;
+          text-align: right;
+          /* the typed line's seat: a nowrap line + a definite height so
+             mounting and typing never shift the box */
+          white-space: nowrap;
+          min-height: 1.05em;
+        }
+        .ab-code-head .ab-typewrap > glaphic-cursor-type {
+          font-size: 1em;
+          font-weight: 700;
+          display: inline-block;
+          line-height: 1;
+          font-family: var(--f-disp, 'Space Grotesk', sans-serif);
+        }
+        /* the two rows (F8): widget-1 with the asteroid line sharing ONE
+           left x (the pair stacked at the row's start edge), then the
+           serious line LEFT of the job widget, the pair hugged right */
+        .ab-code-rows {
           margin-top: 4.4vh;
           display: grid;
-          grid-template-columns: auto minmax(0, 1fr);
-          column-gap: 3vw;
-          align-items: center;
+          row-gap: 4.4vh;
         }
-        .ab-coding-copy {
+        .ab-row-a {
+          display: grid;
+          grid-template-columns: max-content;
+          justify-content: start;
+          /* the widget plate above, the line under it — one shared left
+             edge: the text's start sits at the plate's left */
+          row-gap: 1.6vh;
+        }
+        .ab-row-b {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          column-gap: 2.5vw;
+        }
+        .ab-widget {
+          /* the pair's print size comes off the named var (the library's
+             knob channel — an inherited set beats its :host default) */
+          --glaphic-ascii-type: var(--ab-code-ascii-type);
+          /* the library's plate/border/blend/shadow stay INTACT on both
+             widgets — band 2 keeps the component's own look (F1's
+             isolation is band-1's only) */
+        }
+        .ab-code-copy {
           /* the opening line: a clear notch under the headline's clamp
-             scale (34-70px) so the row reads headline-then-line */
+             scale (34-70px) so the rows read headline-then-lines */
           font-size: clamp(22px, 2.8vw, 40px);
           line-height: 1.2;
           max-width: 34ch;
@@ -372,7 +584,6 @@ export function LandingAbout() {
         /* full non-sidebar width (the strip grammar); the rail spans the
            strip edge-to-edge, the nodes' text keeps the flow's gutter */
         .ab-journey {
-          grid-column: 1 / -1;
           margin-inline: -3.9vw 20.1vw;
           margin-top: 4.4vh;
           position: relative;
@@ -424,7 +635,6 @@ export function LandingAbout() {
            would drop under a plain block otherwise); the glaphic-plate
            paints the surface, the paragraph prints ink on it */
         .ab-plate {
-          grid-column: 1 / -1;
           margin-inline: -3.9vw 20.1vw;
           margin-top: 4.4vh;
           position: relative;
@@ -443,7 +653,8 @@ export function LandingAbout() {
         .ab-plate-paint { position: absolute; inset: 0; }
         .ab-plate-copy {
           position: relative;
-          padding: 2.6vh 3.9vw;
+          /* F9: the copy breathes far from the field's edges */
+          padding: var(--ab-plate-pad);
           font-size: clamp(12px, 1.18vw, 17px);
           line-height: 1.55;
           /* print lines past ~70ch stop reading — the plate spans the
@@ -453,15 +664,27 @@ export function LandingAbout() {
 
         /* ── mobile: the three bands stack full-width ─────────────── */
         @media (max-width: 899px) {
-          .landing-about { height: auto; }
+          .landing-about {
+            height: auto;
+            /* the same F5 spacer math, with the seat recomputed to FIT
+               the column: the art is 90 columns at the mono advance
+               (0.6em, so the fitting type is 54em wide ÷ the column),
+               and the seat is that fitting type spread over its 49
+               lines; the 8px slack holds whether or not the part
+               overrides retired the 2px border pair */
+            --ab-band1-mid: calc((88vw - 8px) / 54 * 49);
+          }
           .ab-flow { display: flex; flex-direction: column; padding-inline: 6vw; }
           .ab-marquee { margin-inline: -6vw; }
           /* the component's own rails; the top one rests on mobile */
           .ab-marquee::part(rail-top) { display: none; }
-          /* band 1's stack: headline over the portraits, breathing kept */
+          /* band 1's stack: headline over the portraits, breathing kept;
+             the row's height goes auto (the stack's natural height) while
+             the seat var drives the art's box alone */
           .ab-band1-mid {
             /* the stack: headline block over the portraits box, one track */
             grid-template-columns: 1fr;
+            height: auto;
             row-gap: 16px;
             align-items: start;
             padding-left: 6vw;
@@ -469,10 +692,18 @@ export function LandingAbout() {
             margin-top: 18px;
           }
           .ab-band1-head { margin-bottom: 18px; }
-          .ab-coding { grid-template-columns: 1fr; row-gap: 22px; }
-          .ab-coding-spark { justify-self: center; }
-          .ab-coding-copy { max-width: none; }
-          .ab-head { padding-top: 44px; }
+          /* the band's content runs the full mobile flow (no panel to
+             stand off on mobile) */
+          .ab-band2 { margin-inline: 0; }
+          .ab-code-head { padding-top: 44px; }
+          /* the column caps both rows: the copies run max-content here
+             (their 34ch cap rides the desktop's wider box), so the
+             tracks must clamp or every row's width runs max-content
+             past the 390 column and the right-hugged widget paints
+             off-viewport, clipped by the section's overflow */
+          .ab-code-rows { grid-template-columns: minmax(0, 1fr); }
+          .ab-row-a { grid-template-columns: minmax(0, 1fr); }
+          .ab-code-copy { max-width: none; }
           /* the timeline reads as a strip along a vertical rail: the
              nodes stack, the ticks ride the left line — a horizontal
              ladder can't cross into wrapped rows */
@@ -481,7 +712,6 @@ export function LandingAbout() {
           .ab-nodes { grid-template-columns: 1fr; row-gap: 14px; }
           .ab-node { padding-top: 0; padding-left: 26px; }
           .ab-tick { top: 5px; }
-          .ab-plate-copy { padding: 18px 16px; font-size: 13px; }
         }
       `}</style>
 
@@ -492,95 +722,136 @@ export function LandingAbout() {
           section's exit */}
       <div class="ab-flow" ref={flowRef}>
         {/* ── band 1: the ticker, the headline + portraits row, the
-            reversed ticker ─────────────────────────────────────── */}
-        <glaphic-marquee
-          ref={marqueeLeadRef}
-          class="ab-marquee"
-          aria-hidden="true"
-        />
-        {/* the sandwich's middle row: the headline rides the shared
-            grow/print treatment (its own markup here — the flash span
-            needs span structure GrowHead can't carry) */}
-        <div class="ab-band1-mid">
-          <h2 class="ab-band1-head grow-head">
-            <span class={`grow-head-in ${inView ? 'grow-on' : ''}`}>
+            reversed ticker — the band's own flag gates its drop, the
+            flash, and the portraits' cycle (F11) ─────────────────── */}
+        <div class={`ab-band ab-band1 ${in1 ? 'ab-on' : ''}`} ref={band1Ref}>
+          <glaphic-marquee
+            ref={marqueeLeadRef}
+            class="ab-marquee"
+            aria-hidden="true"
+          />
+          {/* the sandwich's middle row: plain ink (F6), no reserve from
+              the art (F4) — the phrases print straight from the
+              section's ink; the flash span carries the one crimson
+              moment */}
+          <div class="ab-band1-mid">
+            <h2 class="ab-band1-head grow-head">
               <span class="ab-phrase">Trained Poet;</span>{' '}
               <span class="ab-flash">Experienced Developer</span>
-            </span>
-          </h2>
-          {/* the portraits: slot empty until the runtime fetch resolves */}
-          <glaphic-ascii
-            ref={portraitsRef}
-            class="ab-portraits"
-            label="A cycling ASCII portrait, thirty drawn frames"
-          />
-        </div>
-        {/* the reversed runner: same band voice, track running the other
-            way (see the ::part rule above) */}
-        <glaphic-marquee
-          ref={marqueeRevRef}
-          class="ab-marquee ab-marquee-rev"
-          aria-hidden="true"
-        />
-
-        {/* ── band 2: the coding headline + the widget/copy row ───── */}
-        <GrowHead text="I've been Coding." inView={inView} class="ab-head" />
-        <div class="ab-coding">
-          {/* the shell's rise/burst cycle — the FRAMES array + the
-              imperative-ref pattern, as before */}
-          <div class="ab-coding-spark">
+            </h2>
+            {/* the portraits: F1's own instance look; the frames land
+                only once the fetch resolves AND this band fires */}
             <glaphic-ascii
-              ref={burstRef}
-              role="img"
-              label="A shell rises, flashes, and bursts into sparks"
+              ref={portraitsRef}
+              class="ab-portraits"
+              label="A cycling ASCII portrait, thirty drawn frames"
             />
           </div>
-          <p class="ab-coding-copy ab-fade" style={{ '--ab-d': '0.35s' }}>
-            It started with cloning asteroids on my middle school graphic calculator.
-          </p>
+          {/* the reversed runner: same band voice, track running the other
+              way (see the ::part rule above) */}
+          <glaphic-marquee
+            ref={marqueeRevRef}
+            class="ab-marquee ab-marquee-rev"
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* ── band 2: the typed headline + the split body rows ────── */}
+        <div class={`ab-band ab-band2 ${in2 ? 'ab-on' : ''}`} ref={band2Ref}>
+          {/* F7: the hero's typed-head composition. The h2's real text
+              must exist at first paint (the cursor-type renders into its
+              shadow root on a print timer — an empty accessible name
+              broke the hero's h2 until the sr-only span carried the
+              words); the typed copy below is a performance of the same
+              words, hidden, and it types the instant this band's flag
+              lands (the ' ' mount keeps the line box stable; the
+              element's documented re-types-on-change does the rest) */}
+          <h2 class="ab-code-head grow-head">
+            <span class="sr-only">I've been Coding.</span>
+            <span aria-hidden="true" class="ab-typewrap">
+              <glaphic-cursor-type
+                text={in2 ? CODE_SCRIPT : ' '}
+                speed={CODE_CHAR_MS}
+                cursor-vanish
+                style={{ '--glaphic-cursor-type-cursor-ink': in2 ? INK : 'transparent' }}
+              />
+            </span>
+          </h2>
+          {/* the body split (F8): the asteroid line starts AT widget-1's
+              plate left edge (one shared left x); then the restored job
+              cycle right-hugged with the serious line at its left */}
+          <div class="ab-code-rows">
+            <div class="ab-row-a">
+              <glaphic-ascii
+                ref={burstRef}
+                class="ab-widget"
+                role="img"
+                label="A shell rises, flashes, and bursts into sparks"
+              />
+              <p class="ab-code-copy ab-fade" style={{ '--ab-d': '1.15s' }}>
+                It started with cloning asteroids on my middle school graphic calculator.
+              </p>
+            </div>
+            <div class="ab-row-b">
+              <p class="ab-code-copy ab-fade" style={{ '--ab-d': '2.3s' }}>
+                Since then things have gotten serious.
+              </p>
+              <glaphic-ascii
+                ref={jobRef}
+                class="ab-widget"
+                role="img"
+                label="A monospace log types 2012 NYC, glitches through job codes, and drowns in a wall of currency — the work got serious"
+              />
+            </div>
+          </div>
         </div>
 
         {/* ── band 3: the third ticker, the journey headline, the
-            timeline, then the chamfered plate ───────────────────── */}
-        <glaphic-marquee
-          ref={marqueeTailRef}
-          class="ab-marquee"
-          aria-hidden="true"
-        />
-        <GrowHead text="My professional Journey." inView={inView} class="ab-head" />
-        {/* the journey: a 1px rail + seven nodes printing on the
-            160ms ladder (JOURNEY/NODE_STEP_MS at module scope); 'NOW
-            ???' is the terminal readout — plain text, no affordance */}
-        <div class="ab-journey">
-          <div class="ab-rail" />
-          <ol class="ab-nodes">
-            {JOURNEY.map((node, i) => (
-              <li
-                key={node.year + node.label}
-                class="ab-node ab-fade"
-                style={{ '--ab-d': `${i * NODE_STEP_MS}ms` }}
-              >
-                <span class="ab-tick" aria-hidden="true" />
-                <span class="ab-node-year">{node.year}</span>
-                <span class="ab-node-label">{node.label}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
-        {/* the chamfered fluro plate: the paint is the glaphic-plate tone;
-            the paragraph (verbatim from the old .ab-story, the lead line
-            retired) prints ink on it; the reveal chain: the plate's fade
-            delay = the ladder's settle + beat (PLATE_DELAY_MS) */}
-        <div class="ab-plate ab-fade" style={{ '--ab-d': `${PLATE_DELAY_MS}ms` }}>
-          <glaphic-plate class="ab-plate-paint" tone="cyan" aria-hidden="true" />
-          <p class="ab-plate-copy">
-            I like to joke that poetry and coding are similar in practice, but it is true: both
-            crafts hinge upon collapsing complicated ideas into succinct patterns of symbols. A poet
-            folds a singular human experience into as few words as possible. A programmer takes a
-            complicated problem and reduces it to (hopefully) comprehensible code. Instead of
-            unfolding into emotion, a program ends up as streams of binary running through some
-            device's threads. Both too often intimidate the uninitiated.
-          </p>
+            timeline, then the chamfered plate — the band's own flag
+            gates every one of them (F11) ─────────────────────────── */}
+        <div class={`ab-band ab-band3 ${in3 ? 'ab-on' : ''}`} ref={band3Ref}>
+          <glaphic-marquee
+            ref={marqueeTailRef}
+            class="ab-marquee"
+            aria-hidden="true"
+          />
+          <GrowHead text="My professional Journey." inView={in3} class="ab-head" />
+          {/* the journey: a 1px rail + seven nodes printing on the
+              160ms ladder (JOURNEY/NODE_STEP_MS at module scope) the
+              moment band 3 fires; 'NOW ???' is the terminal readout —
+              plain text, no affordance */}
+          <div class="ab-journey">
+            <div class="ab-rail" />
+            <ol class="ab-nodes">
+              {JOURNEY.map((node, i) => (
+                <li
+                  key={node.year + node.label}
+                  class="ab-node ab-fade"
+                  style={{ '--ab-d': `${i * NODE_STEP_MS}ms` }}
+                >
+                  <span class="ab-tick" aria-hidden="true" />
+                  <span class="ab-node-year">{node.year}</span>
+                  <span class="ab-node-label">{node.label}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+          {/* the chamfered fluro plate: the paint is the glaphic-plate tone;
+              the paragraph (verbatim from the old .ab-story, the lead line
+              retired) prints ink on it; the reveal chain: the plate's fade
+              delay = the ladder's settle + beat (PLATE_DELAY_MS), counted
+              from band 3's own fire */}
+          <div class="ab-plate ab-fade" style={{ '--ab-d': `${PLATE_DELAY_MS}ms` }}>
+            <glaphic-plate class="ab-plate-paint" tone="cyan" aria-hidden="true" />
+            <p class="ab-plate-copy">
+              I like to joke that poetry and coding are similar in practice, but it is true: both
+              crafts hinge upon collapsing complicated ideas into succinct patterns of symbols. A poet
+              folds a singular human experience into as few words as possible. A programmer takes a
+              complicated problem and reduces it to (hopefully) comprehensible code. Instead of
+              unfolding into emotion, a program ends up as streams of binary running through some
+              device's threads. Both too often intimidate the uninitiated.
+            </p>
+          </div>
         </div>
       </div>
 

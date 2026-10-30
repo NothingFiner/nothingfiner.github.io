@@ -93,7 +93,51 @@
 - [x] **Verify:** tsc; build; 1440/1024: band-1 measured ~245px mid-row; the two marquee tracks scroll OPPOSITE (assert computed animation-direction + two-frame captures showing the drift); the flash lands ~1.2s after the reveal (recorded timeline of the fill color or a two-frame capture); the portraits cycler cycles (two distinct frames captured) on its fluro box; band-2's widget + copy read; band-3: the nodes print in sequence (frame captures at node 1 → mid → last) and the plate reveals only after; the plate's chamfered corners + fluro read (capture); the paragraph is verbatim; 390: three bands stack full-width (capture). 0 errors; overflow clean. Screenshots nf31p2-*.
 - [x] Tick + commit: "the About section's three bands — marquees, the portraits slot, the journey timeline, the chamfered plate".
 
-## Phase 3 — Past Work: joins the landing
+## Feedback round A — the About section (Eliot, 2026-10-30 ~16:57)
+
+Amends Phase 2 in place; every item is her call with a plan default. Scope: `src/components/LandingAbout.tsx` ONLY. Phases 3-5 unchanged.
+
+- F1 **The portrait's styling is the CONSUMER's** — "isolate the framestyles from the ascii slide component": the burst/band-2 widget keeps the library's plate/border/shadow; the PORTRAIT instance prints **ink glyphs, no background, no border, no multiply** (her words: "ink colored text and no background or border"). Default: site-side `::part(box/frame)` overrides for this instance only; if the shadow CSS wins the cascade, STOP and report — that gap becomes a first-class style-knob ask (her repo).
+- F2 **Bigger**: the portrait's seat ≈ **2× the current 245px → ~490px**; type recomputed from the seat (≈ the seat ÷ 49 lines); the box widens with the grid (~2× ≈ 536px).
+- F3 **Slower**: `--glaphic-ascii-step` 0.2s → **0.4s** (the frame hold; cycle doubles to ~12.8s).
+- F4 **The headline may overlap the art at its edge** ("the word developer can overlap the image at the edge") — no column reserve between the headline block and the art; the capture gates the read.
+- F5 **Band 1 sits at the MIDDLE of the page when the sidebar has fully animated in, not at the top** — a leading spacer (default `calc(50vh - band1-total/2)` as the about's padding-top, named constant + rationale) places band-1 mid-screen AT the park point; the driver samples the parked point and band-1's center together (record the pair). Band-1's reveal gate retunes so its animations fire as it comes into view just before the park.
+- F6 **Band-1 headline: NO grow shadows** — plain ink fill both phrases; the crimson flash (F-phrase) stays as its span.
+- F7 **Band-2 headline cursors IN, justified right** — the hero's cursor-type composition pattern (real text in the sr-only span + typed copies aria-hidden + the cursor-ink knobs), right-justified. Copy stays "I've been Coding." (her lowercase read as informal; veto = lowercase).
+- F8 **Band-2's rows**: the body text start-aligns WITH widget-1's plate left edge (one left x); widget-1 smaller (type ≈ 32px, named constant); then a **SECOND ascii widget aligned RIGHT with text to its left: "Since then things have gotten serious."** — widget-2's frames default to the retired JOB_FRAMES (the 2012→C0DE→job cycle IS that story; restored for this instance from the pre-rebuild data).
+- F9 **Band-3's plate gets a lot more margin** between the copy and its edges (default ~8vh block / ~8vw inline — measured on capture).
+- F10 **More space between ALL the bands** (default +~6vh — a section-level spacing constant; measured).
+- F11 **Every band's animations trigger only when THAT band comes into view** — per-band latched IntersectionObservers (the section idiom, -64% rootMargin, band-level flags). Band 1's gate pairs with the sidebar-park point (measured together per F5).
+
+- [x] F1-F4, F6-F9 applied and verified at 1440/1024 (the portrait's ink/no-plate computed read, its ~2× box, the slower cycle duration read, the overlap read, the typed headline's cursor behavior + right alignment, the two-row band-2 with the restored job widget, the plate's margins).
+- [x] F5/F11: the per-band gates wired; the band-1 reveal↔park pairing measured (park px at the reveal fire — recorded).
+- [x] Standing verification (3 widths, 0 errors, overflow clean; reverse-marquee still holding; the cycle's slower step read); captures nf31p2b-* vp-suffixed.
+- [x] Commit: "About feedback round A: the portrait's ink restyle, the mid-page arrival, the typed headers, the second widget, the view-gated bands".
+
+>> (Round-A run — 2026-10-30 ~17:2x, recorded: F1 the part-override verdict is a WIN
+>> (portrait box computed color rgb(13,2,33), border 0px, background transparent,
+>> blend normal, no drop ladder; the burst AND restored job widgets keep the library
+>> plate exactly — 2px border, rgb(20,241,200), multiply, ladder(5) — per-instance),
+>> F2 box 540×490 (fs 10 = seat/49; scrollW==540==clientW), F3 step 0.4s, span
+>> duration 12.8s, F4 reserve gap 0.0 (boxes touch at 1440 — the metrics leave
+>> 60.78px of daylight to the flash's end; at 1024 the flash strides 115.02px ACROSS
+>> the art's edge), F5 fire at scroll 736 (@ --ab-p 0.7397) → park 904 (@ 1, the
+>> analytic 900 within one 8px step; band-1 center at the park = the viewport's
+>> middle; the lead marquee's transform read matrix(…,0,0) — the drop landed by
+>> the park), F7 typed prints at the fire (caught "I" at the fire step; settled
+>> "I've been Coding.", cursor-vanish held, right-justify delta 0), F8 rowA one
+>> shared left x (Δ 0.0/0.08 @1440, 0 @1024/390), rowB flush right (Δ 0; the copy
+>> left of the widget at all three widths), job frames 31 restored, F9 computed
+>> padding 72px/115.2px (glyph inset 115.19), F10 gaps 54px = 6vh, F11 fires per
+>> band at 736/1376/2152, reverse drift −100.01/+100.01/−100.01, 0 errors ×3,
+>> overflow clean ×3. Mobile retunes: the 390's seat recomputed to FIT the column
+>> ((88vw−8px)/54×49 — the first pass caught the fit ÷49 double-dipped at
+>> 0.1267px type, fixed), the band-2 rows' tracks capped (minmax(0,1fr)) or the
+>> max-content copies painted the right-hugged widget off-viewport; at 390 the
+>> 34ch copies run max-content wide so rowB's pair squeezes (copy 199px left of
+>> the 134px widget, flush right 367) — the pool-menu patch (the fixed chrome)
+>> clears the copy once squeezed.)
+
 
 **Files:** `src/components/LandingPast.tsx` (+ nothing — its data home already exists).
 
