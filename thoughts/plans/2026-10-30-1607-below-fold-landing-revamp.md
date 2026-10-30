@@ -220,6 +220,25 @@ Amends round A in place; scope stays `src/components/LandingAbout.tsx` ONLY. Pha
 >> /tmp/nf31p2c-results.json (drivers nf31p2c-driver.mjs,
 >> nf31p2c-catch.mjs); the :4178 preview reused alive throughout.)
 
+## Iteration C — About, refined again (Eliot, 2026-10-30 ~17:59)
+
+Amends round B in place; scope stays `src/components/LandingAbout.tsx` ONLY. Phases 3-5 unchanged.
+
+- C1 **Band 1's riders animate in TOGETHER** — the two marquees, the header print, and the ascii portrait arrive in lockstep on the band's single fire (no per-rider delay differences; one shared beat, capture gates the read).
+- C2 **"I've been Coding." becomes right-justified** (the grow header stays, the alignment flips: the ladder prints against the strip's RIGHT edge).
+- C3 **Two rows below, both left-anchored, each row's elements start-aligned** (the B4 mirror yields: rowA = panel·text, rowB = panel·text, all flex-start; the cursored text TOP-aligns against its panel's start edge).
+- C4 **The beside-texts run ~50% their round-B size** (default ~20px at 1440 — half the measured 40px, one named constant).
+- C5 **The panels never collapse and carry no shadows**: full height from first paint (reserved seats, pre-fire too — the round-B reserves didn't hold visually) and the drop/shadow ladder retires from band-2's widgets per-instance (the fluro plate + border STAY; the portrait's isolated ink look unchanged).
+- C6 **Row-2's text types after row-1's completes** (chained delay = row-1's pace end + beat, named constants).
+- C7 **Band-3's separations**: marquee→title ≈ **15vh** · title→timeline ≈ **5vh** · timeline→plate ≈ **10vh**.
+- C8 **The plate hugs the text — padding 16px all around** (the chamfer keeps its cut close to the box edge; measured).
+- C9 **Plate → next section ≈ 15vh** (the about's bottom margin — measured so the visual gap from the plate to the next section's head lands ~15vh over the tail reservation).
+
+- [ ] C1-C6 applied and verified at 1440/1024 (the lockstep arrival, the right-justified ladder, the two start-aligned rows, the 20px typing, the full-height no-shadow panels, the row-2 chaining).
+- [ ] C7-C9: the three separations measured at all widths (record px).
+- [ ] Standing verification (3 widths, 0 errors, overflow clean; the park-pairing + reverse drift still holding); captures nf31p2d-* vp-suffixed.
+- [ ] Commit: "About iteration C: the lockstep intro, the right-justified ladder, the start-aligned typing rows, the full-height unshadowed panels, the journey's measured separations".
+
 ## Phase 3 — Past Work: joins the landing
 
 **Files:** `src/components/LandingPast.tsx` (+ nothing — its data home already exists).
