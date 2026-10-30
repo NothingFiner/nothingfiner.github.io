@@ -85,4 +85,57 @@ Every value is the research's proportional interpolation (× 0.7173, 24 / 33.47)
 
 ## After all phases
 
-- [ ] Final report: one screenshot set (1440 / 1024 / 390) of the full journey, the occupancy measurement (longest link vs bar at both widths), and the settled numbers list for Eliot's review — especially the veto points (gap 1.36vh, cloud cap holds, carousel 303px holds, `top: 38.7vh` holds).
+- [x] Final report: one screenshot set (1440 / 1024 / 390) of the full journey, the occupancy measurement (longest link vs bar at both widths), and the settled numbers list for Eliot's review — especially the veto points (gap 1.36vh, cloud cap holds, carousel 303px holds, `top: 38.7vh` holds). *(ticked ~14:45 — the full record landed below; three clean full-journey passes + spot-checks all green at 5dcd191)*
+
+## After all phases — final record (2026-10-30 ~14:45)
+
+Recorded at `new-design` @ **5dcd191** — the four-commit arc: `9c9edbc` panel → `de3a725` pool-fade → `8f276e5` riders → `5dcd191` spans. The :4178 preview's dist verified current at 5dcd191 (HEAD's `24vw` / clamp / hold values all inlined in the served bundle). **Full journey per width** — load (hero fold) → about (panel parked) → technologies → now → page bottom (the band's foot pose) → back to top — one pass each at 1440×900, 1024×900, 390×844, reusing the phase drivers' template. **Every stop, every width: 0 console errors, 0 pageerrors, `scrollWidth === clientWidth` (root + body)** — `journeyClean = true ×3`.
+
+### Journey passes (errors / overflow per stop)
+
+| stop | 1440×900 | 1024×900 | 390×844 |
+|---|---|---|---|
+| load (hero fold) | 0 · 1440/1440 | 0 · 1024/1024 | 0 · 390/390 |
+| about (panel parked) | 0 · 1440/1440 | 0 · 1024/1024 | 0 · 390/390 |
+| technologies | 0 · 1440/1440 | 0 · 1024/1024 | 0 · 390/390 |
+| now | 0 · 1440/1440 | 0 · 1024/1024 | 0 · 390/390 |
+| page bottom | 0 · 1440/1440 | 0 · 1024/1024 | 0 · 390/390 |
+| back to top | 0 · 1440/1440 | 0 · 1024/1024 | 0 · 390/390 |
+
+### Settled numbers (fresh spot-check on THIS head)
+
+| piece | 1440×900 | 1024×900 | verdict |
+|---|---|---|---|
+| Panel geometry — 24vw parked | w **345.59**, left **1094.4**, `transform: none` | w **245.76**, left **778.24** (measured 778.2 @1dp) | holds exactly |
+| Nav pose (HOLD) — `top: 38.7vh` / `left: 0.9vw` / gap 1.36vh | 348.3px / 12.96px / 12.24px | same | the holds hold |
+| Nav computed font | **37px** (clamp cap) | **26.624px** (2.6vw mid-form) | holds |
+| Longest link — `What I'm up to.` | **263.89px** | **189.86px** | measured |
+| Occupancy vs the old 33.47vw scale | **76.36%** (old ≈ 76.76% — Δ 0.40pp) | **77.25%** (old ≈ 76.63% — Δ 0.60pp) | old-ratio read holds |
+| Tech marquee at panel edge | right 1094.4, **gap 0.00** (`right: 24vw`) | right 778.2, gap 0.00 | flush holds |
+| Now strip at panel edge | right 1094.4, **gap 0.00, underhang 0** | right 778.3, gap −0.01 (0.01px underhang) | flush holds |
+| Carousel depth (HOLD 303px) | style **303px** (renders 305px with border) | same | holds — slides **364.8** / **259.4**, **3 exactly fill the strip** (1094.4 / 778.2) |
+| About spans shy of panel | head / cols / story all **46.41px = 3.22vw** | **33.04px = 3.23vw** | ≈3.2vw holds, all three tracks identical |
+| Text line-lengths (phase-3 measure vs its pre-capture) | cols ×1.1345, story ×1.1273 | ×1.1361 / ×1.1262 | ≈ +11–14% — the widened tracks, no blowout |
+| Chip cloud (HOLD cap 52vw) | **6 rows** / 27 chips, cap 748.8px = 52vw **binds** | **8 rows** / 27 chips, cap 532.48px binds | row counts + cap hold |
+| @390 mobile | — | — | panel `display: none`; marquee `margin-inline: −23.4px` (−6vw), strip `−23.4px 0px` — poses hold |
+
+**Invariants re-saw on the journey:** the about marquee still runs full-bleed UNDER the parked panel by exactly the panel's width (345.6 / 245.8 — on purpose); the band owns the foot at page bottom (`.lf-band.lf-band-journey.lf-foot-in`, full width, z 45 over the panel); the fixed panel contributes no scrollable overflow at any stop.
+
+### Holds ledger (veto points — never touched, re-fenced at 5dcd191)
+
+- nav `top: 38.7vh` · `left: 0.9vw`
+- the panel's 106% self-relative flight — `translate: calc((1 − var(--ab-p, 0)) * 106%)`; the hero fold measured it off-viewport right at p=0, parked only after the about hand-in
+- carousel `--glaphic-card-carousel-height: 303px`
+- chip cloud `max-width: 52vw`
+- grow/body type clamps, row fr ratios, ALL vertical margins (tech band `top: 16vh`/48px, strip `margin-top: 12.6vh`, every entry in the Defaults table)
+
+### Known-estimate note
+
+The research's **~83%** occupancy interpolation was off — the link actually fills **76.36%** @1440 (77.25% @1024). But 83% was never the goal; the goal was the **same occupancy ratio as the old scale**, and that is what landed: measured 76.36% vs the old scale's ≈76.76% (derived from the phase-1 font math) — **within 0.4pp**. (@1024: 77.25% vs ≈76.63%, ≈0.6pp.) Both widths read the same "fills most of the bar" beat the old design had — no further type retune warranted.
+
+### Screenshots (full journey, /tmp only)
+
+- 1440×900: `/tmp/nf30r-w1440-hero.png` · `-panel.png` · `-tech.png` · `-now.png` · `-end.png`
+- 1024×900: `/tmp/nf30r-w1024-hero.png` · `-panel.png` · `-tech.png` · `-now.png` · `-end.png`
+- 390×844: `/tmp/nf30r-m390-hero.png` · `-panel.png` · `-tech.png` · `-now.png` · `-end.png`
+- driver + capture JSON: `/tmp/nf30r-record.mjs` · `/tmp/nf30r-record.json`
