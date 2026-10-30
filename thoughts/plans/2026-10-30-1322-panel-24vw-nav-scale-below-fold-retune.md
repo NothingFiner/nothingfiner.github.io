@@ -139,3 +139,4 @@ The research's **~83%** occupancy interpolation was off — the link actually fi
 - 1024×900: `/tmp/nf30r-w1024-hero.png` · `-panel.png` · `-tech.png` · `-now.png` · `-end.png`
 - 390×844: `/tmp/nf30r-m390-hero.png` · `-panel.png` · `-tech.png` · `-now.png` · `-end.png`
 - driver + capture JSON: `/tmp/nf30r-record.mjs` · `/tmp/nf30r-record.json`
+- **Post-record call (Eliot 2026-10-30 ~14:57):** both marquee bands full-bleed — the tech band stops matching the panel's edge; landed as `e649834` (the dispatched worker was cancelled mid-flight; its faithful tree changes were verified + committed by the round: `.lt-marquee` box measured 0→1440 / 0→1024 with 0 errors, mobile pose untouched; parked-band edge reads identical for both marques: /tmp/nf30fb-1440-{edge-about,edge-tech}.png and -parked pairs)
