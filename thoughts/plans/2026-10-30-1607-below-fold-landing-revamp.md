@@ -73,15 +73,25 @@
 ## Phase 2 — About: the three bands
 
 **Files:** `src/components/LandingAbout.tsx` (+ module-scope data inside it). No other files.
+>> (Phase 2 run — 2026-10-30 ~16:46, the D5 SUBSTITUTION: the REAL portraits dropped on disk
+    (30 frames, every frame 49 lines x 90 columns; numbering minus 4 and 9), so the placeholder-
+    frames strategy retired — the section fetches the art at runtime and sets the frames array
+    imperatively once all resolve; the art set is committed WITH this phase. Measured, desktop 1440:
+    mid row 245.00px, band-1 total 341px (48 + 245 + 48, flush) — the veto read (245 as the TOTAL)
+    is the one-line --ab-band1-mid swap noted in the code. The D1 reverse trick RUNTIME-VERIFIED:
+    computed animation-direction "reverse" on ::part(track) + ~1.1s drift -101.53px vs +101.52px
+    (opposite); no library ask needed. Glyph coverage: 89 unique non-space glyphs, 0 outliers at the
+    reference and painted sizes against the site's effective mono stack. Portraits cycle 6.4s/loop
+    (30 frames + the hold steps at the 0.2s step).)
 
-- [ ] Fresh read of the file + the marquee/ascii/plate/text source cites from the research's library survey (glaphic-ascii needs nothing new — already registered).
-- [ ] **Band 1 (245px, D8):** marquee instance 1 (TICKER, speed 26) on top; the ~245-tall middle row: the headline "Trained Poet; Experienced Developer" (Space Grotesk at the grow-head clamp size, ink fill) with a one-shot crimson flash on the second phrase (keyframe color→#A6022A riding .ab-in, delay ~1.2s — constant + rationale) + the ASCII-portraits cycler (D5) right; marquee instance 2 BELOW — its track reversed via D1's `::part(track)` class-scoped rule. The band sandwiched by both bands' rails, full non-sidebar width.
-- [ ] **Band 2:** GrowHead "I've been Coding." (reuse) + the row: the glaphic-ascii fluro-plate widget (the existing FRAMES, imperative ref) LEFT of the ink copy line "It started with cloning asteroids on my middle school graphic calculator." (slightly smaller, ink).
-- [ ] **Band 3:** another full-bleed marquee instance; GrowHead "My professional Journey."; the timeline (D4: rail + 7 nodes sequential print on .ab-in, node data module-scope); then the chamfered fluro plate (D3) holding the poetry paragraph (verbatim from today's .ab-story; D13: the lead line retires) — full non-sidebar width; the plate's reveal chained after the timeline's settle.
-- [ ] The old machinery retires WITH its comments: the two story rows, .ab-cols/.ab-row/.ab-rule grid, .ab-story grids, the JOB_FRAMES array + its widget (the timeline supersedes it), the old col-spans block. The FRAMES array + the imperative-ref pattern stay (band 2).
-- [ ] Keep: id="about", .ab-in latched reveal, rideOutUp, 37.5vh tail, the ≤899px block re-derived for the three bands (full-width stacks, rules/marquees static).
-- [ ] **Verify:** tsc; build; 1440/1024: band-1 measured ~245px mid-row; the two marquee tracks scroll OPPOSITE (assert computed animation-direction + two-frame captures showing the drift); the flash lands ~1.2s after the reveal (recorded timeline of the fill color or a two-frame capture); the portraits cycler cycles (two distinct frames captured) on its fluro box; band-2's widget + copy read; band-3: the nodes print in sequence (frame captures at node 1 → mid → last) and the plate reveals only after; the plate's chamfered corners + fluro read (capture); the paragraph is verbatim; 390: three bands stack full-width (capture). 0 errors; overflow clean. Screenshots nf31p2-*.
-- [ ] Tick + commit: "the About section's three bands — marquees, the portraits slot, the journey timeline, the chamfered plate".
+- [x] Fresh read of the file + the marquee/ascii/plate/text source cites from the research's library survey (glaphic-ascii needs nothing new — already registered).
+- [x] **Band 1 (245px, D8):** marquee instance 1 (TICKER, speed 26) on top; the ~245-tall middle row: the headline "Trained Poet; Experienced Developer" (Space Grotesk at the grow-head clamp size, ink fill) with a one-shot crimson flash on the second phrase (keyframe color→#A6022A riding .ab-in, delay ~1.2s — constant + rationale) + the ASCII-portraits cycler (D5) right; marquee instance 2 BELOW — its track reversed via D1's `::part(track)` class-scoped rule. The band sandwiched by both bands' rails, full non-sidebar width.
+- [x] **Band 2:** GrowHead "I've been Coding." (reuse) + the row: the glaphic-ascii fluro-plate widget (the existing FRAMES, imperative ref) LEFT of the ink copy line "It started with cloning asteroids on my middle school graphic calculator." (slightly smaller, ink).
+- [x] **Band 3:** another full-bleed marquee instance; GrowHead "My professional Journey."; the timeline (D4: rail + 7 nodes sequential print on .ab-in, node data module-scope); then the chamfered fluro plate (D3) holding the poetry paragraph (verbatim from today's .ab-story; D13: the lead line retires) — full non-sidebar width; the plate's reveal chained after the timeline's settle.
+- [x] The old machinery retires WITH its comments: the two story rows, .ab-cols/.ab-row/.ab-rule grid, .ab-story grids, the JOB_FRAMES array + its widget (the timeline supersedes it), the old col-spans block. The FRAMES array + the imperative-ref pattern stay (band 2).
+- [x] Keep: id="about", .ab-in latched reveal, rideOutUp, 37.5vh tail, the ≤899px block re-derived for the three bands (full-width stacks, rules/marquees static).
+- [x] **Verify:** tsc; build; 1440/1024: band-1 measured ~245px mid-row; the two marquee tracks scroll OPPOSITE (assert computed animation-direction + two-frame captures showing the drift); the flash lands ~1.2s after the reveal (recorded timeline of the fill color or a two-frame capture); the portraits cycler cycles (two distinct frames captured) on its fluro box; band-2's widget + copy read; band-3: the nodes print in sequence (frame captures at node 1 → mid → last) and the plate reveals only after; the plate's chamfered corners + fluro read (capture); the paragraph is verbatim; 390: three bands stack full-width (capture). 0 errors; overflow clean. Screenshots nf31p2-*.
+- [x] Tick + commit: "the About section's three bands — marquees, the portraits slot, the journey timeline, the chamfered plate".
 
 ## Phase 3 — Past Work: joins the landing
 
