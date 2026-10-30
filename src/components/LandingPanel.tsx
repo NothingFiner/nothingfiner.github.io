@@ -198,7 +198,7 @@ export function LandingPanel() {
           /* fixed elements don't contribute to the document's scrollable
              overflow, so the off-screen pose opens no horizontal scrollbar */
           top: 0; right: 0; bottom: 0;
-          width: 33.47vw;
+          width: 24vw;
           background: ${RED};
           /* above the landing flow (which carries the site gutter); the
              sticky footer band (z 45) stays above it so the pool menu and
@@ -216,16 +216,16 @@ export function LandingPanel() {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 1.9vh;
+          gap: 1.36vh;
           /* one nav slot: link line-height plus the column gap — the fan
              measures flight distances from the active link in these */
-          --ab-slot: calc(clamp(30px, 3.6vw, 52px) * 1.1 + 1.9vh);
+          --ab-slot: calc(clamp(22px, 2.6vw, 37px) * 1.1 + 1.36vh);
           transition: opacity 0.3s ease-out;
         }
         .ab-nav a {
           font-family: var(--f-disp, 'Space Grotesk', sans-serif);
           font-weight: 700;
-          font-size: clamp(30px, 3.6vw, 52px);
+          font-size: clamp(22px, 2.6vw, 37px);
           line-height: 1.1;
           letter-spacing: -0.01em;
           text-decoration: none;
