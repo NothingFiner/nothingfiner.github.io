@@ -16,7 +16,8 @@ export interface Project {
 }
 
 // the card order is the file order (Projects renders PRJ.{index+1} off
-// the array position): Rite, glaphicUI, chatbot, gospodin, dark forest
+// the array position): Rite, glaphicUI, chatbot, gospodin, dark forest,
+// Novel
 export const projects: Project[] = [
   {
     id: '1',
@@ -60,6 +61,13 @@ export const projects: Project[] = [
     image: './assets/darkforest.png',
     description: "Dark Forest is a simple game, inspired by Katamari Damacy and Liu Cixin's Rememberance of Earth's past trilogy, built with paper.js and css.",
     copy: 'live',
+  },
+  {
+    id: '6',
+    title: 'Novel',
+    image: './assets/novel.png',
+    description: 'The novel itself — the writing Rite is being built for.',
+    copy: 'draft', // the novel's landing band line stands in draft until Eliot writes the real one; nothing links to the entry's route yet (the brief: the novel carries no button)
   },
 ];
 

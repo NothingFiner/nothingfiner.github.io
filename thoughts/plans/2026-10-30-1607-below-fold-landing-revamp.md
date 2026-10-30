@@ -51,15 +51,24 @@
 
 **Files:** `src/components/LandingNow.tsx`, `src/data/projects.ts`, `src/lib/glaphic-registrar.ts`, `src/types/glaphic-elements.d.ts`.
 
-- [ ] **Prerequisite reads:** the section file in full + the data file + the registrar + the tokens sheet reads of glaphic-text's knobs (glaphic-text.ts:41-66 — tier-2 vars) — fresh read, line numbers moved since the research.
-- [ ] `src/data/projects.ts`: append the Novel entry per D6 (copy:'draft'; no githubUrl; image ./assets/novel.png). The `copy` flag comment carries the provenance note.
-- [ ] Registrar + element typings: glaphic-text (D2's element) joins the site composition.
-- [ ] Rebuild the section's BODY (keep the root class/id export): the bloom-strip header (2px ink borders + centered D2 treatment); then band Rite; marquee (TICKER, speed 26, imperative ref, full-bleed like the other bands — the ab-marquee grammar); band glaphicUI; marquee; band Novel. Each band per D8: name at the height-filling size, fluro block with copy (Rite's = its live description; glaphicUI/novel = today's draft lines + DRAFT tags), image `object-fit: cover` filling the remainder, "go to ->" D11 button over the image (Rite + glaphicUI only; Novel carries none), bands flush: full-bleed left → AT the panel edge.
-- [ ] The carousel's wiring leaves with the carousel: --glaphic-card-carousel-height, .ln-strip's margin-inline flush rule, the card-mode comment; the components stay in the library untouched.
-- [ ] Keep: id="now", the .ln-in two-way reveal, the rideOutUp wiring, the 37.5vh tail, and the ≤899px mobile block — the bands become the mobile cards (title, text, image, CTA) in that block (today's order:2 rule rides along; Phase 4 remaps the order map).
-- [ ] Stale-comment audit in the file's header block (the COPY NOTE provenance lines) — rewritten to the new truth.
-- [ ] **Verify:** tsc; build; REAL loads: 1440/1024 — the strip's borders + centered bloom headline; three bands at measured 350px (record actual); right edges flush at the panel's left edge (Δ ≤ ~1px, the 20.1vw grammar); the big-name glyph boxes vs band height (tune once, record); images fill (no letterbox); the go-to buttons navigate (REAL clicks) to /projects/1 and /projects/2; the DRAFT tags print on glaphicUI + Novel; the two marquee instances drop on reveal; 0 errors; overflow clean. 390: the card stack reads (capture). Screenshots nf31p1-*.
-- [ ] Tick + commit: "the 'What I'm up to.' section: the carousel out, the three project bands in".
+- [x] **Prerequisite reads:** the section file in full + the data file + the registrar + the tokens sheet reads of glaphic-text's knobs (glaphic-text.ts:41-66 — tier-2 vars) — fresh read, line numbers moved since the research.
+- [x] `src/data/projects.ts`: append the Novel entry per D6 (copy:'draft'; no githubUrl; image ./assets/novel.png). The `copy` flag comment carries the provenance note.
+- [x] Registrar + element typings: glaphic-text (D2's element) joins the site composition.
+  (already in place: the registrar line + the typed declaration shipped with fe594be/e05d074 and the gallery
+  page composes the element — verified live, no edit needed; the now section's composition rides the same registration)
+- [x] Rebuild the section's BODY (keep the root class/id export): the bloom-strip header (2px ink borders + centered D2 treatment); then band Rite; marquee (TICKER, speed 26, imperative ref, full-bleed like the other bands — the ab-marquee grammar); band glaphicUI; marquee; band Novel. Each band per D8: name at the height-filling size, fluro block with copy (Rite's = its live description; glaphicUI/novel = today's draft lines + DRAFT tags), image `object-fit: cover` filling the remainder, "go to ->" D11 button over the image (Rite + glaphicUI only; Novel carries none), bands flush: full-bleed left → AT the panel edge.
+- [x] The carousel's wiring leaves with the carousel: --glaphic-card-carousel-height, .ln-strip's margin-inline flush rule, the card-mode comment; the components stay in the library untouched.
+- [x] Keep: id="now", the .ln-in two-way reveal, the rideOutUp wiring, the 37.5vh tail, and the ≤899px mobile block — the bands become the mobile cards (title, text, image, CTA) in that block (today's order:2 rule rides along; Phase 4 remaps the order map).
+- [x] Stale-comment audit in the file's header block (the COPY NOTE provenance lines) — rewritten to the new truth.
+- [x] **Verify:** tsc; build; REAL loads: 1440/1024 — the strip's borders + centered bloom headline; three bands at measured 350px (record actual); right edges flush at the panel's left edge (Δ ≤ ~1px, the 20.1vw grammar); the big-name glyph boxes vs band height (tune once, record); images fill (no letterbox); the go-to buttons navigate (REAL clicks) to /projects/1 and /projects/2; the DRAFT tags print on glaphicUI + Novel; the two marquee instances drop on reveal; 0 errors; overflow clean. 390: the card stack reads (capture). Screenshots nf31p1-*.
+  (run 2, post-tune — recorded: bands 350.00px/350.00px/350.00px at both 1440 and 1024, panel-edge deltas 0 / 0.02px,
+  glyph boxes 290.47/129.06/232.38px vs 350 (83%/37%/66%) and 206.56/91.80/165.25px (59%/26%/47%) after the one tune
+  (ADVANCE_EM 0.58 → 0.52 against run 1's measured advances 0.479/0.502/0.529em), image deltas 0/0 (cover, no
+  letterbox), strip borders 2px + centered (Δ 0), DRAFT tags 2 (glaphicUI + Novel), both marquees present (strings
+  12, speed 26) and dropping (mid-drop −198px → settled 0), REAL clicks → #/projects/1 and #/projects/2,
+  scrollWidth === clientWidth at every stop, 0 console errors / 0 pageerrors; 390: the card stack (column,
+  title→text→image→CTA, static CTA)
+- [x] Tick + commit: "the 'What I'm up to.' section: the carousel out, the three project bands in".
 
 ## Phase 2 — About: the three bands
 
