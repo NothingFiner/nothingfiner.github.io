@@ -139,6 +139,24 @@ Amends Phase 2 in place; every item is her call with a plan default. Scope: `src
 >> clears the copy once squeezed.)
 
 
+## Feedback round B — the About section, refined (Eliot, 2026-10-30 ~17:32)
+
+Amends round A in place; scope stays `src/components/LandingAbout.tsx` ONLY. Phases 3-5 unchanged.
+
+- B1 **The chamfered text box floats — it no longer spans the whole non-sidebar space.** Default: the chamfer/paint/copy stay but ~8vw inline margins BOTH sides (the box floats inside the strip); the measured width goes in the record; centered-vs-offset is a one-line tweak.
+- B2 **"I've been Coding." returns to the grow header style** (revert round-A's typed headline; the section's left-aligned grow voice) — and **the cursor-typing moves to the text beside the ascii panels** (both beside-texts cursor in; the hero's sr-only-real-text + typed-copies composition; cursor ink = each line's ink).
+- B3 **"Trained Poet;" = fluro green** (#14F1C8; no grow shadows — round-A's F6 holds); "Experienced Developer" keeps its ink→crimson flash.
+- B4 **The ascii panels sit NEXT TO their respective text** (the mirror rows return: panel·text / text·panel; round-A's above/below start-pairing yields to adjacency).
+- B5 **"It started with cloning asteroids…" tabs over** — a text-indent (default 3ch) on that line.
+- B6 **All the About bands need MORE room — the section breathes**: inter-band spacing up from 6vh to ~12vh (the section's spacing constant).
+
+- [ ] B1-B5 applied and verified at 1440/1024 (the plate's float width, the grow headline's return, both beside-texts typing with cursors, the fluro-green phrase, the mirrored adjacency, the indent).
+- [ ] B6: the breathing spacing measured at all widths.
+- [ ] Standing verification (3 widths, 0 errors, overflow clean; the reverse marquee + the park-pairing still holding); captures nf31p2c-* vp-suffixed.
+- [ ] Commit: "About feedback round B: the floating plate, the grow header back, the beside-texts type in, the fluro-green phrase, the mirrored panels, room to breathe".
+
+## Phase 3 — Past Work: joins the landing
+
 **Files:** `src/components/LandingPast.tsx` (+ nothing — its data home already exists).
 
 - [ ] Rebuild the section: the grow header ("Past Work." — D12) + TWO bands per D7: "E-Commerce" (Forever 21 · Reformation · Brooks Brothers) and "Custom Application Development" (Batesville) — at desktop each HALF the non-sidebar width (side by side, the pair spanning 0→panel edge), each band: its image (object-fit cover fill) + the bullet points (the entries' responsibilities, DRAFT-tagged per D7). Mobile: the two bands stack full width.
