@@ -281,6 +281,46 @@ Amends round B in place; scope stays `src/components/LandingAbout.tsx` ONLY. Pha
 >> /tmp/nf31p2d-results.json (drivers /tmp/nf31p2d-driver.mjs + /tmp/nf31p2d-mini.mjs); the :4178
 >> preview reused alive throughout.)
 
+## Feedback round A — the Now section (Eliot, 2026-10-30 ~18:23)
+
+Amends the Phase-2 build in place; scope stays `src/components/LandingNow.tsx` ONLY. Phases 3-5 unchanged. Landed as N1-N8:
+
+- [x] N1 the bloom band: the strip is a SOLID GREY band (site grey #686474; the 2px ink borders kept) and the headline's fill rides the SAME grey at rest — the band reads empty until the reveal.
+- [x] N2 the reveal: the fill turns over to the warm white as the INK shadows bloom OUTWARD from the glyphs (a transition on the light-DOM copy span — a shadow list can only transition on the element carrying it, and the slot that holds the library's printed stack is unreachable from the page's tree; the equal-length resting list (18 transparent zero rungs) makes the paired interpolation engine-proof).
+- [x] N3 the shadows run BOTH ways: the x+- axis — the fib rungs (1 2 4 7 12 20 33 54 88) mirrored to a plus/minus pair per rung at the infinite fade alphas.
+- [x] N4 the bands rebuilt over their photos: 30vh tall; the LEFT 62% = the project photo as one background, chamfered on its right edge (the plates' 20px cuts, both right corners — the clip also scopes the title's difference blend to the shot); the title sits OVER the photo (mix-blend-mode difference), left justified AT the band edge, fill-size = the band's height (30vh em; --ln-name-fit steps a long run down to stay across its photo, NAME_SHARE 58).
+- [x] N5 the 12px crimson midline riding the band's vertical middle UNDER the glyphs (z 1 vs the title's 2; a third color prints where the difference fill crosses it).
+- [x] N6 the copy + the "go to ->" CTA sit on the RIGHT 38%: the fluro block (plate cyan) carries the copy and the button stacked, left-aligned on the plate's padding; novel still carries none.
+- [x] N7 the marquees' ride REMOVED (base pose, transition, drop animation and their reduce overrides all retired): they are the bands' borders — present before the reveal, the bands rise between them.
+- [x] N8 the entry's alternate rotation: each band overshoots +/-2deg on the rise (--ln-tilt per band: + - +), the SECOND band turning the OPPOSITE way, all settling level (interpretation read: the brief's "rotate" landed on the ENTRANCE, not a static tilt — a static full-bleed tilt would leave paper wedges at the band's edges at rest; vetoable to a static read with the same var).
+- [x] Verify: tsc clean; build clean; the full pass + a 1440 probe (the CTA's rect left == the copy's left, both fluro-flush) below. 0 console/page errors at all three widths; overflow clean everywhere; images loaded.
+- [x] Commit: "Now feedback round A: the grey bloom band with the outward two-way shadows, the photo bands over the difference titles, the midline, the bordered marquees, the alternate-turn entry".
+
+>> (Round-A run — 2026-10-30 ~18:3x: driver /tmp/nf31nowa-driver.mjs, results
+>> /tmp/nf31nowa-results.json, against the alive :4178 preview reused from round C.
+>> PRE-REVEAL (all widths): strip bg rgb(104,100,116) == the copy's fill (invisible,
+>> grey-on-grey); the copy's resting shadow list = 18 transparent zero rungs; the bands'
+>> matrices carry the tilts directly — b = +0.0349 / -0.0349 / +0.0349 (+2 / -2 / +2deg,
+>> the second turning opposite); BOTH marquees transform none + animationName none
+>> (static, pre and post). ENTRY pump: 17 strong samples per band mid-flight, signs
+>> 1/-1/1, settled transform none at all widths. SETTLED: bands 270.0px (30vh of 900) at
+>> 1440 AND 1024; the shot ratio 0.62 exact / fluro 0.38; clip-path polygon with calc
+>> 20px cuts; blend difference; nameLeft 0; runs 516.52 / 613.42 / 645.81 @1440 (all
+>> inside the 678.5 shot right edge — the fit machinery holds); titles 270 (fill) /
+>> 135.6 (fit-capped) / 244.16; ink stays in-band (inkPx 196.56 / 123.93 / 174.33 on a
+>> 270 band — fits true); the midline: height 12px, crimson rgb(166,2,42), center
+>> offset 0.0 from the band's middle at ALL bands/widths, z 1 under the title's 2;
+>> fluro plate rgb(20,241,200); CTA present bands 1-2 / absent band 3, its left flush
+>> with the copy's (698.22 == the copy's 698.22 @1440 — the padding rides the block,
+>> not the paragraph). 390: the stacked cards (382 / 357 / 292 tall — the first
+>> driver pass caught the shot COLLAPSED by the mobile % flex-basis (basis resolved
+>> against the column's indefinite height, the absolute-only shot went 0 tall; fixed
+>> flex basis auto, heights drive); the midline rides the TITLE (shot) middle in the
+>> card (-89.7px vs the band middle is the copy block below, per card design).
+>> CTA REAL click -> #/projects/1, back restores #now. Captures nf31nowa-*:
+>> header-1440/1024/390, band1/2/3-1440, band1/band2-1024, stack1/2/3-390 + the
+>> junction crops (the line stops at the photo's clipped edge; the plate untouched).)
+
 ## Phase 3 — Past Work: joins the landing
 
 **Files:** `src/components/LandingPast.tsx` (+ nothing — its data home already exists).
