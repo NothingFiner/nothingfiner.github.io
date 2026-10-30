@@ -1,8 +1,8 @@
 // New-design landing section two — the About rebuilt as Eliot's three
 // bands (the 2026-10-30 revamp brief; the Figma-mock era's story rows
 // and its old reading retired), amended in place by feedback round A
-// (2026-10-30 ~16:57, F1-F11) and feedback round B (2026-10-30 ~17:32,
-// B1-B6):
+// (2026-10-30 ~16:57, F1-F11), feedback round B (2026-10-30 ~17:32,
+// B1-B6) and iteration C (2026-10-30 ~17:59, C1-C9):
 //   band 1  a TICKER above the ~490px portrait seat — the headline
 //           "Trained Poet; Experienced Developer" keeps its shadow-less
 //           read (F6) but "Trained Poet;" now paints the FLURO GREEN
@@ -18,22 +18,30 @@
 //           whole band leads the section with a spacer that seats
 //           band-1 at the viewport's middle exactly when the sidebar
 //           parks (F5, re-verified after the B6 retune)
-//   band 2  "I've been Coding." is BACK IN THE GROW HEADER treatment
-//           (B2 — round A's typed headline retired with its
-//           composition) and the cursor-typing MOVED onto the two
-//           beside-lines (the hero's exact idiom: real text in the
-//           sr-only span, the aria-hidden typed copies, the cursor-ink
-//           knob = each line's ink), both typing as THIS band's own
-//           gate lands; the two widget pairs MIRROR (B4 — round A's
-//           above/below start-pairing yields): the asteroid shell LEFT
-//           of its line, then "Since then things have gotten serious."
-//           LEFT of the restored JOB_FRAMES cycle; the asteroid line
-//           opens on a 3ch tab (B5)
+//   band 2  "I've been Coding." in the grow header treatment (B2),
+//           RIGHT-JUSTIFIED for round C (C2: the ladder prints against
+//           the strip's right edge); the two widget rows are BOTH
+//           LEFT-ANCHORED start-aligned pairs (C3 — round B's mirror
+//           yields): panel·text / panel·text, each row's cursored line
+//           top-aligned against its panel's top edge; the beside-lines
+//           run at HALF their round-B size (C4: ~20px at 1440 via
+//           --ab-copy-type), and row 2's line types only AFTER row 1's
+//           print completes (C6's chained delay: row-1's pace end + a
+//           beat); the widgets reserve FULL-HEIGHT seats from first
+//           paint and shed the library's drop/shadow ladder
+//           per-instance (C5: fluro surface + border stay; the
+//           portrait keeps its isolated ink/no-plate look)
 //   band 3  a third TICKER + "My professional Journey." grow-head + the
 //           seven-node journey timeline, then the chamfered fluro
-//           plate — no longer the strip's full span: it FLOATS ~8vw
-//           inside the strip on both sides (B1) — whose copy still
-//           breathes 8vh/8vw from the field's edges (F9)
+//           plate — it still floats ~8vw inside the strip (B1) and its
+//           copy now hugs the field at 16px (C8); band 3's internals
+//           breathe on measured separations (C7: marquee→title 15vh ·
+//           title→timeline 5vh · timeline→plate 10vh), and the plate
+//           exhales 15vh to the next section over the 37.5vh tail
+//           reservation (C9)
+// Band 1's riders — the two marquees, the headline print, the portrait
+// cycler — arrive in LOCKSTEP on the band's single fire (C1: the mid
+// row shares the marquees' held pose and drop; no per-rider delays).
 // Every band's animations trigger only when THAT band enters the
 // viewport — one latched IntersectionObserver watching all three band
 // wrappers, each latching its own flag (F11; the section's own .ab-in
@@ -135,10 +143,13 @@ const JOURNEY: ReadonlyArray<{ readonly year: string; readonly label: string }> 
 const NODE_STEP_MS = 160;
 /* the .ab-fade transition's own tail — part of the plate's chain count */
 const FADE_TAIL_MS = 700;
+/* the one print-to-print beat — the pause between a finished print and
+   the next arrival; the plate's chain and row 2's chain (C6) share it */
+const PRINT_BEAT_MS = 240;
 /* the plate arrives AFTER the ladder settles: the last node's own moment
-   + its fade's tail + a 240ms beat — the story reads to its end, then
-   the plate */
-const PLATE_DELAY_MS = (JOURNEY.length - 1) * NODE_STEP_MS + FADE_TAIL_MS + 240;
+   + its fade's tail + the beat — the story reads to its end, then the
+   plate */
+const PLATE_DELAY_MS = (JOURNEY.length - 1) * NODE_STEP_MS + FADE_TAIL_MS + PRINT_BEAT_MS;
 
 /* band 2's typed beside-lines (B2): the hero's lead's own pacing —
    28ms/char, the body-copy pace the hero's typed lead types at; the
@@ -148,6 +159,10 @@ const PLATE_DELAY_MS = (JOURNEY.length - 1) * NODE_STEP_MS + FADE_TAIL_MS + 240;
 const COPY_CHAR_MS = 28;
 const ASTEROID_SCRIPT = 'It started with cloning asteroids\non my middle school graphic calculator.';
 const SERIOUS_SCRIPT = 'Since then things have gotten serious.';
+/* C6, the chain: row 2's typing WAITS for row 1 — its delay is row-1's
+   pace end (the script's own char count at the shared pace) + the beat;
+   the armed flag flips once, in a timer the band-2 effect cleans up */
+const ROW2_DELAY_MS = ASTEROID_SCRIPT.length * COPY_CHAR_MS + PRINT_BEAT_MS;
 
 export function LandingAbout() {
   // the section's own arrival latch (stays per F11's contract) — the
@@ -158,6 +173,9 @@ export function LandingAbout() {
   const [in1, setIn1] = useState(false);
   const [in2, setIn2] = useState(false);
   const [in3, setIn3] = useState(false);
+  // C6: row 2's line arms only after row 1's print settles — ' ' until
+  // the flag lands (see the chain effect below the widgets' frames)
+  const [rowBTypes, setRowBTypes] = useState(false);
   // the portraits' resolved art (null until every fetch lands) — the set
   // onto the element waits for BOTH this and band 1's fire
   const [portraitFrames, setPortraitFrames] = useState<string[] | null>(null);
@@ -254,6 +272,16 @@ export function LandingAbout() {
     if (job && job.frames.length === 0) job.frames = JOB_FRAMES;
   }, [in2]);
 
+  // C6: row 2's line arms AFTER row 1's print settles — the flag flips
+  // once at the chain's delay (ROW2_DELAY_MS); the timer's cleanup
+  // cancels it on teardown; the second line's cursor-type mounts
+  // silent (' ') and re-types-on-change when the flag lands
+  useEffect(() => {
+    if (!in2) return;
+    const timer = setTimeout(() => setRowBTypes(true), ROW2_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [in2]);
+
   // the ride-out wiring
   useEffect(() => rideOutUp(hostRef, flowRef, 0.5), []);
 
@@ -335,7 +363,9 @@ export function LandingAbout() {
              48px ticker bands + the seat) above and below the 50vh line
              at that scroll point */
           padding-top: calc(50vh - (var(--ab-band1-mid) + 2 * var(--ab-marquee-h)) / 2);
-          padding-bottom: calc(37.5vh + 8vh);
+          /* the tail's 37.5vh + C9's exhale: the plate clears the next
+             section's head ~15vh over the band's resting slot */
+          padding-bottom: calc(37.5vh + var(--ab-bottom-gap));
           overflow: hidden;
           font-family: var(--f-body, 'Inter', sans-serif);
           /* F2, the portrait's seat ≈ 2×: the mid row's height — and the
@@ -350,6 +380,24 @@ export function LandingAbout() {
              section breathes at 12vh between every band (the band
              wrappers' leading margins) */
           --ab-band-gap: 12vh;
+          /* C4, the beside-lines at HALF their round-B size: the round-B
+             body clamp bisected (22/2.8vw/40 → 11/1.4vw/20) — ~20px at
+             1440; the floor holds the smallest width's read */
+          --ab-copy-type: clamp(11px, 1.4vw, 20px);
+          /* C5, the widgets' reserved seats: full height from FIRST
+             paint — the pair's frames' tallest run is 5 lines at the
+             library's 1.3 line-height, and the border-box seat counts
+             the library's 2px border pair, so the boxes hold before,
+             during and after the type */
+          --ab-widget-seat: calc(6.5 * var(--ab-code-ascii-type) + 4px);
+          /* C7, band 3's measured separations: marquee→title ·
+             title→timeline · timeline→plate */
+          --ab-b3-gap-head: 15vh;
+          --ab-b3-gap-rail: 5vh;
+          --ab-b3-gap-plate: 10vh;
+          /* C9, the exhale after the plate: the about's bottom gap in
+             ADDITION to the 37.5vh tail reservation */
+          --ab-bottom-gap: 15vh;
           /* band 1's crimson flash: one-shot ~1.2s after the band's own
              reveal — the band's drop (0.7s) has settled and a beat
              passes, so the crimson lands as a second, deliberate mark
@@ -359,9 +407,9 @@ export function LandingAbout() {
              library's 48px default — the pair reads junior to the
              headline while staying legible on the mono grid */
           --ab-code-ascii-type: 32px;
-          /* F9, the plate copy's margin: ~8vh block / ~8vw inline from
-             the fluro field's edges */
-          --ab-plate-pad: 8vh 8vw;
+          /* C8, the plate's hug: 16px on every side (the round-B
+             8vh/8vw breath retires) */
+          --ab-plate-pad: 16px;
           /* F3, the portrait's slower cycle: the frame hold doubles —
              31 steps (30 frames + 2 hold steps) at 0.4s ≈ 12.8s/loop */
           --ab-ascii-step: 0.4s;
@@ -434,8 +482,10 @@ export function LandingAbout() {
           --glaphic-marquee-ink: ${RED};
           transform: translateY(-22vh);
         }
-        /* the print-in: the band drops whole (its rules ride with it) */
-        .ab-band.ab-on .ab-marquee {
+        /* the print-in: the band drops whole — the mid row's riders ride
+           the same beat with the marquees (C1) */
+        .ab-band.ab-on .ab-marquee,
+        .ab-band.ab-on .ab-band1-mid {
           animation: gl-marquee-drop 0.7s cubic-bezier(0.25, 1, 0.4, 1) both;
         }
         /* reduced motion: no drop — the band seats instantly (the base
@@ -445,6 +495,8 @@ export function LandingAbout() {
         @media (prefers-reduced-motion: reduce) {
           .landing-about .ab-marquee { transform: none; }
           .ab-band.ab-on .ab-marquee { animation: none; }
+          .landing-about .ab-band1-mid { transform: none; }
+          .ab-band.ab-on .ab-band1-mid { animation: none; }
         }
 
         /* band 1's sandwich reads TIGHT: the middle row hugs the leader
@@ -462,7 +514,12 @@ export function LandingAbout() {
            full non-sidebar width via the strip grammar (flush left, flush
            AT the parked panel's edge — the phase-1 bands' settled read);
            the headline keeps the flow's gutter inside */
+        /* C1: the headline's print and the cycle's seat hold the
+           marquees' drop pose — band 1's riders (the two marquees, this
+           row's contents) arrive as ONE piece on the band's single fire,
+           no per-rider delay differences */
         .ab-band1-mid {
+          transform: translateY(-22vh);
           margin-inline: -3.9vw 20.1vw;
           padding-left: 3.9vw;
           /* the small inset right: the portrait keeps its own breath off
@@ -547,39 +604,47 @@ export function LandingAbout() {
           --ab-band2-inset: calc(20.1vw + 3.1vw);
         }
         /* B2: the headline is the shared grow voice again (GrowHead's
-           own markup, band 3's .ab-head twin) — left-aligned like
-           band 3's, the shadow ladder keyed to THIS band's flag; only
-           its standoff pad rides here (round A's right-justified
-           typed-head rules retired with it) */
-        .ab-code-head { padding-top: 3.6vh; }
-        /* B4: the two rows mirror — row A is panel LEFT · line RIGHT,
-           row B is line LEFT · panel RIGHT (round A's above/below
-           start-pairing yields to adjacency), each pair centered on
-           its row line */
+           own markup, band 3's .ab-head twin), its shadow ladder keyed
+           to THIS band's flag; C2 flips the alignment — the ladder
+           prints against the STRIP'S RIGHT edge */
+        .ab-code-head {
+          text-align: right;
+          padding-top: 3.6vh;
+        }
+        /* C3: the two rows are BOTH left-anchored start-aligned pairs
+           (round B's mirror yields) — panel first, the line after, and
+           the line TOP-aligns against its panel's top edge */
         .ab-code-rows {
           margin-top: 4.4vh;
           display: grid;
           row-gap: 4.4vh;
         }
-        .ab-row-a {
+        .ab-row-a, .ab-row-b {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: flex-start;
-          column-gap: 2.5vw;
-        }
-        .ab-row-b {
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
           column-gap: 2.5vw;
         }
         .ab-widget {
           /* the pair's print size comes off the named var (the library's
              knob channel — an inherited set beats its :host default) */
           --glaphic-ascii-type: var(--ab-code-ascii-type);
-          /* the library's plate/border/blend/shadow stay INTACT on both
-             widgets — band 2 keeps the component's own look (F1's
-             isolation is band-1's only) */
+          /* C5: the boxes hold FULL-HEIGHT seats from first paint — the
+             reserved heights sit on the shadow's frame via the
+             per-instance part overrides below */
+        }
+        .ab-widget::part(box) {
+          /* the reserved seat: --ab-widget-seat = the frames' tallest
+             5-line run at the library's 1.3 line-height, border-boxed
+             (the boxes hold before, during and after the type) */
+          height: var(--ab-widget-seat);
+          /* C5: the drop/shadow ladder retires on THESE instances — the
+             fluro surface + border + multiply stay the library's look
+             (the portrait's isolation above is band 1's only); the base
+             paints no shadow, so killing the build parks everything at
+             the unshadowed rest */
+          animation: none;
+          box-shadow: none;
         }
         /* B2: the beside-lines now type (see the JSX idiom note): the
            cursor-type host rides as an inline-block cut of the row (the
@@ -588,7 +653,8 @@ export function LandingAbout() {
            retired — the typed line is the arrival now, no .ab-fade
            mount, and its inline --ab-d delays left with the fades) */
         .ab-code-copy {
-          font-size: clamp(22px, 2.8vw, 40px);
+          /* C4: the constant halved from round B's 2.8vw/40px clamp */
+          font-size: var(--ab-copy-type);
           line-height: 1.2;
         }
         .ab-code-copy glaphic-cursor-type {
@@ -612,11 +678,15 @@ export function LandingAbout() {
         .ab-dent glaphic-cursor-type { text-indent: var(--ab-copy-indent); }
 
         /* ── band 3: the journey timeline + the chamfered plate ──── */
+        /* C7's separations ride the named constants: the grow title
+           exhales off the marquee (15vh), the timeline off the title
+           (5vh), the plate off the timeline (10vh) */
+        .ab-head { margin-top: var(--ab-b3-gap-head); }
         /* full non-sidebar width (the strip grammar); the rail spans the
            strip edge-to-edge, the nodes' text keeps the flow's gutter */
         .ab-journey {
           margin-inline: -3.9vw 20.1vw;
-          margin-top: 4.4vh;
+          margin-top: var(--ab-b3-gap-rail);
           position: relative;
           padding-inline: 3.9vw;
         }
@@ -673,7 +743,7 @@ export function LandingAbout() {
              the centered read is the default; an offset read is a
              one-line margin tweak) */
           margin-inline: calc(var(--ab-plate-float) - 3.9vw) calc(20.1vw + var(--ab-plate-float));
-          margin-top: 4.4vh;
+          margin-top: var(--ab-b3-gap-plate); /* C7: the timeline → the plate */
           position: relative;
           isolation: isolate;
           /* the two chamfers, at the card's 20px amount: top-left +
@@ -690,7 +760,9 @@ export function LandingAbout() {
         .ab-plate-paint { position: absolute; inset: 0; }
         .ab-plate-copy {
           position: relative;
-          /* F9: the copy breathes far from the field's edges */
+          /* C8: the plate HUGS its copy — 16px on every side, the
+             chamfer's 20px cut riding the box edge (F9's 8vh/8vw
+             breath retires) */
           padding: var(--ab-plate-pad);
           font-size: clamp(12px, 1.18vw, 17px);
           line-height: 1.55;
@@ -738,10 +810,10 @@ export function LandingAbout() {
              and the right-hugged widget paints off-viewport, clipped by
              the section's overflow */
           .ab-code-rows { grid-template-columns: minmax(0, 1fr); }
-          /* row A stacks on mobile (B4's mirror is a desktop read):
-             the widget above its line; the p's typed reserve holds
-             through the print either way */
-          .ab-row-a { flex-direction: column; align-items: start; row-gap: 10px; }
+          /* both rows stack on mobile (C3's start-alignment is a
+             desktop read): the widget above its line; the p's typed
+             reserve holds through the print either way */
+          .ab-row-a, .ab-row-b { flex-direction: column; align-items: start; row-gap: 10px; }
           /* B1's float is a desktop strip read — the stacked mobile
              plate spans the column again */
           .ab-plate { margin-inline: 0; }
@@ -806,8 +878,9 @@ export function LandingAbout() {
               rules; the cursor typing moved onto the two beside-lines
               below (their idiom note carries the whys) */}
           <GrowHead text="I've been Coding." inView={in2} class="ab-code-head" />
-          {/* B2/B4: the mirrored rows — each widget sits BESIDE its line
-              (round A's above/below start-pairing yields). The typing is
+          {/* B2 + C3: the two rows are LEFT-ANCHORED start-aligned pairs
+              (round B's mirror yields) — each row runs panel first, its
+              cursored line after, tops aligned. The typing is
               the hero's exact idiom: the real text rides the sr-only
               span (it must exist at first paint — the cursor-type prints
               into a shadow root on a timer, which left the hero's h2
@@ -841,23 +914,25 @@ export function LandingAbout() {
               </p>
             </div>
             <div class="ab-row-b">
-              <p class="ab-code-copy">
-                <span class="sr-only">Since then things have gotten serious.</span>
-                <span aria-hidden="true">
-                  <glaphic-cursor-type
-                    text={in2 ? SERIOUS_SCRIPT : ' '}
-                    speed={COPY_CHAR_MS}
-                    cursor-vanish
-                    style={{ '--glaphic-cursor-type-cursor-ink': in2 ? INK : 'transparent' }}
-                  />
-                </span>
-              </p>
               <glaphic-ascii
                 ref={jobRef}
                 class="ab-widget"
                 role="img"
                 label="A monospace log types 2012 NYC, glitches through job codes, and drowns in a wall of currency — the work got serious"
               />
+              {/* C6: the second line arms only after row 1's print
+                  settles (the chain flag flips once — ROW2_DELAY_MS) */}
+              <p class="ab-code-copy">
+                <span class="sr-only">Since then things have gotten serious.</span>
+                <span aria-hidden="true">
+                  <glaphic-cursor-type
+                    text={rowBTypes ? SERIOUS_SCRIPT : ' '}
+                    speed={COPY_CHAR_MS}
+                    cursor-vanish
+                    style={{ '--glaphic-cursor-type-cursor-ink': rowBTypes ? INK : 'transparent' }}
+                  />
+                </span>
+              </p>
             </div>
           </div>
         </div>

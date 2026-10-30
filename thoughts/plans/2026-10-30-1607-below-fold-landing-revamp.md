@@ -234,10 +234,52 @@ Amends round B in place; scope stays `src/components/LandingAbout.tsx` ONLY. Pha
 - C8 **The plate hugs the text — padding 16px all around** (the chamfer keeps its cut close to the box edge; measured).
 - C9 **Plate → next section ≈ 15vh** (the about's bottom margin — measured so the visual gap from the plate to the next section's head lands ~15vh over the tail reservation).
 
-- [ ] C1-C6 applied and verified at 1440/1024 (the lockstep arrival, the right-justified ladder, the two start-aligned rows, the 20px typing, the full-height no-shadow panels, the row-2 chaining).
-- [ ] C7-C9: the three separations measured at all widths (record px).
-- [ ] Standing verification (3 widths, 0 errors, overflow clean; the park-pairing + reverse drift still holding); captures nf31p2d-* vp-suffixed.
-- [ ] Commit: "About iteration C: the lockstep intro, the right-justified ladder, the start-aligned typing rows, the full-height unshadowed panels, the journey's measured separations".
+- [x] C1-C6 applied and verified at 1440/1024 (the lockstep arrival, the right-justified ladder, the two start-aligned rows, the 20px typing, the full-height no-shadow panels, the row-2 chaining).
+- [x] C7-C9: the three separations measured at all widths (record px).
+- [x] Standing verification (3 widths, 0 errors, overflow clean; the park-pairing + reverse drift still holding); captures nf31p2d-* vp-suffixed.
+- [x] Commit: "About iteration C: the lockstep intro, the right-justified ladder, the start-aligned typing rows, the full-height unshadowed panels, the journey's measured separations".
+
+
+>> (Iteration-C run — 2026-10-30 ~18:2x: ONE driver pass (nf31p2d-driver.mjs + the nf31p2d-mini.mjs
+>> parked-pairing/cycle pass) against the alive :4178 preview (reused; the dist rebuilt before it).
+>> RECORDED — C1 the LOCKSTEP: band-1 fires at 736 (@ --ab-p 0.7397) at BOTH desktop widths and ALL
+>> THREE riders read identical at the fire — the lead marquee, the reversed marquee, .ab-band1-mid all
+>> animationName gl-marquee-drop, 0.7s, delay 0s, transform matrix(1,0,0,1,0,-198) (the shared hold —
+>> equal delays, one shared beat, no per-rider differences) — settling to matrix(…,0) by the park; the
+>> portraits' 30 frames land AT the fire. PARK PAIRING re-verified: park @ --ab-p 1 lands y 900-904 at
+>> both widths, band-1's center AT the park step = 450px @1440 (the 4px-step parkSample read) / 446px
+>> @1024 (the 8px-step read, one step shy) — the spacers' computed 157px holds band-1 at the viewport's
+>> middle at the park EXACTLY (C7/C9 moved nothing above band 1; the pairing is round-A/B-identical).
+>> C2: the grow ladder prints against the strip's RIGHT edge — the span's right = the strip's right =
+>> 1049.77 @1440 (Δ 0) / 746.52 @1024 (Δ 0), warm-white rgb(242,245,235), text "I've been Coding.".
+>> C3: BOTH rows left-anchored start-aligned panels-first: the panels flush at the band's content edge
+>> (rowA Δ 0, rowB Δ 0, starts equal), the cursored lines TOP-aligned (top Δ 0 in all three row reads at
+>> 1440 AND 1024); the copy reserves hold (rowA 48px = 2.4em @20px; rowB 24px = 1.2em). C4: the type
+>> reads 20px @1440 / 14.336px @1024 (1.4vw) / 11px @390 (the floor) — half of round B's clamp at every
+>> width. C5: the widgets hold 212px boxes (the border-box seat = 6.5 × 32px + the library's 4px border
+>> pair; scrollH 208 = clientH 208 — five 41.6px lines inside) at PRE-fire (mount), MID-print and
+>> SETTLED, box-shadow none and animationName none at every phase (the drop/shadow ladder retired
+>> per-instance) while the fluro surface rgb(20,241,200) + border solid 2px rgb(166,2,42) + multiply
+>> STAY; the portrait's isolation untouched (ink rgb(13,2,33), border 0, bg transparent, box 490). C6
+>> the CHAIN: row-2 types only AFTER row-1's settle — @1440: row-1 settles 73/73 at 2139ms from the
+>> band-2 fire, row-2's first growth 2387ms (gap 248 ≈ the 240ms beat); @1024: 2120 → 2362 (gap 242);
+>> finals 73 & 38; the mid captures show row-1 printing with row-2 silent, the chained captures show
+>> row-1 settled with row-2 printing. C7: marquee→title 135px · title→timeline 45px · timeline→plate
+>> 90px @1440 AND @1024 (= exactly 15/5/10 of the 900 viewport); @390: 126.59/42.19/84.39. C8: the
+>> computed padding 16px (the copy box flush on the plate: 0/0/0/0; the 20px chamfer keeps its cut).
+>> C9: plate → next section head = 472.5px @1440 AND @1024 (= the 37.5vh tail + the 15vh exhale =
+>> 52.5vh; computed padding-bottom 472.5px; the tech's head child .lt-flow sits AT the section's top) /
+>> 443.09px @390 (52.5vh of 844; pad-bottom 443.1px). STANDING: 0 console errors / 0 pageerrors on ALL
+>> loads (1440, 1024, 390); scrollWidth === clientWidth at every stop (top, the three band stops, page
+>> end) INCLUDING 390's three stops; the reverse marquee holds (dirs normal/reverse/normal; drift
+>> −101.53/+101.53/−101.53 over ~1.1s); the paragraph is verbatim (485 chars as the DOM reads);
+>> the portraits' cycle RUNS (the flip's animation clock read 1117 → 2050 → 3700ms). The 390's stack:
+>> band-1 559px · band-2 637px · band-3 958px; the rows STACK (the widget above its line; rowA's copy
+>> 184px at the floor type — round-B's squeezed 34ch rowB read is gone with the halved type). Captures
+>> nf31p2d-*: band1-park-1440/1024, band2-typed-mid-1440/1024, band2-chained-1440/1024,
+>> band2-settled-1440/1024, band3-plate-1440/1024, stack-stop1/2/3-390, portraits-a/b-1440; numbers in
+>> /tmp/nf31p2d-results.json (drivers /tmp/nf31p2d-driver.mjs + /tmp/nf31p2d-mini.mjs); the :4178
+>> preview reused alive throughout.)
 
 ## Phase 3 — Past Work: joins the landing
 
