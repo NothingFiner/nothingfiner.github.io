@@ -325,12 +325,34 @@ Amends the Phase-2 build in place; scope stays `src/components/LandingNow.tsx` O
 
 **Files:** `src/components/LandingPast.tsx` (+ nothing — its data home already exists).
 
-- [ ] Rebuild the section: the grow header ("Past Work." — D12) + TWO bands per D7: "E-Commerce" (Forever 21 · Reformation · Brooks Brothers) and "Custom Application Development" (Batesville) — at desktop each HALF the non-sidebar width (side by side, the pair spanning 0→panel edge), each band: its image (object-fit cover fill) + the bullet points (the entries' responsibilities, DRAFT-tagged per D7). Mobile: the two bands stack full width.
-- [ ] The see-all CTA (D11) at the bottom of the section → wouter-navigate('/past').
-- [ ] The section NOW carries: the .ln-in reveal idiom (it reuses it today with no consumer rules — wire the reveal to the bands' print), the 37.5vh tail reservation (today it has NONE — the band's rest slot must clear), the rideOutUp wiring (the sections' idiom), the ≤899px block. Do NOT set any `order` value here (the mobile order map is Phase 4's, re-derived once for the whole journey).
-- [ ] `src/data/pastWork.ts` stays UNTOUCHED (no category field invented — the mapping lives in the section's module scope as data, keyed by tag, with a comment naming it a DEFAULT mapping Eliot may remap).
-- [ ] **Verify:** tsc; build; 1440/1024: the two bands half-fill the non-sidebar space ending flush at the panel edge; images fill; bullets + DRAFT tags print; the see-all navigation works (REAL click → /past renders the bands); the reveal plays; the tail reserves (the band's foot does not overlap the section's content at page-end); 390: stacked full-width cards (capture). 0 errors; overflow clean. Screenshots nf31p3-*.
-- [ ] Tick + commit: "Past Work joins the landing — the two category bands + the see-all".
+- [x] Rebuild the section: the grow header ("Past Work." — D12) + TWO bands per D7: "E-Commerce" (Forever 21 · Reformation · Brooks Brothers) and "Custom Application Development" (Batesville) — at desktop each HALF the non-sidebar width (side by side, the pair spanning 0→panel edge), each band: its image (object-fit cover fill) + the bullet points (the entries' responsibilities, DRAFT-tagged per D7). Mobile: the two bands stack full width.
+- [x] The see-all CTA (D11) at the bottom of the section → wouter-navigate('/past').
+- [x] The section NOW carries: the .ln-in reveal idiom (it reuses it today with no consumer rules — wire the reveal to the bands' print), the 37.5vh tail reservation (today it has NONE — the band's rest slot must clear), the rideOutUp wiring (the sections' idiom), the ≤899px block. Do NOT set any `order` value here (the mobile order map is Phase 4's, re-derived once for the whole journey).
+- [x] `src/data/pastWork.ts` stays UNTOUCHED (no category field invented — the mapping lives in the section's module scope as data, keyed by tag, with a comment naming it a DEFAULT mapping Eliot may remap).
+- [x] **Verify:** tsc; build; 1440/1024: the two bands half-fill the non-sidebar space ending flush at the panel edge; images fill; bullets + DRAFT tags print; the see-all navigation works (REAL click → /past renders the bands); the reveal plays; the tail reserves (the band's foot does not overlap the section's content at page-end); 390: stacked full-width cards (capture). 0 errors; overflow clean. Screenshots nf31p3-*.
+- [x] Tick + commit: "Past Work joins the landing — the two category bands + the see-all".
+
+>> (Phase-3 run — 2026-10-30 ~18:5x: driver /tmp/nf31p3-driver.mjs, results
+>> /tmp/nf31p3-results.json, the alive :4178 preview reused. THE PAIR: right edge
+>> 1094.41 @1440 = the parked panel's left edge EXACTLY (1440 − 24vw; the flow's
+>> 3.9vw pad turns the item's 20.1vw pull into the panel standoff — the now bands'
+>> flush, unchanged); equal halves 538.56/538.58; heights EQUAL 535.53 (the copy
+>> mass drives, the other shot stretches), 550.53 @1024. THE BANDS: shot ratio
+>> 0.40; the plates' 20px chamfers; blend difference; the fit model RETUNED on the
+>> measured advances (E-Commerce 0.607em, CD's Application 0.578 — the 0.52 model
+>> overshot the run 23px onto the plate; ADVANCE_EM 0.62, LP_SHARE 36 → runs
+>> 189.88/180.39 inside the 215.42 shot); sizes 31.29/28.44px. THE COPY: 2 cyan
+>> plates rgb(20,241,200), 4 member labels, 16 drafted bullets verbatim, 2 DRAFT
+>> tags. THE REVEAL: pre-reveal rowY 126 (the 14vh hold), latched on arrival,
+>> rowT none settled, the latch HOLDS away from the section; tail padding 409.5px
+>> == 45.5vh exact. SEE-ALL REAL click -> #/past (the route prints PAST.001 ///
+>> BROOKS BROTHERS...), back restores. NOTE: the first capture pass came back
+>> INK — the click flow's PageWipe hold was still crossing over the element
+>> shots; shots reordered before the click. 390: the stacked cards (697.59 /
+>> 416.59; the first pass collapsed them — the row's 1 1 0 items in the
+>> auto-height column; flex 0 0 auto + column per the now cards' fix). 0 errors,
+>> overflow clean at all widths. Captures nf31p3-*: pair-1440, band1/band2-1440,
+>> pair-1024, band1/band2-1024, pair-390, stack1/2-390.)
 
 ## Phase 4 — the reorder + the sidebar (the journey lines up)
 
