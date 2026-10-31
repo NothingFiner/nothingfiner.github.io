@@ -47,7 +47,7 @@ export function BlogPost() {
           </h2>
 
           <div
-            class="prose prose-lg max-w-none text-theme blog-content"
+            class="max-w-none text-theme blog-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>

@@ -3,7 +3,7 @@ export function About() {
     <div class="min-h-screen p-8">
       <div class="max-w-4xl mx-auto">
         <div class="rounded-2xl panel p-8">
-          <div class="prose prose-lg max-w-none text-theme font-body">
+          <div class="max-w-none text-theme font-body">
             <p class="mb-4">
               I'm Elie. I've been coding since I was a kid. The first thing I ever coded was an attempt at an asteroid clone on a casio graphing calculator.
               I never could get it past enemy rendering: it got too slow. I'm sure I had a fundamental misunderstanding of how to implement a game loop.

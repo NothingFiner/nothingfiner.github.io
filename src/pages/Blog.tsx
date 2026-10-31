@@ -35,7 +35,7 @@ export function Blog() {
                 {post.title}
               </h2>
               <div 
-                class="text-theme prose prose-sm max-w-none"
+                class="text-theme max-w-none"
                 dangerouslySetInnerHTML={{ __html: post.content.replace(/<[^>]*>/g, '').trim().slice(0, 300) + '...' }}
               />
               <div class="mt-4">
