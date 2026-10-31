@@ -175,7 +175,7 @@ function startDriver(): void {
     }
     @keyframes pw-band-out { from { opacity: 1; } to { opacity: 0; } }
     .pw-page.pw-exit-on .grow-head__in {
-      animation: gl-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0s reverse both;
+      animation: landing-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0s reverse both;
     }
     /* the arrival (B + the no-held-swap plain entrance): the bands
        fade in — the grow-head's forward re-print is the bands page's

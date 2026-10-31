@@ -39,7 +39,7 @@
 /* plays once when the section's reveal flag lands; the `both` fill
    parks the stack at its full depth */
 .grow-head__in.grow-head--on {
-  animation: gl-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0.15s both;
+  animation: landing-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0.15s both;
 }
 
 /* the spark boxes' drop-build left with the ASCII cycle machine: it is
@@ -472,11 +472,11 @@
    registered with the band while they move. Sections gate it on
    their reveal flag and hold the pre-drop pose with a base transform
    (same from value, so there's no jump when the reveal lands). */
-@keyframes gl-marquee-drop {
+@keyframes landing-marquee-drop {
   from { transform: translateY(-22vh); }
   to { transform: translateY(0); }
 }
-@keyframes gl-grow {
+@keyframes landing-grow {
   0% {
     /* empty on purpose: the grow starts from the element's own base
        (no shadow) and builds from there */
@@ -519,31 +519,33 @@
   }
 }
 /* ── the landing sections' shared flow layer ─────────────────────
-   LandingPast and LandingNow co-use the padded flow grid and the
-   grow headline's slot (both sections' style blocks used to carry
-   identical copies). They live here ONCE: the blocks are the
-   landing's class layer (nothingfiner.md Anatomy); each section's
-   own style block keeps only its private rules (LandingNow's strip,
-   its root reset). */
-.ln-flow {
+   the landing sections' components co-use the padded flow grid and
+   the grow headline's slot (three style blocks used to carry identical
+   copies). They live here ONCE: the blocks are the landing's class
+   layer (nothingfiner.md Anatomy); each section's own style block keeps
+   only its private rules (LandingNow's strip, the sections' root
+   resets). */
+.landing-flow {
   position: relative;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  column-gap: 1.1vw;
+  column-gap: 1.1vw; /* the slight gutter */
   padding-inline: 3.9vw;
 }
-/* the head slot is scoped to the two sections that share it. LandingNow's
-   private `.landing-now * { margin: 0 }` reset prints LATER in document
-   order (its style block lives in the markup, after this stylesheet), so
-   at equal (0,1,0) it zeroed the head's mobile margin-bottom out from
-   under #now. Scoping lifts the shared rules to (0,2,0), which wins the
-   cascade regardless of document order. `.ln-flow`'s variants set no
-   margins, so the reset cannot touch them and they stay unscoped. */
-.landing-now .ln-head,
-.landing-past .ln-head { grid-column: 1 / -1; padding-top: 3.6vh; }
+/* the head slot is scoped to the sections that share it (the now section
+   has no grow head today — its headline is its own header-strip band).
+   Each section's private `<section> * { margin: 0 }` reset prints LATER
+   in document order (its style block lives in the markup, after this
+   stylesheet), so at equal (0,1,0) the reset zeroes the head's mobile
+   margin-bottom out from under the section. Scoping lifts the shared
+   rules to (0,2,0), which wins the cascade regardless of document
+   order. `.landing-flow`'s variants set no margins, so the reset cannot
+   touch them and they stay unscoped. */
+.landing-past .landing-past__head,
+.landing-technologies .landing-technologies__head { grid-column: 1 / -1; padding-top: 3.6vh; }
 
 @media (max-width: 899px) {
-  .ln-flow { display: flex; flex-direction: column; padding-inline: 6vw; }
-  .landing-now .ln-head,
-  .landing-past .ln-head { margin-bottom: 24px; padding-top: 44px; }
+  .landing-flow { display: flex; flex-direction: column; padding-inline: 6vw; }
+  .landing-past .landing-past__head,
+  .landing-technologies .landing-technologies__head { margin-bottom: 24px; padding-top: 44px; }
 }

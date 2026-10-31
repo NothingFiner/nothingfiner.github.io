@@ -62,7 +62,7 @@ export function LandingHero() {
           glyph band's grid-area, the strip's rows) needs a grid parent —
           this wrapper carries the same 12×8 tracks + full height, so
           the placements stay live while the wrapper's transform rides */}
-      <div ref={heroRideRef} class="hf-ride">
+      <div ref={heroRideRef} class="landing-hero__ride">
       <style>{`
         .landing-hero {
           display: grid;
@@ -86,7 +86,7 @@ export function LandingHero() {
            grid parent, so this wrapper carries the same 12×8 tracks + full
            height and the placements stay live while the wrapper's transform
            rides (see the JSX comment) */
-        .hf-ride {
+        .landing-hero__ride {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           grid-template-rows: repeat(8, minmax(0, 1fr));
@@ -95,7 +95,7 @@ export function LandingHero() {
         }
 
         /* ── the fold's own lower strip (grid rows 6-8) ───────────── */
-        .hf-strip {
+        .landing-hero__strip {
           grid-area: 6 / 1 / 9 / 13;
           /* a flex stage and the copy sits on its floor (the sticky ////'
              line parks below it) — it lands here however the fr rows resolve */
@@ -106,12 +106,12 @@ export function LandingHero() {
           padding-bottom: 5vh;
         }
         @media (max-width: 767px) {
-          .hf-strip { display: block; margin-top: 20px; padding-bottom: 28px; }
+          .landing-hero__strip { display: block; margin-top: 20px; padding-bottom: 28px; }
         }
 
         /* the typed copy block — the strip's bottom edge; the right 32vw
            stays clear for the band's menu / icons cluster */
-        .hf-copy {
+        .landing-hero__copy {
           width: 100%;
           padding-right: 32vw;
           display: flex;
@@ -121,10 +121,10 @@ export function LandingHero() {
         /* neither side of the row ever flex-shrinks: a squeezed headline
            would tip "Hi, I'm Elie." into a mid-type line-break (the wrap
            flash) — they overflow the row instead */
-        .hf-copy .gl-title { flex: none; }
-        .hf-copy .gl-lead { flex: none; }
+        .landing-hero__copy .landing-hero__title { flex: none; }
+        .landing-hero__copy .landing-hero__lead { flex: none; }
         @media (max-width: 767px) {
-          .hf-copy {
+          .landing-hero__copy {
             flex-direction: column;
             align-items: flex-start;
             width: auto;
@@ -132,9 +132,9 @@ export function LandingHero() {
             margin: 0 6vw;
             padding-right: 0;
           }
-          .hf-copy .gl-lead { padding-left: 0; padding-bottom: 0; gap: 6px; }
+          .landing-hero__copy .landing-hero__lead { padding-left: 0; padding-bottom: 0; gap: 6px; }
         }
-        .gl-title {
+        .landing-hero__title {
           padding-left: 2.3vw;
           font-family: var(--f-disp, sans-serif);
           font-weight: 700;
@@ -145,7 +145,7 @@ export function LandingHero() {
           /* the staged cursor-type mounts never re-flow the headline */
           white-space: nowrap;
         }
-        .gl-lead {
+        .landing-hero__lead {
           display: flex;
           flex-direction: column;
           gap: 8px;
@@ -160,32 +160,32 @@ export function LandingHero() {
            same display/body voice their row already carries; the wraps
            hold the ink, the cursor-type hosts ride as inline-block cuts
            of the line (their block cursors print the copy's own ink) */
-        .hf-type-hi, .hf-type-elie {
+        .landing-hero__type-hi, .landing-hero__type-elie {
           font-family: var(--f-disp, sans-serif);
           font-size: 1em;
         }
-        .hf-type-hi { color: ${CYAN}; }
-        .hf-type-elie { color: ${CRIMSON}; }
-        .hf-type-lead { color: ${INK}; font-weight: 600; }
-        .hf-type-hi > glaphic-cursor-type,
-        .hf-type-elie > glaphic-cursor-type,
-        .hf-type-lead > glaphic-cursor-type {
+        .landing-hero__type-hi { color: ${CYAN}; }
+        .landing-hero__type-elie { color: ${CRIMSON}; }
+        .landing-hero__type-lead { color: ${INK}; font-weight: 600; }
+        .landing-hero__type-hi > glaphic-cursor-type,
+        .landing-hero__type-elie > glaphic-cursor-type,
+        .landing-hero__type-lead > glaphic-cursor-type {
           font-size: 1em;
           font-weight: 700;
           display: inline-block;
           line-height: 1;
         }
-        .hf-type-hi > glaphic-cursor-type {
+        .landing-hero__type-hi > glaphic-cursor-type {
           color: ${CYAN};
           font-family: var(--f-disp, sans-serif);
           --glaphic-cursor-type-cursor-ink: ${CYAN};
         }
-        .hf-type-elie > glaphic-cursor-type {
+        .landing-hero__type-elie > glaphic-cursor-type {
           color: ${CRIMSON};
           font-family: var(--f-disp, sans-serif);
           --glaphic-cursor-type-cursor-ink: ${CRIMSON};
         }
-        .hf-type-lead > glaphic-cursor-type {
+        .landing-hero__type-lead > glaphic-cursor-type {
           color: ${INK};
           font-family: var(--f-body, sans-serif);
           font-weight: 600;
@@ -204,16 +204,16 @@ export function LandingHero() {
         }
         @media (max-width: 767px) {
           .landing-hero__legal { position: static; display: block; margin: 40px 6vw 0; padding-left: 0; opacity: 1; }
-          .gl-title {
+          .landing-hero__title {
             padding-left: 0;
           }
         }
 
         /* on-load fades */
-        .hero-fade { opacity: 0; animation: hero-fade-in 0.7s ease-out forwards; }
-        .gl-hold { opacity: 0; }
-        .gl-hold.gl-in { animation: hero-fade-in 0.7s ease-out forwards; }
-        @keyframes hero-fade-in { to { opacity: 1; } }
+        .landing-hero__fade { opacity: 0; animation: landing-hero-fade-in 0.7s ease-out forwards; }
+        .landing-hero__hold { opacity: 0; }
+        .landing-hero__hold.landing-hero__hold--in { animation: landing-hero-fade-in 0.7s ease-out forwards; }
+        @keyframes landing-hero-fade-in { to { opacity: 1; } }
       `}</style>
 
       {/* rows 1-5 — glyph band: one echoed pair; box height capped at 100%
@@ -222,9 +222,9 @@ export function LandingHero() {
 
       {/* rows 6-8 — the fold's typed copy (the sticky band's `////`
           copyright parks just below it at the page top) */}
-      <div class="hf-strip">
-        <div class="hf-copy">
-          <h2 class="gl-title">
+      <div class="landing-hero__strip">
+        <div class="landing-hero__copy">
+          <h2 class="landing-hero__title">
             {/* The heading's real text. It must exist at first paint: the two
                 cursor-type components below only render their string into a
                 shadow root after a typing delay, which left this h2 with an
@@ -233,7 +233,7 @@ export function LandingHero() {
                 The visible typed copies are aria-hidden because they are a
                 performance of these same words. */}
             <span class="sr-only">Elie Gaspar-Finer — frontend-focused senior engineer</span>
-            <span aria-hidden="true" class="gl-typewrap hf-type-hi">
+            <span aria-hidden="true" class="landing-hero__typewrap landing-hero__type-hi">
               <glaphic-cursor-type
                 text="Hi,"
                 speed={chHi}
@@ -241,7 +241,7 @@ export function LandingHero() {
               />
             </span>
             {showElie && (
-              <span aria-hidden="true" class="gl-typewrap hf-type-elie">
+              <span aria-hidden="true" class="landing-hero__typewrap landing-hero__type-elie">
                 <glaphic-cursor-type
                   text=" I'm Elie."
                   speed={chElie}
@@ -251,19 +251,19 @@ export function LandingHero() {
             )}
           </h2>
 
-          <div class="gl-lead">
+          <div class="landing-hero__lead">
             {/* same words as the h1's accessible text — hidden here so the role
                 isn't announced twice */}
-            <div class={`gl-hold ${copyIn ? 'gl-in' : ''}`} aria-hidden="true">
+            <div class={`landing-hero__hold ${copyIn ? 'landing-hero__hold--in' : ''}`} aria-hidden="true">
               FRONTEND_FOCUSED_SENIOR_ENGINEER
             </div>
-            <div class={`gl-hold ${copyIn ? 'gl-in' : ''}`} style={{ animationDelay: '0.2s' }}>
+            <div class={`landing-hero__hold ${copyIn ? 'landing-hero__hold--in' : ''}`} style={{ animationDelay: '0.2s' }}>
               12+ Years of Experience.
             </div>
             {/* always mounted: keeps the line box stable so the column doesn't
                 shift up when the line starts typing; text="" -> re-types on
                 change is the component's documented behavior */}
-            <div class="gl-typewrap hf-type-lead">
+            <div class="landing-hero__typewrap landing-hero__type-lead">
               <glaphic-cursor-type
                 text={copyIn ? 'Let me help you tell your story.' : ' '}
                 speed={28}

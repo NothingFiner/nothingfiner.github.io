@@ -80,11 +80,11 @@ export function LandingTechnologies() {
     <section
       id="technologies"
       ref={hostRef}
-      class={`landing-tech ${inView ? 'lt-in' : ''}`}
+      class={`landing-technologies ${inView ? 'landing-technologies--in' : ''}`}
       style={{ color: INK }}
     >
       <style>{`
-        .landing-tech {
+        .landing-technologies {
           position: relative;
           /* natural height — no forced single screens (as the about); the
              tail keeps the sticky band's resting slot clear of the cloud */
@@ -93,7 +93,7 @@ export function LandingTechnologies() {
           overflow: hidden;
           font-family: var(--f-body, 'Inter', sans-serif);
         }
-        .landing-tech * { margin: 0; box-sizing: border-box; }
+        .landing-technologies * { margin: 0; box-sizing: border-box; }
 
         /* ── reveal ───────────────────────────────────────────────
            the chips' print-in as a ROLL (glaphic-collapse's shrink-
@@ -105,47 +105,37 @@ export function LandingTechnologies() {
            chips still to its right keep popping, so the cloud
            compacts continuously from the left under the ongoing
            series and the wrap re-flows as the wave passes */
-        .lt-cloud glaphic-chip { opacity: 0; }
-        .landing-tech.lt-in .lt-cloud glaphic-chip {
-          animation: lt-pop 0.32s cubic-bezier(0.25, 1.4, 0.45, 1) var(--lt-d, 0ms) both;
+        .landing-technologies__cloud glaphic-chip { opacity: 0; }
+        .landing-technologies--in .landing-technologies__cloud glaphic-chip {
+          animation: landing-technologies-pop 0.32s cubic-bezier(0.25, 1.4, 0.45, 1) var(--lt-d, 0ms) both;
         }
-        @keyframes lt-pop {
+        @keyframes landing-technologies-pop {
           0% { opacity: 0; transform: scale(0.7); }
           45% { opacity: 1; transform: scale(1.05); }
           100% { opacity: 1; transform: none; }
         }
-        .lt-gap {
+        .landing-technologies__gap {
           display: block;
           height: 30px;
           flex: none;
           width: 44px;
         }
-        .landing-tech.lt-in .lt-gap {
+        .landing-technologies--in .landing-technologies__gap {
           width: 14px;
           /* each gap joins the roll behind its own chip — chained to
              the same noisy beat, so the lag carries into the slide */
           transition: width 90ms ease calc(var(--lt-d, 0ms) + 0.24s);
         }
         @media (prefers-reduced-motion: reduce) {
-          .landing-tech.lt-in .lt-cloud glaphic-chip { animation: none; opacity: 1; }
-          .lt-cloud glaphic-chip { opacity: 1; } /* the cloud is content: visible pre-gate too */
-          .landing-tech.lt-in .lt-gap { transition: none; }
+          .landing-technologies--in .landing-technologies__cloud glaphic-chip { animation: none; opacity: 1; }
+          .landing-technologies__cloud glaphic-chip { opacity: 1; } /* the cloud is content: visible pre-gate too */
+          .landing-technologies--in .landing-technologies__gap { transition: none; }
         }
-
-        /* ── the padded flow grid (content gets the gutter) ──────── */
-        .lt-flow {
-          position: relative;
-          display: grid;
-          grid-template-columns: repeat(12, 1fr);
-          column-gap: 1.1vw; /* the slight gutter */
-          padding-inline: 3.9vw;
-        }
-        .lt-head { grid-column: 1 / -1; padding-top: 3.6vh; }
 
         /* marquee — the same band the about runs; the rules are the COMPONENT'S
            (its own seated rails) and the band drops whole */
-        .lt-marquee { transform: translateY(-22vh); }
-        .lt-marquee {
+        .landing-technologies__marquee { transform: translateY(-22vh); }
+        .landing-technologies__marquee {
           position: absolute;
           left: 0;
           /* full bleed like the about's band (Eliot 10-30): the panel rides over the right run — an edge stop against the sidebar's slide reads odd */
@@ -162,61 +152,59 @@ export function LandingTechnologies() {
           --glaphic-marquee-ink: ${RED};
         }
         /* the print-in: the band drops whole (its rules ride with it) */
-        .landing-tech.lt-in .lt-marquee {
-          animation: gl-marquee-drop 0.7s cubic-bezier(0.25, 1, 0.4, 1) both;
+        .landing-technologies--in .landing-technologies__marquee {
+          animation: landing-marquee-drop 0.7s cubic-bezier(0.25, 1, 0.4, 1) both;
         }
         /* reduced motion: the band seats instantly (the base transform must
            clear too — animation:none alone leaves it parked at its -22vh
            hold, clipped off the section's top). These sit AFTER the drop
            rule so they win the cascade */
         @media (prefers-reduced-motion: reduce) {
-          .landing-tech .lt-marquee { transform: none; }
-          .landing-tech.lt-in .lt-marquee { animation: none; }
+          .landing-technologies .landing-technologies__marquee { transform: none; }
+          .landing-technologies--in .landing-technologies__marquee { animation: none; }
         }
 
         /* ── the chip cloud ────────────────────────────────────────
            wraps like a scatter on the same grid span the about's story
            uses (1-9); the cascade staggers each chip a beat apart */
-        .lt-cloud {
+        .landing-technologies__cloud {
           grid-column: 1 / span 9;
           display: flex;
           flex-wrap: wrap;
           align-content: flex-start;
-          gap: 18px 0; /* columns come from the .lt-gap spans */
+          gap: 18px 0; /* columns come from the .landing-technologies__gap spans */
           margin-top: 13.8vh;
           max-width: 52vw;
         }
         /* a nudge up from the spec's 25px chip for the showcase scale */
-        .lt-cloud glaphic-chip {
+        .landing-technologies__cloud glaphic-chip {
           --glaphic-chip-height: 30px;
           --glaphic-chip-label-size: 12px;
           --glaphic-chip-well-size: 20px;
           --glaphic-chip-well-width: 30px;
           align-items: center;
         }
-        .lt-cloud glaphic-chip .chip-icon {
+        .landing-technologies__cloud glaphic-chip .landing-technologies__chip-icon {
           display: inline-grid;
           place-items: center;
         }
 
         /* ── mobile: the flow stacks (as the about) ── */
         @media (max-width: 899px) {
-          .landing-tech { height: auto; /* the Phase-4 map's tech slot (the last mobile stop) */ order: 4; }
-          .lt-flow { display: flex; flex-direction: column; padding-inline: 6vw; }
-          .lt-head { margin-bottom: 24px; padding-top: 44px; }
-          .lt-marquee { position: static; }
+          .landing-technologies { height: auto; /* the Phase-4 map's tech slot (the last mobile stop) */ order: 4; }
+          .landing-technologies__marquee { position: static; }
           /* the component's own rails; the top one rests on mobile */
-          .lt-marquee::part(rail-top) { display: none; }
-          .lt-marquee { right: 0; margin-inline: -6vw; }
-          .lt-cloud { margin-bottom: 40px; max-width: none; gap: 14px 0; }
+          .landing-technologies__marquee::part(rail-top) { display: none; }
+          .landing-technologies__marquee { right: 0; margin-inline: -6vw; }
+          .landing-technologies__cloud { margin-bottom: 40px; max-width: none; gap: 14px 0; }
         }
       `}</style>
 
       {/* flow grid: the grow headline + the chip cloud */}
-      <div class="lt-flow">
-        <GrowHead text="Tools I've used." inView={inView} class="lt-head" />
+      <div class="landing-flow">
+        <GrowHead text="Tools I've used." inView={inView} class="landing-technologies__head" />
 
-        <div class="lt-cloud">
+        <div class="landing-technologies__cloud">
           {technologies.map((tech, i) => (
             <Fragment key={tech.name}>
               <glaphic-chip
@@ -226,11 +214,11 @@ export function LandingTechnologies() {
                 wide
               >
                 {tech.name}
-                <span slot="icon" class="chip-icon">
+                <span slot="icon" class="landing-technologies__chip-icon">
                   <Icon name={tech.icon} size={18} />
                 </span>
               </glaphic-chip>
-              <i class="lt-gap" aria-hidden="true" style={{ '--lt-d': `${beat(i)}ms` }} />
+              <i class="landing-technologies__gap" aria-hidden="true" style={{ '--lt-d': `${beat(i)}ms` }} />
             </Fragment>
           ))}
         </div>
@@ -239,7 +227,7 @@ export function LandingTechnologies() {
       {/* decorative full-bleed: the band extends to the page's edge so the read stays good as the crimson sidebar slides over it — the marquee runs the full viewport, the panel riding on top of its right end */}
       <glaphic-marquee
         ref={marqueeRef}
-        class="lt-marquee"
+        class="landing-technologies__marquee"
         aria-hidden="true"
       />
     </section>

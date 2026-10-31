@@ -194,7 +194,7 @@ function startDriver(): void {
     }
     @keyframes pd-index-card-out { from { opacity: 1; } to { opacity: 0; } }
     .pr-page.pr-exit-on .grow-head__in {
-      animation: gl-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0s reverse both;
+      animation: landing-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0s reverse both;
     }
     /* the arrival (B + the no-held-swap plain entrance): the index's
        cards fade in — the grow-head's forward re-print is the index

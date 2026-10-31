@@ -36,7 +36,7 @@
 //             an alternate +/-2deg rotation on the way (odd bands
 //             counter-clockwise, even clockwise — the second band turns
 //             opposite the first) and settling level
-// The reveal: all two-way on the section's .ln-in flag.
+// The reveal: all two-way on the section's .landing-now--in flag.
 //
 // COPY (provenance): Rite's band copy is the live slide description
 // verbatim; glaphicUI's and novel's are the landing's draft lines. The
@@ -156,7 +156,7 @@ export function LandingNow() {
     <section
       id="now"
       ref={hostRef}
-      class={`landing-now ${inView ? 'ln-in' : ''}`}
+      class={`landing-now ${inView ? 'landing-now--in' : ''}`}
       style={{ color: INK }}
     >
       <style>{`
@@ -180,24 +180,24 @@ export function LandingNow() {
            forwards fill — a filled wrapper stays composited and
            isolates its blends (the pool plates' trap), and the two-way
            flag reverses the ride with the scroll */
-        .ln-header-strip,
-        .ln-band {
+        .landing-now__header-strip,
+        .landing-now__band {
           grid-column: 1 / -1;
           margin-inline: -3.9vw 20.1vw;
           transform: translateY(14vh) rotate(var(--ln-tilt, 0deg));
           transition: transform 0.7s cubic-bezier(0.25, 1, 0.4, 1) 0.1s;
         }
-        .landing-now.ln-in .ln-header-strip,
-        .landing-now.ln-in .ln-band {
+        .landing-now--in .landing-now__header-strip,
+        .landing-now--in .landing-now__band {
           transform: none;
         }
         @media (prefers-reduced-motion: reduce) {
-          .ln-header-strip, .ln-band { transition: none; transform: none; }
+          .landing-now__header-strip, .landing-now__band { transition: none; transform: none; }
         }
 
         /* the bloom band: solid grey, 2px ink borders top+bottom, the
            headline centered */
-        .ln-header-strip {
+        .landing-now__header-strip {
           margin-top: 3.6vh;
           display: grid;
           place-items: center;
@@ -205,7 +205,7 @@ export function LandingNow() {
           border-block: 2px solid ${INK};
           background: ${GREY};
         }
-        .ln-bloom {
+        .landing-now__bloom {
           --glaphic-text-font: 700 clamp(34px, 4.9vw, 70px)/1.05
             var(--f-disp, 'Space Grotesk', sans-serif);
           letter-spacing: -0.02em;
@@ -221,7 +221,7 @@ export function LandingNow() {
            rung-for-rung on every engine, where the none-to-list pad
            behavior is not guaranteed — the 0-in-alpha channels are
            exactly the shadow ink's */
-        .ln-bloom-copy {
+        .landing-now__bloom-copy {
           color: ${GREY};
           text-shadow:
             rgba(13, 2, 33, 0) 0 0, rgba(13, 2, 33, 0) 0 0,
@@ -237,7 +237,7 @@ export function LandingNow() {
             text-shadow 0.7s cubic-bezier(0.25, 1, 0.4, 1) 0.1s,
             color 0.7s cubic-bezier(0.25, 1, 0.4, 1) 0.1s;
         }
-        .landing-now.ln-in .ln-bloom-copy {
+        .landing-now--in .landing-now__bloom-copy {
           color: ${PAPER};
           text-shadow:
             rgba(13, 2, 33, 0.64) 1px 0, rgba(13, 2, 33, 0.64) -1px 0,
@@ -254,11 +254,11 @@ export function LandingNow() {
            apply instantly (these sit AFTER the base rules so they win
            the cascade) */
         @media (prefers-reduced-motion: reduce) {
-          .ln-bloom-copy { transition: none; }
+          .landing-now__bloom-copy { transition: none; }
         }
 
         /* the project bands (30vh at desktop) */
-        .ln-band {
+        .landing-now__band {
           position: relative;
           height: 30vh;
           margin-top: 2.2vh;
@@ -274,13 +274,13 @@ export function LandingNow() {
            chamfered on its right edge (the plates' 20px cuts); the clip
            also scopes the title's difference blend to what sits inside
            the shot (a clip-path is its own stacking context) */
-        .ln-band-shot {
+        .landing-now__band-shot {
           position: relative;
           flex: 0 0 62%;
           overflow: hidden;
           clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
         }
-        .ln-band-shot img {
+        .landing-now__band-shot img {
           position: absolute;
           inset: 0;
           width: 100%;
@@ -290,7 +290,7 @@ export function LandingNow() {
         /* the crimson midline: the 12px stroke riding the band's
            vertical middle — where the fill-size title centers its run —
            under the glyphs (z 1; the title rides at 2) */
-        .ln-band-line {
+        .landing-now__band-line {
           position: absolute;
           left: 0;
           right: 0;
@@ -308,7 +308,7 @@ export function LandingNow() {
            steps a long name down to stay across its photo; the ink
            sits inside the em box with measured air (the driver's
            ink-fit check holds) */
-        .ln-band-name {
+        .landing-now__band-name {
           position: absolute;
           inset-block: 0;
           left: 0;
@@ -325,7 +325,7 @@ export function LandingNow() {
         }
         /* the right 38%: the fluro block — the plate paints the tone,
            the copy and the CTA print above the paint */
-        .ln-band-fluro {
+        .landing-now__band-fluro {
           position: relative;
           flex: 0 0 38%;
           display: flex;
@@ -335,16 +335,16 @@ export function LandingNow() {
           padding: 2cqw 1.8cqw;
           gap: 2.6vh;
         }
-        .ln-band-plate {
+        .landing-now__band-plate {
           position: absolute;
           inset: 0;
         }
-        .ln-band-copy {
+        .landing-now__band-copy {
           position: relative;
           font-size: clamp(11px, 1.05vw, 15px);
           line-height: 1.5;
         }
-        .ln-band-cta {
+        .landing-now__band-cta {
           position: relative;
         }
 
@@ -352,7 +352,7 @@ export function LandingNow() {
            of their own: present before the reveal, the bands rise
            between them. Full-bleed at BOTH edges (the panel rides over
            the right run) */
-        .ln-marquee {
+        .landing-now__marquee {
           grid-column: 1 / -1;
           margin-top: 2.2vh;
           margin-inline: -3.9vw -3.9vw;
@@ -371,7 +371,7 @@ export function LandingNow() {
            draft copy can't pass as sourced; it binds to the entry's
            copy flag). Block display: it owns its line above the copy.
            Its margins beat the root's * reset — same block, later */
-        .ln-draft {
+        .landing-now__draft {
           display: block;
           margin: 0 0 10px;
           border: 2px solid ${INK};
@@ -388,56 +388,56 @@ export function LandingNow() {
            section) */
         @media (max-width: 899px) {
           .landing-now { height: auto; /* the Phase-4 map's now slot (the journey's 3rd section) */ order: 2; }
-          .ln-header-strip,
-          .ln-band { margin-inline: -6vw 0; }
-          .ln-header-strip { margin-top: 8vh; padding-block: 2.6vh; }
-          .ln-band { height: auto; flex-direction: column; }
+          .landing-now__header-strip,
+          .landing-now__band { margin-inline: -6vw 0; }
+          .landing-now__header-strip { margin-top: 8vh; padding-block: 2.6vh; }
+          .landing-now__band { height: auto; flex-direction: column; }
           /* the column's % flex-basis would fight the explicit heights
              (a basis resolves against the column's indefinite height and
              collapses the absolute-only shot to 0): the heights are the
              drivers here */
-          .ln-band-shot { flex: 0 0 auto; height: 52vw; }
-          .ln-band-name { font-size: min(24vw, var(--ln-name-fit, 24vw)); }
-          .ln-band-fluro { flex: 0 0 auto; padding: 18px 16px; }
-          .ln-band-copy { font-size: 13px; }
-          .ln-marquee { margin-inline: -6vw; }
+          .landing-now__band-shot { flex: 0 0 auto; height: 52vw; }
+          .landing-now__band-name { font-size: min(24vw, var(--ln-name-fit, 24vw)); }
+          .landing-now__band-fluro { flex: 0 0 auto; padding: 18px 16px; }
+          .landing-now__band-copy { font-size: 13px; }
+          .landing-now__marquee { margin-inline: -6vw; }
         }
       `}</style>
 
-      <div class="ln-flow" ref={flowRef}>
+      <div class="landing-flow" ref={flowRef}>
         {/* the bloom band — the headline is the band's one content */}
-        <h2 class="ln-header-strip">
-          <glaphic-text class="ln-bloom" variant="infinite" axis="x+-">
-            <span class="ln-bloom-copy">What I'm up to.</span>
+        <h2 class="landing-now__header-strip">
+          <glaphic-text class="landing-now__bloom" variant="infinite" axis="x+-">
+            <span class="landing-now__bloom-copy">What I'm up to.</span>
           </glaphic-text>
         </h2>
 
         {bands.map((band, i) => (
           <Fragment key={band.title}>
             <article
-              class="ln-band"
+              class="landing-now__band"
               style={{ '--ln-name-fit': band.fit, '--ln-tilt': band.tilt }}
             >
               {/* the photo half — the title over it, the line under
                   the title's glyphs */}
-              <div class="ln-band-shot">
+              <div class="landing-now__band-shot">
                 <img src={band.project.image} alt={band.project.title} loading="lazy" />
-                <span class="ln-band-line" aria-hidden="true" />
-                <h3 class="ln-band-name">{band.project.title}</h3>
+                <span class="landing-now__band-line" aria-hidden="true" />
+                <h3 class="landing-now__band-name">{band.project.title}</h3>
               </div>
               {/* the fluro half — the plate is paint-only: the copy and
                   the CTA print above it */}
-              <div class="ln-band-fluro">
-                <glaphic-plate class="ln-band-plate" tone="cyan" aria-hidden="true" />
-                <p class="ln-band-copy">
+              <div class="landing-now__band-fluro">
+                <glaphic-plate class="landing-now__band-plate" tone="cyan" aria-hidden="true" />
+                <p class="landing-now__band-copy">
                   {band.project.copy === 'draft' && (
-                    <span class="ln-draft">DRAFT COPY — AWAITING ELIOT</span>
+                    <span class="landing-now__draft">DRAFT COPY — AWAITING ELIOT</span>
                   )}
                   {band.copy}
                 </p>
                 {band.cta && (
                   <glaphic-button
-                    class="ln-band-cta"
+                    class="landing-now__band-cta"
                     variant="solid"
                     chamfered
                     style={{ ...GO_TO }}
@@ -451,7 +451,7 @@ export function LandingNow() {
             {/* the marquees ride BETWEEN the bands (none after the last) */}
             {i < bands.length - 1 && (
               <glaphic-marquee
-                class="ln-marquee"
+                class="landing-now__marquee"
                 aria-hidden="true"
                 ref={(el) => { marqueeEls.current[i] = el; }}
               />

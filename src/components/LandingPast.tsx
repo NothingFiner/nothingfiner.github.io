@@ -108,7 +108,7 @@ export function LandingPast() {
     <section
       id="past"
       ref={hostRef}
-      class={`landing-past ${inView ? 'ln-in' : ''}`}
+      class={`landing-past ${inView ? 'landing-past--in' : ''}`}
       style={{ color: INK }}
     >
       <style>{`
@@ -129,7 +129,7 @@ export function LandingPast() {
            one move; a TRANSITION, not a forwards fill (a filled wrapper
            stays composited and isolates its blends — the pool plates'
            trap) */
-        .lp-bands {
+        .landing-past__bands {
           grid-column: 1 / -1;
           margin-inline: -3.9vw 20.1vw;
           margin-top: 2.2vh;
@@ -139,15 +139,15 @@ export function LandingPast() {
           transform: translateY(14vh);
           transition: transform 0.7s cubic-bezier(0.25, 1, 0.4, 1) 0.1s;
         }
-        .landing-past.ln-in .lp-bands { transform: none; }
+        .landing-past--in .landing-past__bands { transform: none; }
         @media (prefers-reduced-motion: reduce) {
-          .lp-bands { transition: none; transform: none; }
+          .landing-past__bands { transition: none; transform: none; }
         }
 
         /* one category band: the photo shot left, the copy plate right;
            the pair's height rides the copy's mass (the E-Commerce plate
            drives), the other band's shot stretches to meet it */
-        .lp-band {
+        .landing-past__band {
           position: relative;
           flex: 1 1 0;
           min-width: 0;
@@ -158,7 +158,7 @@ export function LandingPast() {
              the copy's inset read off the band's own width */
           container-type: inline-size;
         }
-        .lp-band-shot {
+        .landing-past__band-shot {
           position: relative;
           flex: 0 0 40%;
           overflow: hidden;
@@ -168,7 +168,7 @@ export function LandingPast() {
           clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
           min-height: 30vh;
         }
-        .lp-band-shot img {
+        .landing-past__band-shot img {
           position: absolute;
           inset: 0;
           width: 100%;
@@ -178,7 +178,7 @@ export function LandingPast() {
         /* the category name: difference-blended over the photo, wrapped
            (the long category fills its lines, balanced) and bounded by
            --lp-name-fit so no chunk crosses onto the copy plate */
-        .lp-band-name {
+        .landing-past__band-name {
           position: absolute;
           inset-block: 0;
           left: 0;
@@ -197,7 +197,7 @@ export function LandingPast() {
         }
         /* the copy plate: the plate paints the tone, the draft tag and
            the member groups print above the paint */
-        .lp-band-fluro {
+        .landing-past__band-fluro {
           position: relative;
           flex: 1 1 auto;
           display: flex;
@@ -206,13 +206,13 @@ export function LandingPast() {
           padding: 2.2vh 2.2cqw 2.6vh;
           gap: 1.6vh;
         }
-        .lp-band-plate {
+        .landing-past__band-plate {
           position: absolute;
           inset: 0;
         }
         /* the draft tag — the now bands' honest-provenance treatment,
            copied (the now section owns its class) */
-        .lp-draft {
+        .landing-past__draft {
           position: relative;
           border: 2px solid ${INK};
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
@@ -223,7 +223,7 @@ export function LandingPast() {
         }
         /* the member label: the entry's name leads its bullets in the
            mono label voice (the draft tag's scale, no border) */
-        .lp-band-member {
+        .landing-past__band-member {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 9px;
           font-weight: 600;
@@ -233,7 +233,7 @@ export function LandingPast() {
         }
         /* the drafted responsibilities, verbatim: the list voice sits a
            step under the band-copy clamp — the plate's density read */
-        .lp-band-bullets {
+        .landing-past__band-bullets {
           padding-left: 14px;
           font-size: clamp(10px, 0.78vw, 11px);
           line-height: 1.5;
@@ -241,7 +241,7 @@ export function LandingPast() {
 
         /* the see-all CTA (D11's one voice) — a normal flow item at the
            section's left content edge, under the pair */
-        .lp-see-all {
+        .landing-past__see-all {
           grid-column: 1 / -1;
           margin-top: 4.2vh;
           justify-self: start;
@@ -256,42 +256,42 @@ export function LandingPast() {
             order: 3;
             padding-bottom: calc(37.5vh + 8vh);
           }
-          .lp-bands { margin-inline: -6vw 0; flex-direction: column; gap: 2.2vh; }
+          .landing-past__bands { margin-inline: -6vw 0; flex-direction: column; gap: 2.2vh; }
           /* the column's % bases fight the explicit heights: the
              auto bases and the heights drive (the now cards' fix;
              a 1 1 0 band basis collapses in the auto-height column) */
-          .lp-band { flex: 0 0 auto; flex-direction: column; }
-          .lp-band-shot { flex: 0 0 auto; width: 100%; min-height: 44vw; }
-          .lp-band-name { font-size: min(24vw, var(--lp-name-fit, 24vw)); }
-          .lp-band-fluro { width: 100%; padding: 18px 16px; gap: 12px; }
-          .lp-band-bullets { font-size: 12px; }
-          .lp-see-all { margin-top: 3vh; }
+          .landing-past__band { flex: 0 0 auto; flex-direction: column; }
+          .landing-past__band-shot { flex: 0 0 auto; width: 100%; min-height: 44vw; }
+          .landing-past__band-name { font-size: min(24vw, var(--lp-name-fit, 24vw)); }
+          .landing-past__band-fluro { width: 100%; padding: 18px 16px; gap: 12px; }
+          .landing-past__band-bullets { font-size: 12px; }
+          .landing-past__see-all { margin-top: 3vh; }
         }
       `}</style>
 
       {/* the flow grid + head slot print from landing.css's shared layer */}
-      <div class="ln-flow" ref={flowRef}>
-        <GrowHead text="Past Work." inView={inView} class="ln-head" />
+      <div class="landing-flow" ref={flowRef}>
+        <GrowHead text="Past Work." inView={inView} class="landing-past__head" />
 
         {/* the pair: two half-width bands in the full-bleed row; the
             row owns the flush and the arrival's rise */}
-        <div class="lp-bands">
+        <div class="landing-past__bands">
           {categories.map((cat) => (
-            <article class="lp-band" key={cat.name} style={{ '--lp-name-fit': cat.fit }}>
+            <article class="landing-past__band" key={cat.name} style={{ '--lp-name-fit': cat.fit }}>
             {/* the photo shot — the head entry's main image cover-fills
                 it whole, the category name over it */}
-            <div class="lp-band-shot">
+            <div class="landing-past__band-shot">
               <img src={cat.image} alt={`The ${cat.works[0].name.toLowerCase()} storefront build`} loading="lazy" />
-              <h3 class="lp-band-name">{cat.name}</h3>
+              <h3 class="landing-past__band-name">{cat.name}</h3>
             </div>
             {/* the copy plate — the plate paints, the tag + groups print */}
-            <div class="lp-band-fluro">
-              <glaphic-plate class="lp-band-plate" tone="cyan" aria-hidden="true" />
-              <span class="lp-draft">DRAFT COPY — AWAITING ELIOT</span>
+            <div class="landing-past__band-fluro">
+              <glaphic-plate class="landing-past__band-plate" tone="cyan" aria-hidden="true" />
+              <span class="landing-past__draft">DRAFT COPY — AWAITING ELIOT</span>
               {cat.works.map((work) => (
                 <Fragment key={work.tag}>
-                  <b class="lp-band-member">{work.name}</b>
-                  <ul class="lp-band-bullets">
+                  <b class="landing-past__band-member">{work.name}</b>
+                  <ul class="landing-past__band-bullets">
                     {work.responsibilities.map((line) => (
                       <li key={line}>{line}</li>
                     ))}
@@ -305,7 +305,7 @@ export function LandingPast() {
 
         {/* the see-all: the pair's one route out */}
         <glaphic-button
-          class="lp-see-all"
+          class="landing-past__see-all"
           variant="solid"
           chamfered
           style={{ ...GO_TO }}

@@ -448,7 +448,7 @@ export function LandingAbout() {
 
         /* the nav tool panel is LandingPanel now (a component alongside
            this one) — a fixed column covering every landing stretch beyond
-           the first fold; the sticky footer band's CSS (.lf-band) pairs
+           the first fold; the sticky footer band's CSS (.site-footer__band) pairs
            with it ── */
 
         /* ── the padded flow grid (content gets the gutter) ──────── */
@@ -468,7 +468,7 @@ export function LandingAbout() {
            arrives). In-band the marquee leads at zero (the band's own
            wrapper owns the spacing); on the band's reveal each band
            rides down into place (no fade): held up off the section's
-           top by the base transform, the shared gl-marquee-drop drops
+           top by the base transform, the shared landing-marquee-drop drops
            them in together */
         .ab-marquee {
           margin-inline: -3.9vw -3.9vw;
@@ -486,7 +486,7 @@ export function LandingAbout() {
            the same beat with the marquees (C1) */
         .ab-band.ab-on .ab-marquee,
         .ab-band.ab-on .ab-band1-mid {
-          animation: gl-marquee-drop 0.7s cubic-bezier(0.25, 1, 0.4, 1) both;
+          animation: landing-marquee-drop 0.7s cubic-bezier(0.25, 1, 0.4, 1) both;
         }
         /* reduced motion: no drop — the band seats instantly (the base
            transform must clear too; animation:none alone leaves it parked
@@ -537,7 +537,7 @@ export function LandingAbout() {
           align-items: center;
         }
         /* the headline: shadow-less still (F6 — the shared .grow-head
-           class here carries only the type voice; no .grow-head-in
+           class here carries only the type voice; no .grow-head__in
            mount, so the grow shadow ladder never plays on this h2).
            B3 paints the lead phrase fluro green; the one-shot crimson
            flash span stays the headline's only animation */

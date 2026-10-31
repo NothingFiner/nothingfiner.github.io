@@ -65,7 +65,7 @@ export function LandingPanel() {
     gain: null,
     was: null,
   });
-  // per-link fan memory — indices whose ab-fan has played, so a later
+  // per-link fan memory — indices whose landing-panel-fan has played, so a later
   // active switch only ever wipes colors; only arrival and the pool
   // menu handing the corner back re-fan (refs keep the scroll handler
   // closure-free)
@@ -111,7 +111,7 @@ export function LandingPanel() {
       // back on the way up
       const nowTop = document.querySelector('.landing-now')?.getBoundingClientRect().top;
       const pastTop = document.querySelector('.landing-past')?.getBoundingClientRect().top;
-      const techTop = document.querySelector('.landing-tech')?.getBoundingClientRect().top;
+      const techTop = document.querySelector('.landing-technologies')?.getBoundingClientRect().top;
       let want = INDEX.ABOUT;
       if (nowTop !== undefined && nowTop <= vh * 0.5) want = INDEX.NOW;
       if (pastTop !== undefined && pastTop <= vh * 0.5) want = INDEX.PAST;
@@ -197,7 +197,7 @@ export function LandingPanel() {
   };
 
   return (
-    <div class={`landing-panel ${arrived ? 'ab-arrived' : ''} ${leaving ? 'ab-leaving' : ''}`}>
+    <div class={`landing-panel ${arrived ? 'landing-panel--arrived' : ''} ${leaving ? 'landing-panel--leaving' : ''}`}>
       <style>{`
         .landing-panel {
           position: fixed;
@@ -215,7 +215,7 @@ export function LandingPanel() {
         }
 
         /* the oversized section nav — flush to the panel edge */
-        .ab-nav {
+        .landing-panel__nav {
           position: absolute;
           left: 0.9vw;
           top: 38.7vh;
@@ -228,7 +228,7 @@ export function LandingPanel() {
           --ab-slot: calc(clamp(22px, 2.6vw, 37px) * 1.1 + 1.36vh);
           transition: opacity 0.3s ease-out;
         }
-        .ab-nav a {
+        .landing-panel__nav a {
           font-family: var(--f-disp, 'Space Grotesk', sans-serif);
           font-weight: 700;
           font-size: clamp(22px, 2.6vw, 37px);
@@ -249,8 +249,8 @@ export function LandingPanel() {
           color: transparent;
           transition: color 0.25s ease-out, opacity 0.3s ease-out;
         }
-        .ab-nav a:hover, .ab-nav a:focus-visible { color: ${ECHO}; }
-        .ab-nav a.active { background-position: 0 0; }
+        .landing-panel__nav a:hover, .landing-panel__nav a:focus-visible { color: ${ECHO}; }
+        .landing-panel__nav a.active { background-position: 0 0; }
 
         /* the fan choreography — only the active link is visible when the
            panel enters; once it has arrived, the others fan out FROM the
@@ -259,9 +259,9 @@ export function LandingPanel() {
            own slot, then snap back into place. A link parks its .fanned
            memory once the flight settles, and rests visible — so a later
            active switch colors only (no re-fan, no disappear/reappear) */
-        .ab-nav a:not(.active) { opacity: 0; }
-        .ab-arrived .ab-nav a.fanned:not(.active) { opacity: 1; }
-        @keyframes ab-fan {
+        .landing-panel__nav a:not(.active) { opacity: 0; }
+        .landing-panel--arrived .landing-panel__nav a.fanned:not(.active) { opacity: 1; }
+        @keyframes landing-panel-fan {
           0% {
             opacity: 0;
             transform: translateY(calc(var(--fd, 0) * var(--ab-slot))) rotate(0deg);
@@ -276,18 +276,18 @@ export function LandingPanel() {
             transform: translateY(0) rotate(0deg);
           }
         }
-        .ab-arrived .ab-nav a:not(.active):not(.fanned) {
-          animation: ab-fan 0.6s cubic-bezier(0.3, 1.2, 0.5, 1) both;
+        .landing-panel--arrived .landing-panel__nav a:not(.active):not(.fanned) {
+          animation: landing-panel-fan 0.6s cubic-bezier(0.3, 1.2, 0.5, 1) both;
           animation-delay: calc(0.25s + var(--afd, 0s));
         }
         /* the way out, once the sidebar is meaningfully leaving: the links
            fly BACK to the active link's spot — reverse of how they came,
            with the farthest link leaving first */
-        .ab-leaving .ab-nav a:not(.active) {
-          animation: ab-fan-out 0.4s cubic-bezier(0.5, 0, 0.75, 0.6) both;
+        .landing-panel--leaving .landing-panel__nav a:not(.active) {
+          animation: landing-panel-fan-out 0.4s cubic-bezier(0.5, 0, 0.75, 0.6) both;
           animation-delay: var(--afo, 0s);
         }
-        @keyframes ab-fan-out {
+        @keyframes landing-panel-fan-out {
           from { opacity: 1; transform: translateY(0) rotate(0deg); }
           to {
             opacity: 0;
@@ -297,28 +297,28 @@ export function LandingPanel() {
 
         /* the active hand-over — both links sweep color in the SAME
            instant: the new active's ink lifts to paper as the front
-           passes (gl-nav-wipe-in), the old one's paper drains to ink;
+           passes (landing-panel-wipe-in), the old one's paper drains to ink;
            the outgoing link swaps to the mirrored gradient so both
            fronts travel left-to-right together (one gradient only ever
            sends its fill from the left — the mirrored one keeps the
            same sweep direction on the way out). No re-fan, no
            disappear/reappear. */
-        .ab-nav a.active.wipe { animation: gl-nav-wipe-in 0.4s ease-out both; }
-        .ab-nav a.was {
+        .landing-panel__nav a.active.wipe { animation: landing-panel-wipe-in 0.4s ease-out both; }
+        .landing-panel__nav a.was {
           background-image: linear-gradient(to right, ${INK} 0% 50%, ${WHITE} 50% 100%);
-          animation: gl-nav-wipe-out 0.4s ease-out both;
+          animation: landing-panel-wipe-out 0.4s ease-out both;
         }
-        @keyframes gl-nav-wipe-in {
+        @keyframes landing-panel-wipe-in {
           from { background-position: 100% 0; }
           to { background-position: 0 0; }
         }
-        @keyframes gl-nav-wipe-out {
+        @keyframes landing-panel-wipe-out {
           from { background-position: 100% 0; }
           to { background-position: 0 0; }
         }
         @media (prefers-reduced-motion: reduce) {
           /* the sweep jumps to its end pose; the static positions hold */
-          .ab-nav a.active.wipe, .ab-nav a.was { animation-duration: 0s; }
+          .landing-panel__nav a.active.wipe, .landing-panel__nav a.was { animation-duration: 0s; }
         }
 
         /* the pool menu (the sticky footer band's) owns the corner while
@@ -327,7 +327,7 @@ export function LandingPanel() {
            link's spot) — the general-sibling ~, because the technologies
            section rides between the panel and the band in the flow (the
            Phase-4 order), so the adjacent sibling is never the .site-footer__band */
-        .landing-panel:has(~ .site-footer__band glaphic-pool-menu[open]) .ab-nav a {
+        .landing-panel:has(~ .site-footer__band glaphic-pool-menu[open]) .landing-panel__nav a {
           animation: none !important;
           opacity: 0 !important;
           pointer-events: none;
@@ -339,13 +339,13 @@ export function LandingPanel() {
           .landing-panel {
             display: none;
           }
-          .ab-nav { position: static; gap: 3vh; }
-          .ab-nav a:not(.active) { opacity: 1; animation: none; } /* plainly listed */
-          .ab-nav a { transform: none !important; }
+          .landing-panel__nav { position: static; gap: 3vh; }
+          .landing-panel__nav a:not(.active) { opacity: 1; animation: none; } /* plainly listed */
+          .landing-panel__nav a { transform: none !important; }
         }
       `}</style>
 
-      <nav class="ab-nav" aria-label="Section nav">
+      <nav class="landing-panel__nav" aria-label="Section nav">
         {NAV.map((n, i) => {
           // flight distance from the active link, in nav slots
           // (the active index follows the scroll)

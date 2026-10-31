@@ -77,9 +77,10 @@ try {
   // Wait for the home hero to render before capturing. The landing route has
   // no #main-content wrapper (the chrome gate only wraps inner routes), and
   // the app-level sr-only h1 paints before any route content — so the marker
-  // is the hero's own gl-title element, which only exists once Landing
-  // composes it (the tag stays h2: the app-level heading is the page's one h1).
-  await page.waitForSelector('#app .landing-hero .gl-title', { timeout: 20000 });
+  // is the hero's own landing-hero__title element, which only exists once
+  // Landing composes it (the tag stays h2: the app-level heading is the
+  // page's one h1).
+  await page.waitForSelector('#app .landing-hero .landing-hero__title', { timeout: 20000 });
   // Let fonts/layout settle.
   await new Promise((r) => setTimeout(r, 400));
 
