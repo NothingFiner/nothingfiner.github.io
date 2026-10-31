@@ -128,10 +128,23 @@
 
 **Files:** `src/components/LandingAbout.tsx` — **gates:** the label edit settled (D8) + Eliot release.
 
-- [ ] `ab-*` (24) → `landing-about__*`; the band states (`.ab-band.ab-on` ×3, `.ab-on .ab-band1-mid` etc.) → `landing-about__band--on` form (D1); `ab-flash`'s delay var chain untouched (custom properties are not class names); `grow-head`/`ab-code-head` placements follow D6's GrowHead + the block mapping; the section root `landing-about` stays.
-- [ ] The css retargets (the component's own style block; landing.css untouched-by-this-phase unless a rule names an ab-* class — sweep-checked).
-- [ ] Verify: tsc + build + 0 errors; before/after `/` at 1440/1024/390 + the about scrolls (the ASCII machines' imperative frames idiom is NOT a class concern — untouched); pixel-identical REQUIRED.
-- [ ] Tick, commit (`css-standards: phase 5 — the about section on the naming law`), STOP.
+- [x] `ab-*` (24) → `landing-about__*`; the band states (`.ab-band.ab-on` ×3, `.ab-on .ab-band1-mid` etc.) → `landing-about__band--on` form (D1); `ab-flash`'s delay var chain untouched (custom properties are not class names); `grow-head`/`ab-code-head` placements follow D6's GrowHead + the block mapping; the section root `landing-about` stays.
+- [x] The css retargets (the component's own style block; landing.css untouched-by-this-phase unless a rule names an ab-* class — sweep-checked).
+- [x] Verify: tsc + build + 0 errors; before/after `/` at 1440/1024/390 + the about scrolls (the ASCII machines' imperative frames idiom is NOT a class concern — untouched); pixel-identical REQUIRED.
+- [x] Tick, commit (`css-standards: phase 5 — the about section on the naming law`), STOP.
+
+>> **Run record — Phase 5**
+>> Driver: /tmp/nfNR5-driver.mjs (the 22-step harness cloned 1:1, fresh nfNR5 prefix). Rename script: /tmp/nfNR5-rename.py — regex keys `(?<!-)ab-<token>` so the lookbehind guard spares every custom property wearing a class-shaped name (`--ab-band1-mid`, `--ab-marquee-h`, `--ab-widget-seat`, `--ab-copy-indent`, `--ab-plate-float`, `--ab-flash-delay`, `--ab-b3-gap-*`, the journey clock `--ab-p` consumed by landing.css's crossfade, the inline `--ab-d` delays …); longest-first with the compound keys before plain; per-file abort-without-write; count-asserts on the order-bearing compounds only.
+>> **The bullet, executed in one file** (src/components/LandingAbout.tsx, ~96 insertions / 106 deletions; the plan's files-claim stays true):
+>> - `.ab-band.ab-on` (6 sites) → `.landing-about__band--on` — D1's verbatim example, now real in the file; root flag `ab-in` → `landing-about--in`; `ab-band/band1/band2/band3/band-shot/fluro/plate/member/bullet/node/code-*`/… all land as `landing-about__*`.
+>> - **ab-flow dedup:** the section's private flow-grid block deleted (byte-identical desktop copy + its own mobile flex line); the JSX now renders `<div class="landing-flow" ref={flowRef}>` — identical to the technologies treatment in phase 4; the 1.1vw gutter's WHY lives on the shared rule in landing.css.
+>> - **ab-nodes zero-hit proof:** the `ab-node` substring key had already rewritten `ab-nodes` (the trailing `s` survives a substring replace), so a dedicated `ab-nodes` key asserted nothing on a real zero-hit — dropped, `ab-node`'s count pinned at 6; rerun: ALL FILES PASSED.
+>> - landing.css untouched BY THIS PHASE and sweep-checked: no rule names an `ab-*` class (the `--ab-p` read is a custom-property consumer — inside the hard boundary, untouched).
+>> - Outside consumers: none (grep over src/ scripts/ index.html for `.ab-`/`"ab-`/`'ab-` beyond this file → empty).
+>> - Stale-comment sweep: one dead name survived the rename — the plate comment's `.ab-story` mention (the class was retired with NO live carrier: grep over src/ + prerender index.html returns only the comment). The dead parenthetical dropped; the comment's WHY (inset geometry, paint tone, reveal-timing chain) kept. The `.ab-dent` comment retargeted in the same pass as its class (`.landing-about__dent`).
+>> Verify totals: tsc clean; build ✓ 1.73s with `prerender: wrote populated dist/index.html`; 22/22 loads at 0 console errors / 0 pageerrors / scrollWidth == clientWidth everywhere (after set /tmp/nfNR5-after-*.png); **DIFF 21 pairs × `pixels differing: 0` + one 3-pixel hit: home-hero-d, first at (32,850)**.
+>> **The 3px verdict (behavior-neutral, measured not asserted):** fresh loads of the SAME dist reproduce the wobble — the typed 'Hi,' cursor boundary is JS-timed and animations:'disabled' cannot fast-forward it. Pre-state probe: 4 fresh fold shots of one pre-rename build (/tmp/nfNR5-foldpre-*.png) race identically BETWEEN their own states: b0-b1=0, b0-b2=3, b0-b3=3, b1-b2=3, all first-at (32,850). Between-state delta == within-state noise; the race zone rides the hero's typing, untouched by an About-only phase. Canonical pair restored: /tmp/nfNR5-foldpre-0.png (before) ↔ /tmp/nfNR5-phase-hero-d.png (after).
+>> **D8:** Eliot's label hunk reverted out of the commit and restored after — never in a commit (`chracters` unchanged, still flagged for Eliot).
 
 ## Phase 6 — close-out
 
