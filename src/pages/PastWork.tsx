@@ -19,7 +19,7 @@
 //
 // The past-family page-choreography (the held band->detail swaps) is
 // driven by src/pages/PastDetail.tsx's own driver, the /projects/
-// family's mirror — its index-side sheet styles the .pw-page/.pw-band
+// family's mirror — its index-side sheet styles the .past-work/.past-work__band
 // nodes this page names. No other choreography lives here.
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { GrowHead } from '../components/GrowHead';
@@ -55,9 +55,9 @@ export function PastWork() {
   }, []);
 
   return (
-    <div class="pw-page">
+    <div class="past-work">
       <style>{`
-        .pw-page {
+        .past-work {
           position: relative;
           min-height: 100vh;
           /* the stage is clear over the site's lava lamp (app.tsx
@@ -66,10 +66,10 @@ export function PastWork() {
              themselves */
           font-family: var(--f-body, 'Inter', sans-serif);
         }
-        .pw-page * { margin: 0; box-sizing: border-box; }
+        .past-work * { margin: 0; box-sizing: border-box; }
 
         /* the padded flow grid (as the landing sections) */
-        .pw-flow {
+        .past-work__flow {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           column-gap: 1.1vw;
@@ -78,13 +78,13 @@ export function PastWork() {
              nothing to reserve for it here, like the projects page */
           padding: 3.6vh 3.9vw 4vh;
         }
-        .pw-head { grid-column: 1 / -1; }
+        .past-work__head { grid-column: 1 / -1; }
 
         /* the bands column: one full-width row per agency (a column
            of bands on the 12-col flow idiom — never the auto-fill
            card tiles). The gaps breathe vertically (vh-scaled like
            the flow grid's own rhythm); the column stacks at 390. */
-        .pw-bands {
+        .past-work__bands {
           grid-column: 1 / -1;
           margin-top: 12.6vh;
           display: flex;
@@ -98,7 +98,7 @@ export function PastWork() {
            parallel inset clip (18.83px on the cut's diagonal, the
            card's exact pair). No 3:2 box: the lead image rides at its
            natural aspect, so the tall storefront shots read whole. */
-        .pw-band {
+        .past-work__band {
           display: block;
           position: relative;
           padding: 2px;
@@ -112,15 +112,15 @@ export function PastWork() {
         }
         /* the lift is a hard fluro print (drop-shadow rides the clip)
            and the keyline goes full ink — the project cards' hover */
-        .pw-band:hover,
-        .pw-band:focus-visible {
+        .past-work__band:hover,
+        .past-work__band:focus-visible {
           filter: drop-shadow(4px 4px 0 ${FLURO});
           background-color: ${INK};
         }
-        .pw-band:focus-visible {
+        .past-work__band:focus-visible {
           outline: none;
         }
-        .pw-plate {
+        .past-work__band-plate {
           display: flex;
           flex-direction: column;
           width: 100%;
@@ -134,7 +134,7 @@ export function PastWork() {
 
         /* the mono kicker row (PAST.001 /// BROOKS BROTHERS) — the
            card's meta row voice, sized off the band's own width */
-        .pw-meta {
+        .past-work__band-meta {
           display: flex;
           align-items: center;
           justify-content: flex-start;
@@ -150,7 +150,7 @@ export function PastWork() {
         }
 
         /* the lead image fills the plate below the kicker */
-        .pw-shot {
+        .past-work__band-shot {
           display: block;
           width: 100%;
           height: auto;
@@ -158,33 +158,33 @@ export function PastWork() {
 
         /* mobile: the flow stacks (as the landing sections) */
         @media (max-width: 899px) {
-          .pw-flow { display: flex; flex-direction: column; padding: 44px 6vw 6vh; }
-          .pw-bands { margin-top: 5vh; }
+          .past-work__flow { display: flex; flex-direction: column; padding: 44px 6vw 6vh; }
+          .past-work__bands { margin-top: 5vh; }
         }
       `}</style>
 
-      <div class="pw-flow">
+      <div class="past-work__flow">
         {/* the reveal gate wraps the head (see headRef above) — the
             GrowHead composes bare inside the tracked wrapper */}
-        <div class="pw-head" ref={headRef}>
+        <div class="past-work__head" ref={headRef}>
           <GrowHead text="Past Work" inView={inView} />
         </div>
 
-        <div class="pw-bands">
+        <div class="past-work__bands">
           {pastWorks.map((work, i) => (
             // one band = the whole row is the link to its detail
             <a
               key={work.tag}
-              class="pw-band"
+              class="past-work__band"
               href={`#/past/${work.tag}`}
               aria-label={`${work.name} — view the agency work`}
             >
-              <span class="pw-plate">
-                <span class="pw-meta">
+              <span class="past-work__band-plate">
+                <span class="past-work__band-meta">
                   <span>{`PAST.${String(i + 1).padStart(3, '0')} /// ${work.name.toUpperCase()}`}</span>
                 </span>
                 <img
-                  class="pw-shot"
+                  class="past-work__band-shot"
                   src={work.image}
                   alt={work.name}
                   loading={i === 0 ? 'eager' : 'lazy'}

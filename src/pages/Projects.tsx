@@ -7,7 +7,7 @@
 //           20px clipped top-left corner, the 2px keyline around it (the
 //           keyline is the card's own paint and the plate sits inside it
 //           with the parallel inset clip — on the notch's diagonal that
-//           inset runs along the cut, see .pc-plate), a mono meta row
+//           inset runs along the cut, see .projects__card-plate), a mono meta row
 //           (the PRJ index left, the project's lowercase underscore tag
 //           right), the screenshot filling the rest (object-fit cover)
 //           and the big blend-difference print riding over it — one <a>,
@@ -52,9 +52,9 @@ export function Projects() {
   }, []);
 
   return (
-    <div class="pr-page" ref={hostRef}>
+    <div class="projects" ref={hostRef}>
       <style>{`
-        .pr-page {
+        .projects {
           position: relative;
           min-height: 100vh;
           /* the stage is clear over the site's lava lamp (mounted
@@ -65,10 +65,10 @@ export function Projects() {
              pull-up) so no clip is needed for a band margin */
           font-family: var(--f-body, 'Inter', sans-serif);
         }
-        .pr-page * { margin: 0; box-sizing: border-box; }
+        .projects * { margin: 0; box-sizing: border-box; }
 
         /* ── the padded flow grid (as the landing sections) ──────── */
-        .pr-flow {
+        .projects__flow {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           column-gap: 1.1vw;
@@ -77,10 +77,10 @@ export function Projects() {
              slot to reserve in the page's own tail */
           padding: 3.6vh 3.9vw 4vh;
         }
-        .pr-head { grid-column: 1 / -1; }
+        .projects__head { grid-column: 1 / -1; }
 
         /* ── the card index ─────────────────────────────────────── */
-        .pr-grid {
+        .projects__grid {
           grid-column: 1 / -1;
           margin-top: 12.6vh;
           display: grid;
@@ -99,7 +99,7 @@ export function Projects() {
            18.83px = (22.83 - 2·2) in its own box. The card is the
            container so the mock's 456-wide proportions print at any
            column width. */
-        .pc-card {
+        .projects__card {
           display: block;
           position: relative;
           aspect-ratio: 3 / 2;
@@ -114,15 +114,15 @@ export function Projects() {
         }
         /* the lift is a hard offset print (drop-shadow rides the clip,
            a box-shadow would not) and the keyline goes full ink */
-        .pc-card:hover,
-        .pc-card:focus-visible {
+        .projects__card:hover,
+        .projects__card:focus-visible {
           filter: drop-shadow(4px 4px 0 #14F1C8);
           background-color: ${INK};
         }
-        .pc-card:focus-visible {
+        .projects__card:focus-visible {
           outline: none;
         }
-        .pc-plate {
+        .projects__card-plate {
           width: 100%;
           height: 100%;
           background: ${PLATE};
@@ -136,7 +136,7 @@ export function Projects() {
         }
 
         /* the mono meta row (PRJ.001 left, the tag right) */
-        .pc-meta {
+        .projects__card-meta {
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -150,14 +150,14 @@ export function Projects() {
           letter-spacing: 0.05em;
           color: ${GREY};
         }
-        .pc-tag {
+        .projects__card-tag {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
 
         /* the screenshot fills the plate below the meta row */
-        .pc-shot {
+        .projects__card-shot {
           position: relative;
           flex: 1 1 auto;
           min-height: 0;
@@ -165,7 +165,7 @@ export function Projects() {
              page's ground behind the card) */
           isolation: isolate;
         }
-        .pc-shot img {
+        .projects__card-shot img {
           position: absolute;
           inset: 0;
           width: 100%;
@@ -177,7 +177,7 @@ export function Projects() {
         /* the big print — the mock's ~16%-of-card-width mono title in
            warm white over the shot, difference-blended; long names step
            down so the print stays on the plate */
-        .pc-title {
+        .projects__card-title {
           position: absolute;
           left: 50%;
           top: 56%;
@@ -197,10 +197,10 @@ export function Projects() {
            exactly (the fan's stack would set 700 / 2px; these overrides
            win on specificity over the component's adopted sheet) and the
            echo rings fan out around it on hover. All rings live inside
-           the same blend element (.pc-title's mix-blend-mode isolates
+           the same blend element (.projects__card-title's mix-blend-mode isolates
            them as one group), so the stack difference-blends over the
            shot as a unit. */
-        .pc-title glaphic-fan .stack {
+        .projects__card-title glaphic-fan .stack {
           font-weight: 600;
           letter-spacing: -0.02em;
           line-height: 1;
@@ -209,15 +209,15 @@ export function Projects() {
 
         /* ── mobile: the flow stacks (as the landing sections) ──── */
         @media (max-width: 899px) {
-          .pr-flow { display: flex; flex-direction: column; padding: 44px 6vw 6vh; }
-          .pr-grid { margin-top: 5vh; grid-template-columns: 1fr; }
+          .projects__flow { display: flex; flex-direction: column; padding: 44px 6vw 6vh; }
+          .projects__grid { margin-top: 5vh; grid-template-columns: 1fr; }
         }
       `}</style>
 
-      <div class="pr-flow">
-        <GrowHead text="Projects" inView={inView} class="pr-head" />
+      <div class="projects__flow">
+        <GrowHead text="Projects" inView={inView} class="projects__head" />
 
-        <div class="pr-grid">
+        <div class="projects__grid">
           {projects.map((project, i) => {
             const t = tag(project.title);
             // one mono cell ≈ 0.6em wide: step the print down when a long
@@ -226,23 +226,23 @@ export function Projects() {
             return (
               <a
                 key={project.id}
-                class="pc-card"
+                class="projects__card"
                 href={`#/projects/${project.id}`}
                 style={{ '--pc-fit': `${fit}cqw` }}
                 aria-label={`${project.title} — view project`}
               >
-                <span class="pc-plate">
-                  <span class="pc-meta">
+                <span class="projects__card-plate">
+                  <span class="projects__card-meta">
                     <span>{`PRJ.${String(i + 1).padStart(3, '0')}`}</span>
-                    <span class="pc-tag">{t}</span>
+                    <span class="projects__card-tag">{t}</span>
                   </span>
-                  <span class="pc-shot">
+                  <span class="projects__card-shot">
                     <img src={project.image} alt={project.title} loading="lazy" />
                     {/* the title carries the glaphic-fan bloom (hover fans,
-                       leave collapses). 1em size rides .pc-title's stepped
+                       leave collapses). 1em size rides .projects__card-title's stepped
                        print size; the core ink is the print's paper so the
                        rest state reads exactly as before. */}
-                    <span class="pc-title">
+                    <span class="projects__card-title">
                       <glaphic-fan
                         text={project.title}
                         trigger="hover"

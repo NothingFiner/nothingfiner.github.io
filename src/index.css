@@ -104,7 +104,7 @@ body {
 }
 
 /* Menu drawer close button - uses theme color */
-.menu-drawer-close-btn {
+.menu-drawer__close-btn {
   color: var(--color-fg);
 }
 

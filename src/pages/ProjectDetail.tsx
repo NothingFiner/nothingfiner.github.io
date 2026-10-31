@@ -189,24 +189,24 @@ function startDriver(): void {
   const indexCss = `
     /* A: the index's exit — the cards fade out, the grow head
        un-prints */
-    .pr-page.pr-exit-on .pc-card {
-      animation: pd-index-card-out 0.4s ease-in both;
+    .projects.projects--exit .projects__card {
+      animation: project-detail-index-card-out 0.4s ease-in both;
     }
-    @keyframes pd-index-card-out { from { opacity: 1; } to { opacity: 0; } }
-    .pr-page.pr-exit-on .grow-head__in {
+    @keyframes project-detail-index-card-out { from { opacity: 1; } to { opacity: 0; } }
+    .projects.projects--exit .grow-head__in {
       animation: landing-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0s reverse both;
     }
     /* the arrival (B + the no-held-swap plain entrance): the index's
        cards fade in — the grow-head's forward re-print is the index
        page's own reveal */
-    .pr-page.pr-in-on .pc-card {
-      animation: pd-index-card-in 0.4s ease-out both;
+    .projects.projects--in .projects__card {
+      animation: project-detail-index-card-in 0.4s ease-out both;
     }
-    @keyframes pd-index-card-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes project-detail-index-card-in { from { opacity: 0; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
-      .pr-page.pr-exit-on .pc-card,
-      .pr-page.pr-exit-on .grow-head__in,
-      .pr-page.pr-in-on .pc-card {
+      .projects.projects--exit .projects__card,
+      .projects.projects--exit .grow-head__in,
+      .projects.projects--in .projects__card {
         animation: none;
       }
     }
@@ -215,17 +215,17 @@ function startDriver(): void {
   sheet.textContent = indexCss;
   (document.head ?? document.documentElement).appendChild(sheet);
 
-  /* the arriving index's cards: stamped on every fresh .pr-page when
+  /* the arriving index's cards: stamped on every fresh .projects when
      the previous route was a detail (B's held swap AND the
      back/forward plain entrance both read as the cards fading in) */
   const stamped = new WeakSet<Element>();
   let tracked = parseHashPath(location.hash);
   let fromDetail = isDetailPath(tracked);
   const stamp = (): void => {
-    const page = document.querySelector('.pr-page');
+    const page = document.querySelector('.projects');
     if (!page || stamped.has(page)) return;
     stamped.add(page);
-    if (fromDetail) page.classList.add('pr-in-on');
+    if (fromDetail) page.classList.add('projects--in');
   };
   new MutationObserver(stamp).observe(document.documentElement, {
     childList: true,
@@ -300,8 +300,8 @@ function startDriver(): void {
       if (fromPath === '/projects') {
         holding = true;
         const start = fromPath;
-        const page = document.querySelector('.pr-page');
-        if (page) page.classList.add('pr-exit-on');
+        const page = document.querySelector('.projects');
+        if (page) page.classList.add('projects--exit');
         window.setTimeout(() => {
           if (parseHashPath(location.hash) === start) apply(to);
           else holding = false;
@@ -355,7 +355,7 @@ export function ProjectDetail() {
   // the boxes slide out LEFT, the image block drifts DOWN/AWAY; the
   // driver applies the hash from the callback — the exit's end (the
   // entrance itself is pure CSS: the mounted root carries
-  // pd-enter-on, so every fresh mount plays it)
+  // project-detail--enter, so every fresh mount plays it)
   useEffect(() => {
     pageExit = (done) => {
       const root = rootRef.current;
@@ -363,7 +363,7 @@ export function ProjectDetail() {
         done();
         return;
       }
-      root.classList.add('pd-exit-on');
+      root.classList.add('project-detail--exit');
       window.setTimeout(done, EXIT_MS);
     };
     return () => {
@@ -373,13 +373,13 @@ export function ProjectDetail() {
 
   return (
     <div
-      class="pd-page pd-enter-on"
+      class="project-detail project-detail--enter"
       key={project.id}
       ref={rootRef}
       data-detail-route={project.id}
     >
       <style>{`
-        .pd-page {
+        .project-detail {
           --pd-pad: 3.9vw;   /* the landing flow grid's inline padding */
           --pd-gut: 1.1vw;   /* ...its column gutter */
           position: relative;
@@ -393,15 +393,15 @@ export function ProjectDetail() {
              container: the band's sticky still pins to the viewport) */
           overflow: clip;
         }
-        .pd-page * { margin: 0; box-sizing: border-box; }
-        .pd-page img { display: block; }
-        .pd-page a { text-decoration: none !important; }
+        .project-detail * { margin: 0; box-sizing: border-box; }
+        .project-detail img { display: block; }
+        .project-detail a { text-decoration: none !important; }
 
         /* ── the grid: every piece composes on the landing's 12-column
            flow grid — the same 12 tracks + 3.9vw inline padding + 1.1vw
            gutter, so the pinned corners and the stream's tracks align
            with the landing sections' columns ─────────────────────── */
-        .pd-stream {
+        .project-detail__stream {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           column-gap: var(--pd-gut);
@@ -416,7 +416,7 @@ export function ProjectDetail() {
            (top-left / bottom-left corners). The text keeps its air in
            the plates' own inner padding; the flush read is the
            silhouette's. The stream keeps the landing's 3.9vw pad. */
-        .pd-pin {
+        .project-detail__pin {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           column-gap: var(--pd-gut);
@@ -427,10 +427,10 @@ export function ProjectDetail() {
           pointer-events: none;
           padding: 0;
         }
-        .pd-pin > * { pointer-events: auto; }
-        .pd-pin-top { top: 0; }     /* the title plate rides the
+        .project-detail__pin > * { pointer-events: auto; }
+        .project-detail__pin--top { top: 0; }     /* the title plate rides the
                                        viewport's TOP-LEFT corner */
-        .pd-pin-bottom { bottom: 0; } /* the details plate rides the
+        .project-detail__pin--bottom { bottom: 0; } /* the details plate rides the
                                        viewport's BOTTOM-LEFT corner —
                                        the band's foot shifts right of
                                        the plate below */
@@ -440,7 +440,7 @@ export function ProjectDetail() {
            RIGHT chamfered on DESKTOP (the rest cut); MOBILE carries the
            new scheme (the green plate cuts TOP-LEFT — see the media
            block) */
-        .pd-title {
+        .project-detail__title {
           grid-column: 1 / 5;
           background: ${FLURO};
           color: ${INK};
@@ -449,7 +449,7 @@ export function ProjectDetail() {
           max-height: min(62vh, 560px);
           overflow: auto;
         }
-        .pd-kicker {
+        .project-detail__kicker {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 10px;
           font-weight: 600;
@@ -459,7 +459,7 @@ export function ProjectDetail() {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        .pd-heading {
+        .project-detail__heading {
           font-family: var(--f-disp, 'Space Grotesk', sans-serif);
           font-weight: 700;
           font-size: clamp(26px, 2.7vw, 40px);
@@ -467,14 +467,14 @@ export function ProjectDetail() {
           letter-spacing: -0.02em;
           margin: 0 0 14px !important;
         }
-        .pd-desc {
+        .project-detail__desc {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 11.5px;
           font-weight: 400;
           line-height: 1.7;
           margin: 0 !important;
         }
-        .pd-draft {
+        .project-detail__draft {
           display: inline-block;
           margin-top: 14px !important;
           border: 2px solid ${INK};
@@ -487,19 +487,19 @@ export function ProjectDetail() {
         /* the title plate's link buttons (the data's links[] — only
            real targets ride; the library's outline reads on the fluro:
            the ink keyline + label, the paper-deep hover) */
-        .pd-links {
+        .project-detail__links {
           display: flex;
           gap: 10px;
           margin-top: 0.4vh !important;
           flex-wrap: wrap;
         }
-        .pd-links a { text-decoration: none; }
+        .project-detail__links a { text-decoration: none; }
 
         /* BOTTOM-LEFT — the BARE crimson details plate (no keyline, no
            rim), TOP-RIGHT chamfered on DESKTOP (the rest cut); MOBILE
            carries the new scheme (the red plate cuts BOTTOM-RIGHT —
            see the media block) */
-        .pd-details {
+        .project-detail__details {
           grid-column: 1 / 4;
           background: ${CRIMSON};
           color: ${PAPER};
@@ -508,7 +508,7 @@ export function ProjectDetail() {
           max-height: 58vh;
           overflow: auto;
         }
-        .pd-details-label {
+        .project-detail__details-label {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 10px;
           font-weight: 600;
@@ -518,24 +518,24 @@ export function ProjectDetail() {
              plate's one accent — solid paint, no alpha */
           color: ${FLURO};
         }
-        .pd-tech {
+        .project-detail__tech {
           margin: 0 0 18px !important;
           padding: 0 !important;
           list-style: none !important;
         }
-        .pd-tech li {
+        .project-detail__tech li {
           font-family: var(--f-disp, 'Space Grotesk', sans-serif);
           font-size: 15px;
           font-weight: 600;
           line-height: 1.55;
           color: ${PAPER};
         }
-        .pd-resp {
+        .project-detail__resp {
           margin: 0 0 18px !important;
           padding: 0 !important;
           list-style: none !important;
         }
-        .pd-resp li {
+        .project-detail__resp li {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 11.5px;
           line-height: 1.7;
@@ -543,7 +543,7 @@ export function ProjectDetail() {
           padding-left: 14px;
           position: relative;
         }
-        .pd-resp li::before {
+        .project-detail__resp li::before {
           content: '';
           position: absolute;
           left: 0;
@@ -554,14 +554,14 @@ export function ProjectDetail() {
         }
         /* the detail rows' rules print as glaphic-tape RAMP separators
            (paper tape over the crimson — see the elements below) */
-        .pd-row {
+        .project-detail__row {
           display: flex;
           align-items: baseline;
           justify-content: space-between;
           gap: 12px;
           margin: 0 !important;
         }
-        .pd-row dt {
+        .project-detail__row dt {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 10px;
           font-weight: 600;
@@ -569,7 +569,7 @@ export function ProjectDetail() {
           color: ${FLURO};
           flex: none;
         }
-        .pd-row dd {
+        .project-detail__row dd {
           margin: 0 !important;
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 11px;
@@ -579,10 +579,10 @@ export function ProjectDetail() {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        .pd-row a { color: ${PAPER}; }
-        .pd-row a:hover { color: ${FLURO}; }
+        .project-detail__row a { color: ${PAPER}; }
+        .project-detail__row a:hover { color: ${FLURO}; }
         /* the in-plate separator tape: shorter voice than the page's */
-        .pd-details glaphic-tape {
+        .project-detail__details glaphic-tape {
           --glaphic-tape-hot: ${PAPER};
           --glaphic-tape-height: 6px;
           display: block;
@@ -596,7 +596,7 @@ export function ProjectDetail() {
            4.4vh corner offset). The pin also lifts the button out of
            the 12-col grid's track, so the label's one line can never
            be squeezed by a column. */
-        .pd-back-row {
+        .project-detail__back-row {
           position: fixed;
           top: 4.4vh;
           right: 2.3vw;
@@ -616,7 +616,7 @@ export function ProjectDetail() {
            at 1440: plate right edge 1272px, patch left 1338px — 66px
            of air; at 900: 779px vs 810px — 31px) — no extra margin on
            top of the track line */
-        .pd-stream {
+        .project-detail__stream {
           position: relative;
           z-index: 10;
           padding-top: 6vh;
@@ -628,20 +628,20 @@ export function ProjectDetail() {
            deeper along each face (20 / 18.83) — and ONLY the plate's
            two end corners carry cuts: the images inside are uncut
            (the seams are the tapes, not clipped re-entrant corners) */
-        .pd-image-block-container {
+        .project-detail__image-block-container {
           grid-column: 5 / 12;
           padding: 2px;
           background: ${FLURO};
           clip-path: polygon(${px(CUT)} 0, 100% 0, 100% calc(100% - ${px(CUT)}), calc(100% - ${px(CUT)}) 100%, 0 100%, 0 ${px(CUT)});
         }
-        .pd-image-block {
+        .project-detail__image-block {
           clip-path: polygon(${px(CUT_IN)} 0, 100% 0, 100% calc(100% - ${px(CUT_IN)}), calc(100% - ${px(CUT_IN)}) 100%, 0 100%, 0 ${px(CUT_IN)});
         }
-        .pd-image { width: 100%; height: auto; }
+        .project-detail__image { width: 100%; height: auto; }
         /* the ride's separators: RAMP tapes — the plate's OWN seams,
            inside the tall plate, spanning its full inner width (no
            right stop of their own: the plate's edge is the stop) */
-        .pd-image-block-container glaphic-tape {
+        .project-detail__image-block-container glaphic-tape {
           --glaphic-tape-hot: ${CRIMSON};
           --glaphic-tape-height: 12px;
           display: block;
@@ -659,11 +659,11 @@ export function ProjectDetail() {
            tiers while nothing rendered). The wrapper has no
            clip-path/overflow, so its drop-shadow follows the clipped
            child's cut silhouette and survives. */
-        .pd-next-wrap {
+        .project-detail__next-wrap {
           grid-column: 5 / 12;      /* Eliot's grid position — stays */
           display: block;
         }
-        .pd-next {
+        .project-detail__next {
           display: block;
           width: 100%;
           padding: 2px;             /* the 2px keyline (the card's own
@@ -673,7 +673,7 @@ export function ProjectDetail() {
           transition: transform 0.18s ease-out;
           clip-path: polygon(${px(CUT)} 0, 100% 0, 100% calc(100% - ${px(CUT)}), calc(100% - ${px(CUT)}) 100%, 0 100%, 0 ${px(CUT)});
         }
-        .pd-next-in {
+        .project-detail__next-in {
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -682,28 +682,28 @@ export function ProjectDetail() {
           background: ${PLATE};
           clip-path: polygon(${px(CUT_IN)} 0, 100% 0, 100% calc(100% - ${px(CUT_IN)}), calc(100% - ${px(CUT_IN)}) 100%, 0 100%, 0 ${px(CUT_IN)});
         }
-        .pd-next:hover,
-        .pd-next:focus-visible {
+        .project-detail__next:hover,
+        .project-detail__next:focus-visible {
           transition: none;
         }
-        .pd-next:focus-visible { outline: none; }
+        .project-detail__next:focus-visible { outline: none; }
         /* the hover print: the grow headline's stepped shadow stack,
            SMALLER — a tighter four-tier run (1/2/4/6px, vs the
            headline's five to 12px) — stepped in one pass, on the
            WRAPPER (drop-shadow layers compound onto the clipped
            silhouette — the fluro rim paints ink, so the stack reads) */
-        .pd-next-wrap:has(.pd-next:hover),
-        .pd-next-wrap:has(.pd-next:focus-visible) {
-          animation: pd-grow-s 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) both;
+        .project-detail__next-wrap:has(.project-detail__next:hover),
+        .project-detail__next-wrap:has(.project-detail__next:focus-visible) {
+          animation: project-detail-grow-s 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) both;
         }
-        .pd-next-label {
+        .project-detail__next-label {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 10px;
           font-weight: 600;
           letter-spacing: 0.14em;
           color: ${GREY};
         }
-        .pd-next-title {
+        .project-detail__next-title {
           font-family: var(--f-disp, 'Space Grotesk', sans-serif);
           font-size: clamp(20px, 2vw, 30px);
           font-weight: 700;
@@ -718,7 +718,7 @@ export function ProjectDetail() {
            lighter — stepped in one pass, ON THE BUTTON (drop-shadow
            layers compound onto its clipped silhouette; the rim paints
            ink, so the stack reads) */
-        @keyframes pd-grow-s {
+        @keyframes project-detail-grow-s {
           0% {
             filter: drop-shadow(0 0 0 ${INK});
           }
@@ -737,31 +737,31 @@ export function ProjectDetail() {
            driver — the wipe exempts these routes; see the module docs)
            ─────────────────────────────────────────────────────────
            ENTRANCE (any arrival — the mounted root carries
-           pd-enter-on): the images/tapes block slides DOWN into place
+           project-detail--enter): the images/tapes block slides DOWN into place
            from ABOVE the viewport (un-faded); the green + red boxes
            slide in from FULLY OFF the left edge (~0.15s after the
            block starts — un-faded, solid all the way: the leave's
            fully-off-pose seam reads as one motion); the tape
            separators FADE IN once the block settles (the tapes' own
            beat) */
-        @keyframes pd-stream-in {
+        @keyframes project-detail-stream-in {
           from { transform: translateY(-13vh); }
         }
-        @keyframes pd-box-in {
+        @keyframes project-detail-box-in {
           from { transform: translateX(-115%); }
         }
-        @keyframes pd-tape-in {
+        @keyframes project-detail-tape-in {
           from { opacity: 0; }
         }
-        .pd-enter-on .pd-stream {
-          animation: pd-stream-in 0.4s ease-out both;
+        .project-detail--enter .project-detail__stream {
+          animation: project-detail-stream-in 0.4s ease-out both;
         }
-        .pd-enter-on .pd-title,
-        .pd-enter-on .pd-details {
-          animation: pd-box-in 0.4s ease-out 0.15s both;
+        .project-detail--enter .project-detail__title,
+        .project-detail--enter .project-detail__details {
+          animation: project-detail-box-in 0.4s ease-out 0.15s both;
         }
-        .pd-enter-on .pd-image-block glaphic-tape {
-          animation: pd-tape-in 0.3s ease-out 0.5s both;
+        .project-detail--enter .project-detail__image-block glaphic-tape {
+          animation: project-detail-tape-in 0.3s ease-out 0.5s both;
         }
         /* EXIT (the held swap's shapes — the driver plays it and
            applies the hash at its end): the boxes slide FULLY OUT past
@@ -770,28 +770,28 @@ export function ProjectDetail() {
            DOWN/AWAY (un-faded). Declared AFTER the entrance rules:
            while both classes ride the root, the pair wins the cascade
            and re-seats every animation as its exit form. */
-        @keyframes pd-stream-out {
+        @keyframes project-detail-stream-out {
           to { transform: translateY(11vh); }
         }
-        @keyframes pd-box-out {
+        @keyframes project-detail-box-out {
           to { transform: translateX(-115%); }
         }
-        .pd-exit-on .pd-stream {
-          animation: pd-stream-out 0.4s ease-in both;
+        .project-detail--exit .project-detail__stream {
+          animation: project-detail-stream-out 0.4s ease-in both;
         }
-        .pd-exit-on .pd-title,
-        .pd-exit-on .pd-details {
-          animation: pd-box-out 0.4s ease-in both;
+        .project-detail--exit .project-detail__title,
+        .project-detail--exit .project-detail__details {
+          animation: project-detail-box-out 0.4s ease-in both;
           transform-origin: left center;
         }
         @media (prefers-reduced-motion: reduce) {
-          .pd-enter-on .pd-stream,
-          .pd-enter-on .pd-title,
-          .pd-enter-on .pd-details,
-          .pd-enter-on .pd-image-block glaphic-tape,
-          .pd-exit-on .pd-stream,
-          .pd-exit-on .pd-title,
-          .pd-exit-on .pd-details {
+          .project-detail--enter .project-detail__stream,
+          .project-detail--enter .project-detail__title,
+          .project-detail--enter .project-detail__details,
+          .project-detail--enter .project-detail__image-block glaphic-tape,
+          .project-detail--exit .project-detail__stream,
+          .project-detail--exit .project-detail__title,
+          .project-detail--exit .project-detail__details {
             animation: none;
           }
         }
@@ -803,30 +803,30 @@ export function ProjectDetail() {
               mock's read: BOTH detail boxes ride ABOVE the images,
               touching (no gap between/around the boxes), then the
               images */
-          .pd-page { display: flex; flex-direction: column; padding: 72px 6vw 6vh; }
-          .pd-pin { display: contents; padding: 0; }
-          .pd-stream { display: flex; flex-direction: column; padding: 0 0 3vh; row-gap: 0; gap: 6vh; }
-          .pd-title { order: 0; max-height: none; overflow: visible; }
-          .pd-details { order: 1; max-height: none; overflow: visible; }
-          .pd-stream { order: 2; }
+          .project-detail { display: flex; flex-direction: column; padding: 72px 6vw 6vh; }
+          .project-detail__pin { display: contents; padding: 0; }
+          .project-detail__stream { display: flex; flex-direction: column; padding: 0 0 3vh; row-gap: 0; gap: 6vh; }
+          .project-detail__title { order: 0; max-height: none; overflow: visible; }
+          .project-detail__details { order: 1; max-height: none; overflow: visible; }
+          .project-detail__stream { order: 2; }
           /* the MOBILE chamfer scheme (Eliot): the GREEN (fluro) plate
              cuts at TOP-LEFT, the RED (crimson) plate cuts at
              BOTTOM-RIGHT (desktop keeps the rest cuts) */
-          .pd-title {
+          .project-detail__title {
             clip-path: polygon(${px(CUT)} 0, 100% 0, 100% 100%, 0 100%, 0 ${px(CUT)});
           }
-          .pd-details {
+          .project-detail__details {
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - ${px(CUT)}), calc(100% - ${px(CUT)}) 100%, 0 100%);
           }
           /* the stream's plate: full width but it STILL stops at
              --pd-clear (the fixed cluster pins bottom-right at 12px on
              mobile — the landing's own rule — so the button keeps its
              patch of corner) */
-          .pd-image-block-container, .pd-next-wrap { grid-column: auto; margin-right: 0; margin-top: 6vh; }
+          .project-detail__image-block-container, .project-detail__next-wrap { grid-column: auto; margin-right: 0; margin-top: 6vh; }
           /* the back button rides the pool-menu button's mobile pin
              exactly (12px, .site-footer__menu's mobile geometry, mirrored to the
              top corner) */
-          .pd-back-row {
+          .project-detail__back-row {
             position: fixed;
             top: 12px;
             right: 12px;
@@ -844,22 +844,22 @@ export function ProjectDetail() {
           static, the stacked foot needs no shift) */}
       <style>{`
         @media (min-width: 900px) {
-          #main-content:has(.pd-page) .site-footer__band--footer .site-footer__foot {
+          #main-content:has(.project-detail) .site-footer__band--footer .site-footer__foot {
             padding-left: 37.5vw;
           }
         }
       `}</style>
 
       {/* the top pin: title plate (cols 1-4) + back button (col 12) */}
-      <div class="pd-pin pd-pin-top">
+      <div class="project-detail__pin project-detail__pin--top">
         {/* TOP-LEFT pinned plate — title + description (with one DRAFT
             tag so an entry's awaiting copy can't pass as sourced) */}
-        <aside class="pd-title">
-          <div class="pd-kicker">{`PRJ.${String(currentIndex + 1).padStart(3, '0')} /// ${project.title.toUpperCase()}`}</div>
-          <h2 class="pd-heading">{project.title}</h2>
-          <p class="pd-desc">{detail.description}</p>
+        <aside class="project-detail__title">
+          <div class="project-detail__kicker">{`PRJ.${String(currentIndex + 1).padStart(3, '0')} /// ${project.title.toUpperCase()}`}</div>
+          <h2 class="project-detail__heading">{project.title}</h2>
+          <p class="project-detail__desc">{detail.description}</p>
           {detail.links?.length ? (
-            <div class="pd-links">
+            <div class="project-detail__links">
               {detail.links.map((l) => (
                 <a
                   href={l.href}
@@ -872,12 +872,12 @@ export function ProjectDetail() {
               ))}
             </div>
           ) : null}
-          {detail.copy === 'draft' && <span class="pd-draft">DRAFT COPY — AWAITING ELIOT</span>}
+          {detail.copy === 'draft' && <span class="project-detail__draft">DRAFT COPY — AWAITING ELIOT</span>}
         </aside>
 
         {/* TOP-RIGHT pinned — back to the index (the glaphic-button
             OUTLINE recipe: 1px ink keyline, transparent fill) */}
-        <nav class="pd-back-row">
+        <nav class="project-detail__back-row">
           <a href="#/projects" aria-label="Back to projects">
             <glaphic-button variant="outline" size="lg">← INDEX</glaphic-button>
           </a>
@@ -887,36 +887,36 @@ export function ProjectDetail() {
       {/* the ride — the images stream under the pinned plates, RAMP
           tapes between the blocks, right edge clear of the band's
           patch */}
-      <section class="pd-stream" aria-label={`${project.title} images`}>
-        <div class="pd-image-block-container">
-          <div class="pd-image-block">
+      <section class="project-detail__stream" aria-label={`${project.title} images`}>
+        <div class="project-detail__image-block-container">
+          <div class="project-detail__image-block">
             {streamImages.map((src, i) => (
               // one fragment per ride step: the shot then (between blocks)
               // the RAMP tape — the fragment's children land on the grid in
               // order, so each tape prints right under its block
               <Fragment key={src}>
                     <img
-                      class="pd-image"
+                      class="project-detail__image"
                       src={src}
                       alt={`${project.title} — image ${i + 1} of ${streamImages.length}`}
                       loading={i === 0 ? 'eager' : 'lazy'}
                     />
                 {i < streamImages.length - 1 && (
-                  <glaphic-tape pattern="ramp" class="pd-tape" />
+                  <glaphic-tape pattern="ramp" />
                 )}
               </Fragment>
             ))}
           </div>
         </div>
-        <div class="pd-next-wrap">
+        <div class="project-detail__next-wrap">
           <a
-            class="pd-next"
+            class="project-detail__next"
             href={`#/projects/${nextProject.id}`}
             aria-label={`Next project: ${nextProject.title}`}
           >
-            <span class="pd-next-in">
-              <span class="pd-next-label">NEXT PROJECT</span>
-              <span class="pd-next-title">{nextProject.title} →</span>
+            <span class="project-detail__next-in">
+              <span class="project-detail__next-label">NEXT PROJECT</span>
+              <span class="project-detail__next-title">{nextProject.title} →</span>
             </span>
           </a>
         </div>
@@ -926,21 +926,21 @@ export function ProjectDetail() {
           responsibilities section renders ONLY when an entry carries
           it (the coming agency-works page's seam — see
           src/data/projectDetails.ts) */}
-      <div class="pd-pin pd-pin-bottom">
-        <aside class="pd-details">
-          <div class="pd-details-label">TECHNOLOGIES</div>
-          <ul class="pd-tech">
+      <div class="project-detail__pin project-detail__pin--bottom">
+        <aside class="project-detail__details">
+          <div class="project-detail__details-label">TECHNOLOGIES</div>
+          <ul class="project-detail__tech">
             {detail.technologies.map((tech) => (
               <li key={tech}>{tech}</li>
             ))}
           </ul>
           {(detail.responsibilities?.length || detail.rows?.length || project.status || project.githubUrl) && (
-            <glaphic-tape pattern="ramp" class="pd-tape" />
+            <glaphic-tape pattern="ramp" />
           )}
           {detail.responsibilities && detail.responsibilities.length > 0 && (
             <>
-              <div class="pd-details-label">RESPONSIBILITIES</div>
-              <ul class="pd-resp">
+              <div class="project-detail__details-label">RESPONSIBILITIES</div>
+              <ul class="project-detail__resp">
                 {detail.responsibilities.map((resp) => (
                   <li key={resp}>{resp}</li>
                 ))}
@@ -948,16 +948,16 @@ export function ProjectDetail() {
             </>
           )}
           {project.status && (
-            <dl class="pd-row">
+            <dl class="project-detail__row">
               <dt>STATUS</dt>
               <dd>{project.status}</dd>
             </dl>
           )}
           {project.status && project.githubUrl && (
-            <glaphic-tape pattern="ramp" class="pd-tape" />
+            <glaphic-tape pattern="ramp" />
           )}
           {project.githubUrl && (
-            <dl class="pd-row">
+            <dl class="project-detail__row">
               <dt>SOURCE</dt>
               <dd>
                 <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
@@ -967,7 +967,7 @@ export function ProjectDetail() {
             </dl>
           )}
           {detail.rows?.map((row) => (
-            <dl class="pd-row" key={row.label}>
+            <dl class="project-detail__row" key={row.label}>
               <dt>{row.label}</dt>
               <dd>
                 {row.href ? <a href={row.href}>{row.value}</a> : row.value}

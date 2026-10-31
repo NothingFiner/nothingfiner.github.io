@@ -7,7 +7,7 @@
 // prop-shaped. Two axes entangle:
 //   (1) the module-scope held-swap driver's index choreography is
 //       written against the OTHER family's concrete page classes
-//       (.pr-page/.pc-card fade-out, .grow-head__in reverse): a shared
+//       (.projects/.projects__card fade-out, .grow-head__in reverse): a shared
 //       driver would grow route-family branches keyed to a SECOND
 //       index's page classes — page-private CSS does not share.
 //   (2) the plate data sources have divergent error contracts: the
@@ -161,7 +161,7 @@ function startDriver(): void {
   /* the BANDS-side stylesheet — the exit/entrance the /past index
      plays under this driver (PastWork.tsx itself knows nothing about
      it; the sheet names the bands page's own classes — the crossing
-     mirrors the projects driver's .pr-page rules). Its rules
+     mirrors the projects driver's .projects rules). Its rules
      out-rank the page's own rules by SPECIFICITY (three classes),
      never by sheet order: this sheet lands whenever this module
      evaluates. The grow's REVERSE re-runs the same keyframes
@@ -170,24 +170,24 @@ function startDriver(): void {
   const bandsCss = `
     /* A: the bands page's exit — the bands fade out, the grow head
        un-prints */
-    .pw-page.pw-exit-on .pw-band {
-      animation: pw-band-out 0.4s ease-in both;
+    .past-work.past-work--exit .past-work__band {
+      animation: past-detail-band-out 0.4s ease-in both;
     }
-    @keyframes pw-band-out { from { opacity: 1; } to { opacity: 0; } }
-    .pw-page.pw-exit-on .grow-head__in {
+    @keyframes past-detail-band-out { from { opacity: 1; } to { opacity: 0; } }
+    .past-work.past-work--exit .grow-head__in {
       animation: landing-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0s reverse both;
     }
     /* the arrival (B + the no-held-swap plain entrance): the bands
        fade in — the grow-head's forward re-print is the bands page's
        own reveal */
-    .pw-page.pw-in-on .pw-band {
-      animation: pw-band-in 0.4s ease-out both;
+    .past-work.past-work--in .past-work__band {
+      animation: past-detail-band-in 0.4s ease-out both;
     }
-    @keyframes pw-band-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes past-detail-band-in { from { opacity: 0; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
-      .pw-page.pw-exit-on .pw-band,
-      .pw-page.pw-exit-on .grow-head__in,
-      .pw-page.pw-in-on .pw-band {
+      .past-work.past-work--exit .past-work__band,
+      .past-work.past-work--exit .grow-head__in,
+      .past-work.past-work--in .past-work__band {
         animation: none;
       }
     }
@@ -196,17 +196,17 @@ function startDriver(): void {
   sheet.textContent = bandsCss;
   (document.head ?? document.documentElement).appendChild(sheet);
 
-  /* the arriving bands' fade-in: stamped on every fresh .pw-page when
+  /* the arriving bands' fade-in: stamped on every fresh .past-work when
      the previous route was a past detail (B's held swap AND the
      back/forward plain entrance both read as the bands fading in) */
   const stamped = new WeakSet<Element>();
   let tracked = parseHashPath(location.hash);
   let fromDetails = isPastDetailPath(tracked);
   const stamp = (): void => {
-    const page = document.querySelector('.pw-page');
+    const page = document.querySelector('.past-work');
     if (!page || stamped.has(page)) return;
     stamped.add(page);
-    if (fromDetails) page.classList.add('pw-in-on');
+    if (fromDetails) page.classList.add('past-work--in');
   };
   new MutationObserver(stamp).observe(document.documentElement, {
     childList: true,
@@ -281,8 +281,8 @@ function startDriver(): void {
       if (fromPath === '/past') {
         holding = true;
         const start = fromPath;
-        const page = document.querySelector('.pw-page');
-        if (page) page.classList.add('pw-exit-on');
+        const page = document.querySelector('.past-work');
+        if (page) page.classList.add('past-work--exit');
         window.setTimeout(() => {
           if (parseHashPath(location.hash) === start) apply(to);
           else holding = false;
@@ -340,7 +340,7 @@ export function PastDetail() {
   // the boxes slide out LEFT, the image block drifts DOWN/AWAY; the
   // driver applies the hash from the callback — the exit's end (the
   // entrance itself is pure CSS: the mounted root carries
-  // ptd-enter-on, so every fresh mount plays it)
+  // past-detail--enter, so every fresh mount plays it)
   useEffect(() => {
     pageExit = (done) => {
       const root = rootRef.current;
@@ -348,7 +348,7 @@ export function PastDetail() {
         done();
         return;
       }
-      root.classList.add('ptd-exit-on');
+      root.classList.add('past-detail--exit');
       window.setTimeout(done, EXIT_MS);
     };
     return () => {
@@ -371,13 +371,13 @@ export function PastDetail() {
 
   return (
     <div
-      class="ptd-page ptd-enter-on"
+      class="past-detail past-detail--enter"
       key={work.tag}
       ref={rootRef}
       data-detail-route={work.tag}
     >
       <style>{`
-        .ptd-page {
+        .past-detail {
           --ptd-pad: 3.9vw;   /* the landing flow grid's inline padding */
           --ptd-gut: 1.1vw;   /* ...its column gutter */
           position: relative;
@@ -391,15 +391,15 @@ export function PastDetail() {
              scroll container: the band's sticky still pins) */
           overflow: clip;
         }
-        .ptd-page * { margin: 0; box-sizing: border-box; }
-        .ptd-page img { display: block; }
-        .ptd-page a { text-decoration: none !important; }
+        .past-detail * { margin: 0; box-sizing: border-box; }
+        .past-detail img { display: block; }
+        .past-detail a { text-decoration: none !important; }
 
         /* the grid: every piece composes on the landing's 12-column
            flow grid — the same 12 tracks + 3.9vw inline padding +
            1.1vw gutter, so the pinned corners and the stream's
            tracks align with the landing sections' columns */
-        .ptd-stream {
+        .past-detail__stream {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           column-gap: var(--ptd-gut);
@@ -413,7 +413,7 @@ export function PastDetail() {
            the wrappers pin at 0/0. The text keeps its air in the
            plates' own inner padding; the stream keeps the landing's
            3.9vw pad. */
-        .ptd-pin {
+        .past-detail__pin {
           display: grid;
           grid-template-columns: repeat(12, 1fr);
           column-gap: var(--ptd-gut);
@@ -424,17 +424,17 @@ export function PastDetail() {
           pointer-events: none;
           padding: 0;
         }
-        .ptd-pin > * { pointer-events: auto; }
-        .ptd-pin-top { top: 0; }     /* the title plate rides the
+        .past-detail__pin > * { pointer-events: auto; }
+        .past-detail__pin--top { top: 0; }     /* the title plate rides the
                                         viewport's TOP-LEFT corner */
-        .ptd-pin-bottom { bottom: 0; } /* the details plate rides the
+        .past-detail__pin--bottom { bottom: 0; } /* the details plate rides the
                                           viewport's BOTTOM-LEFT corner */
 
         /* TOP-LEFT — the BARE fluro title plate (no keyline, no rim;
            the rimless plate read — the chamfer cut stays), BOTTOM-
            RIGHT chamfered on DESKTOP (the rest cut); MOBILE carries
            the flipped scheme (the green plate cuts TOP-LEFT) */
-        .ptd-title {
+        .past-detail__title {
           grid-column: 1 / 5;
           background: ${FLURO};
           color: ${INK};
@@ -443,7 +443,7 @@ export function PastDetail() {
           max-height: min(62vh, 560px);
           overflow: auto;
         }
-        .ptd-kicker {
+        .past-detail__kicker {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 10px;
           font-weight: 600;
@@ -453,7 +453,7 @@ export function PastDetail() {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        .ptd-heading {
+        .past-detail__heading {
           font-family: var(--f-disp, 'Space Grotesk', sans-serif);
           font-weight: 700;
           font-size: clamp(26px, 2.7vw, 40px);
@@ -461,7 +461,7 @@ export function PastDetail() {
           letter-spacing: -0.02em;
           margin: 0 0 14px !important;
         }
-        .ptd-desc {
+        .past-detail__desc {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 11.5px;
           font-weight: 400;
@@ -470,7 +470,7 @@ export function PastDetail() {
         }
         /* the DRAFT tag: draft copy can't pass as sourced (the copy
            provenance rule) — the past plates all print one today */
-        .ptd-draft {
+        .past-detail__draft {
           display: inline-block;
           margin-top: 14px !important;
           border: 2px solid ${INK};
@@ -485,7 +485,7 @@ export function PastDetail() {
            no rim), TOP-RIGHT chamfered on DESKTOP (the rest cut);
            MOBILE carries the flipped scheme (the red plate cuts
            BOTTOM-RIGHT) */
-        .ptd-details {
+        .past-detail__details {
           grid-column: 1 / 4;
           background: ${CRIMSON};
           color: ${PAPER};
@@ -494,7 +494,7 @@ export function PastDetail() {
           max-height: 58vh;
           overflow: auto;
         }
-        .ptd-details-label {
+        .past-detail__details-label {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 10px;
           font-weight: 600;
@@ -504,12 +504,12 @@ export function PastDetail() {
              the plate's one accent — solid paint, no alpha */
           color: ${FLURO};
         }
-        .ptd-tech {
+        .past-detail__tech {
           margin: 0 0 18px !important;
           padding: 0 !important;
           list-style: none !important;
         }
-        .ptd-tech li {
+        .past-detail__tech li {
           font-family: var(--f-disp, 'Space Grotesk', sans-serif);
           font-size: 15px;
           font-weight: 600;
@@ -518,12 +518,12 @@ export function PastDetail() {
         }
         /* the responsibilities section — the agency seam (renders
            only when the entry carries the list) */
-        .ptd-resp {
+        .past-detail__resp {
           margin: 0 0 18px !important;
           padding: 0 !important;
           list-style: none !important;
         }
-        .ptd-resp li {
+        .past-detail__resp li {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 11.5px;
           line-height: 1.7;
@@ -531,7 +531,7 @@ export function PastDetail() {
           padding-left: 14px;
           position: relative;
         }
-        .ptd-resp li::before {
+        .past-detail__resp li::before {
           content: '';
           position: absolute;
           left: 0;
@@ -542,7 +542,7 @@ export function PastDetail() {
         }
         /* the plate's own separator tape (paper over the crimson) —
            prints before the responsibilities section */
-        .ptd-details glaphic-tape {
+        .past-detail__details glaphic-tape {
           --glaphic-tape-hot: ${PAPER};
           --glaphic-tape-height: 6px;
           display: block;
@@ -554,7 +554,7 @@ export function PastDetail() {
            pool-menu button's EXACT pinned offsets (the band wrapper's
            geometry mirrored to the top corner: right 2.3vw, 4.4vh).
            The pin lifts the button out of the 12-col grid's track. */
-        .ptd-back-row {
+        .past-detail__back-row {
           position: fixed;
           top: 4.4vh;
           right: 2.3vw;
@@ -570,7 +570,7 @@ export function PastDetail() {
            is the 5-12 line, which already STOPS SHORT of the shared
            band's pool-menu patch (the projects plate's measured air:
            66px at 1440, 31px at 900) */
-        .ptd-stream {
+        .past-detail__stream {
           position: relative;
           z-index: 10;
           padding-top: 6vh;
@@ -581,19 +581,19 @@ export function PastDetail() {
            fluro rim), the inner block cuts 2px perpendicular deeper
            along each face (20 / 18.83) — ONLY the plate's two end
            corners carry cuts: the images inside are uncut */
-        .ptd-image-block-container {
+        .past-detail__image-block-container {
           grid-column: 5 / 12;
           padding: 2px;
           background: ${FLURO};
           clip-path: polygon(${px(CUT)} 0, 100% 0, 100% calc(100% - ${px(CUT)}), calc(100% - ${px(CUT)}) 100%, 0 100%, 0 ${px(CUT)});
         }
-        .ptd-image-block {
+        .past-detail__image-block {
           clip-path: polygon(${px(CUT_IN)} 0, 100% 0, 100% calc(100% - ${px(CUT_IN)}), calc(100% - ${px(CUT_IN)}) 100%, 0 100%, 0 ${px(CUT_IN)});
         }
-        .ptd-image { width: 100%; height: auto; }
+        .past-detail__image { width: 100%; height: auto; }
         /* the ride's separators: RAMP tapes — the plate's OWN seams,
            inside the tall plate, spanning its full inner width */
-        .ptd-image-block-container glaphic-tape {
+        .past-detail__image-block-container glaphic-tape {
           --glaphic-tape-hot: ${CRIMSON};
           --glaphic-tape-height: 12px;
           display: block;
@@ -609,11 +609,11 @@ export function PastDetail() {
            — the projects plate's measured diagnosis). The wrapper
            has no clip-path/overflow, so its drop-shadow follows the
            clipped child's cut silhouette and survives. */
-        .ptd-next-wrap {
+        .past-detail__next-wrap {
           grid-column: 5 / 12;
           display: block;
         }
-        .ptd-next {
+        .past-detail__next {
           display: block;
           width: 100%;
           padding: 2px;             /* the 2px keyline (the card's own
@@ -623,7 +623,7 @@ export function PastDetail() {
           transition: transform 0.18s ease-out;
           clip-path: polygon(${px(CUT)} 0, 100% 0, 100% calc(100% - ${px(CUT)}), calc(100% - ${px(CUT)}) 100%, 0 100%, 0 ${px(CUT)});
         }
-        .ptd-next-in {
+        .past-detail__next-in {
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -632,34 +632,34 @@ export function PastDetail() {
           background: ${PLATE};
           clip-path: polygon(${px(CUT_IN)} 0, 100% 0, 100% calc(100% - ${px(CUT_IN)}), calc(100% - ${px(CUT_IN)}) 100%, 0 100%, 0 ${px(CUT_IN)});
         }
-        .ptd-next:hover,
-        .ptd-next:focus-visible {
+        .past-detail__next:hover,
+        .past-detail__next:focus-visible {
           transition: none;
         }
-        .ptd-next:focus-visible { outline: none; }
+        .past-detail__next:focus-visible { outline: none; }
         /* the hover print: the grow headline's stepped shadow stack,
            smaller — three tiers (1/3/6px) stepped in one pass, on
            the WRAPPER (drop-shadow layers compound onto the clipped
            silhouette; the rim paints ink, so the stack reads) */
-        .ptd-next-wrap:has(.ptd-next:hover),
-        .ptd-next-wrap:has(.ptd-next:focus-visible) {
-          animation: ptd-grow-s 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) both;
+        .past-detail__next-wrap:has(.past-detail__next:hover),
+        .past-detail__next-wrap:has(.past-detail__next:focus-visible) {
+          animation: past-detail-grow-s 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) both;
         }
-        .ptd-next-label {
+        .past-detail__next-label {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
           font-size: 10px;
           font-weight: 600;
           letter-spacing: 0.14em;
           color: ${GREY};
         }
-        .ptd-next-title {
+        .past-detail__next-title {
           font-family: var(--f-disp, 'Space Grotesk', sans-serif);
           font-size: clamp(20px, 2vw, 30px);
           font-weight: 700;
           letter-spacing: -0.02em;
           color: ${INK};
         }
-        @keyframes ptd-grow-s {
+        @keyframes past-detail-grow-s {
           0% {
             filter: drop-shadow(0 0 0 ${INK});
           }
@@ -678,29 +678,29 @@ export function PastDetail() {
            driver — the wipe exempts these routes; see the header)
            ─────────────────────────────────────────────────────────
            ENTRANCE (any arrival — the mounted root carries
-           ptd-enter-on): the images/tapes block slides DOWN into
+           past-detail--enter): the images/tapes block slides DOWN into
            place from ABOVE the viewport (un-faded); the green + red
            boxes slide in from FULLY OFF the left edge (~0.15s after
            the block starts — un-faded, solid all the way); the tape
            separators FADE IN once the block settles */
-        @keyframes ptd-stream-in {
+        @keyframes past-detail-stream-in {
           from { transform: translateY(-13vh); }
         }
-        @keyframes ptd-box-in {
+        @keyframes past-detail-box-in {
           from { transform: translateX(-115%); }
         }
-        @keyframes ptd-tape-in {
+        @keyframes past-detail-tape-in {
           from { opacity: 0; }
         }
-        .ptd-enter-on .ptd-stream {
-          animation: ptd-stream-in 0.4s ease-out both;
+        .past-detail--enter .past-detail__stream {
+          animation: past-detail-stream-in 0.4s ease-out both;
         }
-        .ptd-enter-on .ptd-title,
-        .ptd-enter-on .ptd-details {
-          animation: ptd-box-in 0.4s ease-out 0.15s both;
+        .past-detail--enter .past-detail__title,
+        .past-detail--enter .past-detail__details {
+          animation: past-detail-box-in 0.4s ease-out 0.15s both;
         }
-        .ptd-enter-on .ptd-image-block glaphic-tape {
-          animation: ptd-tape-in 0.3s ease-out 0.5s both;
+        .past-detail--enter .past-detail__image-block glaphic-tape {
+          animation: past-detail-tape-in 0.3s ease-out 0.5s both;
         }
         /* EXIT (the held swap's shapes): the boxes slide FULLY OUT
            past the viewport's LEFT edge (they rest there, un-faded,
@@ -708,28 +708,28 @@ export function PastDetail() {
            drifts DOWN/AWAY (un-faded). Declared AFTER the entrance
            rules: while both classes ride the root, the pair wins the
            cascade and re-seats every animation as its exit form. */
-        @keyframes ptd-stream-out {
+        @keyframes past-detail-stream-out {
           to { transform: translateY(11vh); }
         }
-        @keyframes ptd-box-out {
+        @keyframes past-detail-box-out {
           to { transform: translateX(-115%); }
         }
-        .ptd-exit-on .ptd-stream {
-          animation: ptd-stream-out 0.4s ease-in both;
+        .past-detail--exit .past-detail__stream {
+          animation: past-detail-stream-out 0.4s ease-in both;
         }
-        .ptd-exit-on .ptd-title,
-        .ptd-exit-on .ptd-details {
-          animation: ptd-box-out 0.4s ease-in both;
+        .past-detail--exit .past-detail__title,
+        .past-detail--exit .past-detail__details {
+          animation: past-detail-box-out 0.4s ease-in both;
           transform-origin: left center;
         }
         @media (prefers-reduced-motion: reduce) {
-          .ptd-enter-on .ptd-stream,
-          .ptd-enter-on .ptd-title,
-          .ptd-enter-on .ptd-details,
-          .ptd-enter-on .ptd-image-block glaphic-tape,
-          .ptd-exit-on .ptd-stream,
-          .ptd-exit-on .ptd-title,
-          .ptd-exit-on .ptd-details {
+          .past-detail--enter .past-detail__stream,
+          .past-detail--enter .past-detail__title,
+          .past-detail--enter .past-detail__details,
+          .past-detail--enter .past-detail__image-block glaphic-tape,
+          .past-detail--exit .past-detail__stream,
+          .past-detail--exit .past-detail__title,
+          .past-detail--exit .past-detail__details {
             animation: none;
           }
         }
@@ -740,30 +740,30 @@ export function PastDetail() {
               children join the page's own stack with orders — the
               read: BOTH plates ride ABOVE the images, touching (no
               gap between/around them), then the images */
-          .ptd-page { display: flex; flex-direction: column; padding: 72px 6vw 6vh; }
-          .ptd-pin { display: contents; padding: 0; }
-          .ptd-stream { display: flex; flex-direction: column; padding: 0 0 3vh; row-gap: 0; gap: 6vh; }
-          .ptd-title { order: 0; max-height: none; overflow: visible; }
-          .ptd-details { order: 1; max-height: none; overflow: visible; }
-          .ptd-stream { order: 2; }
+          .past-detail { display: flex; flex-direction: column; padding: 72px 6vw 6vh; }
+          .past-detail__pin { display: contents; padding: 0; }
+          .past-detail__stream { display: flex; flex-direction: column; padding: 0 0 3vh; row-gap: 0; gap: 6vh; }
+          .past-detail__title { order: 0; max-height: none; overflow: visible; }
+          .past-detail__details { order: 1; max-height: none; overflow: visible; }
+          .past-detail__stream { order: 2; }
           /* the MOBILE chamfer scheme: the GREEN (fluro) plate cuts
              at TOP-LEFT, the RED (crimson) plate cuts at
              BOTTOM-RIGHT (desktop keeps the rest cuts) */
-          .ptd-title {
+          .past-detail__title {
             clip-path: polygon(${px(CUT)} 0, 100% 0, 100% 100%, 0 100%, 0 ${px(CUT)});
           }
-          .ptd-details {
+          .past-detail__details {
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - ${px(CUT)}), calc(100% - ${px(CUT)}) 100%, 0 100%);
           }
           /* the stream's plate: full width but it STILL stops at the
              fixed cluster's zone (the pool-menu pins right 4vw from
              10vh up on mobile — the band wrapper's geometry — so the
              button keeps its patch of corner) */
-          .ptd-image-block-container, .ptd-next-wrap { grid-column: auto; margin-right: 0; margin-top: 6vh; }
+          .past-detail__image-block-container, .past-detail__next-wrap { grid-column: auto; margin-right: 0; margin-top: 6vh; }
           /* the back button rides the pool-menu button's mobile pin
              exactly (12px — the band wrapper's mobile geometry,
              mirrored to the top corner) */
-          .ptd-back-row {
+          .past-detail__back-row {
             position: fixed;
             top: 12px;
             right: 12px;
@@ -781,27 +781,27 @@ export function PastDetail() {
           the plates are static, the stacked foot needs no shift) */}
       <style>{`
         @media (min-width: 900px) {
-          #main-content:has(.ptd-page) .site-footer__band--footer .site-footer__foot {
+          #main-content:has(.past-detail) .site-footer__band--footer .site-footer__foot {
             padding-left: 37.5vw;
           }
         }
       `}</style>
 
       {/* the top pin: title plate (cols 1-5) + back button */}
-      <div class="ptd-pin ptd-pin-top">
+      <div class="past-detail__pin past-detail__pin--top">
         {/* TOP-LEFT pinned plate — the agency's name + the drafted
             description + the DRAFT tag (nothing here is sourced copy
             until Eliot writes the real lines) */}
-        <aside class="ptd-title">
-          <div class="ptd-kicker">{`PAST.${String(index + 1).padStart(3, '0')} /// ${work.name.toUpperCase()}`}</div>
-          <h2 class="ptd-heading">{work.name}</h2>
-          <p class="ptd-desc">{plate.description}</p>
-          {plate.copy === 'draft' && <span class="ptd-draft">DRAFT COPY — AWAITING ELIOT</span>}
+        <aside class="past-detail__title">
+          <div class="past-detail__kicker">{`PAST.${String(index + 1).padStart(3, '0')} /// ${work.name.toUpperCase()}`}</div>
+          <h2 class="past-detail__heading">{work.name}</h2>
+          <p class="past-detail__desc">{plate.description}</p>
+          {plate.copy === 'draft' && <span class="past-detail__draft">DRAFT COPY — AWAITING ELIOT</span>}
         </aside>
 
         {/* TOP-RIGHT pinned — back to the bands (the glaphic-button
             OUTLINE recipe: the ink keyline, transparent fill) */}
-        <nav class="ptd-back-row">
+        <nav class="past-detail__back-row">
           <a href="#/past" aria-label="Back to past work">
             <glaphic-button variant="outline" size="lg">← INDEX</glaphic-button>
           </a>
@@ -810,9 +810,9 @@ export function PastDetail() {
 
       {/* the ride — the seam's stream images under the pinned plates,
           RAMP ramps between the blocks */}
-      <section class="ptd-stream" aria-label={`${work.name} images`}>
-        <div class="ptd-image-block-container">
-          <div class="ptd-image-block">
+      <section class="past-detail__stream" aria-label={`${work.name} images`}>
+        <div class="past-detail__image-block-container">
+          <div class="past-detail__image-block">
             {plate.images.map((src, i) => (
               // one fragment per ride step: the shot then (between
               // blocks) the RAMP tape — the fragment's children land
@@ -820,27 +820,27 @@ export function PastDetail() {
               // its block
               <Fragment key={src}>
                     <img
-                      class="ptd-image"
+                      class="past-detail__image"
                       src={src}
                       alt={`${work.name} — image ${i + 1} of ${plate.images.length}`}
                       loading={i === 0 ? 'eager' : 'lazy'}
                     />
                 {i < plate.images.length - 1 && (
-                  <glaphic-tape pattern="ramp" class="ptd-tape" />
+                  <glaphic-tape pattern="ramp" />
                 )}
               </Fragment>
             ))}
           </div>
         </div>
-        <div class="ptd-next-wrap">
+        <div class="past-detail__next-wrap">
           <a
-            class="ptd-next"
+            class="past-detail__next"
             href={`#/past/${nextWork.tag}`}
             aria-label={`Next past work: ${nextWork.name}`}
           >
-            <span class="ptd-next-in">
-              <span class="ptd-next-label">NEXT PROJECT</span>
-              <span class="ptd-next-title">{nextWork.name} →</span>
+            <span class="past-detail__next-in">
+              <span class="past-detail__next-label">NEXT PROJECT</span>
+              <span class="past-detail__next-title">{nextWork.name} →</span>
             </span>
           </a>
         </div>
@@ -850,21 +850,21 @@ export function PastDetail() {
           responsibilities section prints ONLY when the seam entry
           carries it (the agency seam — see src/data/projectDetails.ts;
           every past entry carries one today) */}
-      <div class="ptd-pin ptd-pin-bottom">
-        <aside class="ptd-details">
-          <div class="ptd-details-label">TECHNOLOGIES</div>
-          <ul class="ptd-tech">
+      <div class="past-detail__pin past-detail__pin--bottom">
+        <aside class="past-detail__details">
+          <div class="past-detail__details-label">TECHNOLOGIES</div>
+          <ul class="past-detail__tech">
             {plate.technologies.map((tech) => (
               <li key={tech}>{tech}</li>
             ))}
           </ul>
           {plate.responsibilities !== undefined && plate.responsibilities.length > 0 && (
-            <glaphic-tape pattern="ramp" class="ptd-tape" />
+            <glaphic-tape pattern="ramp" />
           )}
           {plate.responsibilities !== undefined && plate.responsibilities.length > 0 && (
             <>
-              <div class="ptd-details-label">RESPONSIBILITIES</div>
-              <ul class="ptd-resp">
+              <div class="past-detail__details-label">RESPONSIBILITIES</div>
+              <ul class="past-detail__resp">
                 {plate.responsibilities.map((respItem) => (
                   <li key={respItem}>{respItem}</li>
                 ))}

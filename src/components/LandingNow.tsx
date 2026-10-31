@@ -367,7 +367,7 @@ export function LandingNow() {
         }
 
         /* the draft tag on the band copy (today's treatment — mirrors
-           the detail plate's pd-draft: honest provenance printed so
+           the detail plate's project-detail__draft: honest provenance printed so
            draft copy can't pass as sourced; it binds to the entry's
            copy flag). Block display: it owns its line above the copy.
            Its margins beat the root's * reset — same block, later */
