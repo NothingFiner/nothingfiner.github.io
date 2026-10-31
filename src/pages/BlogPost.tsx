@@ -13,7 +13,7 @@ export function BlogPost() {
           <h2 class="text-2xl font-heading font-bold text-theme mb-4">Post not found</h2>
           <button
             onClick={() => navigate('/blog')}
-            class="px-6 py-3 rounded-xl panel panel-hover transition-all text-theme"
+            class="px-6 py-3 rounded-xl site-panel site-panel--hover transition-all text-theme"
           >
             ← Back to Blog
           </button>
@@ -27,13 +27,13 @@ export function BlogPost() {
       <div class="max-w-3xl mx-auto">
         <button
           onClick={() => navigate('/blog')}
-          class="mb-8 px-4 py-2 rounded-xl panel panel-hover transition-all text-theme text-sm"
+          class="mb-8 px-4 py-2 rounded-xl site-panel site-panel--hover transition-all text-theme text-sm"
           aria-label="Back to blog list"
         >
           ← Back to Blog
         </button>
 
-        <article class="panel rounded-2xl p-8">
+        <article class="site-panel rounded-2xl p-8">
           <time class="text-sm text-grey font-mono block mb-4">
             {new Date(post.date).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -55,7 +55,7 @@ export function BlogPost() {
         <div class="mt-8 flex justify-between">
           <button
             onClick={() => navigate('/blog')}
-            class="px-6 py-3 rounded-xl panel panel-hover transition-all text-theme"
+            class="px-6 py-3 rounded-xl site-panel site-panel--hover transition-all text-theme"
             aria-label="Back to blog list"
           >
             ← Back to Blog

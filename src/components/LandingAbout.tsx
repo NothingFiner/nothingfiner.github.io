@@ -889,7 +889,7 @@ export function LandingAbout() {
                 ref={burstRef}
                 class="landing-about__widget"
                 role="img"
-                label="A shell rises, flashes, and bursts into sparks"
+                label="simple characters: a ship fires a laser, destroying an asteroid."
               />
               {/* the asteroid line: the B5 tab rides the typed host's own
                   first row (.landing-about__dent) — the scripts are pre-broken so

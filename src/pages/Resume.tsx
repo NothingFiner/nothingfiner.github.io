@@ -2,7 +2,7 @@ export function Resume() {
   return (
     <div class="min-h-screen p-8">
       <div class="max-w-4xl mx-auto">
-        <div class="rounded-2xl panel p-8 overflow-hidden">
+        <div class="rounded-2xl site-panel p-8 overflow-hidden">
           <iframe
             src="/assets/resume.pdf"
             class="w-full h-[80vh] rounded-lg border border-[var(--panel-keyline)]"

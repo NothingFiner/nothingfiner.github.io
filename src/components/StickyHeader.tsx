@@ -25,7 +25,7 @@ export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThe
   return (
     <header
       class={`sticky-header fixed left-4 right-4 top-4 z-50 transition-all duration-300 rounded-xl ${
-        scrolled ? 'panel sticky-header--shrunk py-2 px-4' : 'py-3 px-4 sticky-header--idle'
+        scrolled ? 'site-panel sticky-header--shrunk py-2 px-4' : 'py-3 px-4 sticky-header--idle'
       }`}
     >
       <style>{`

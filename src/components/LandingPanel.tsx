@@ -250,17 +250,17 @@ export function LandingPanel() {
           transition: color 0.25s ease-out, opacity 0.3s ease-out;
         }
         .landing-panel__nav a:hover, .landing-panel__nav a:focus-visible { color: ${ECHO}; }
-        .landing-panel__nav a.active { background-position: 0 0; }
+        .landing-panel__nav a.landing-panel__link--active { background-position: 0 0; }
 
         /* the fan choreography — only the active link is visible when the
            panel enters; once it has arrived, the others fan out FROM the
            active link's words (each starts there — --fd is the flight
            distance in slot heights) with a slight overshoot past their
-           own slot, then snap back into place. A link parks its .fanned
+           own slot, then snap back into place. A link parks its --fanned
            memory once the flight settles, and rests visible — so a later
            active switch colors only (no re-fan, no disappear/reappear) */
-        .landing-panel__nav a:not(.active) { opacity: 0; }
-        .landing-panel--arrived .landing-panel__nav a.fanned:not(.active) { opacity: 1; }
+        .landing-panel__nav a:not(.landing-panel__link--active) { opacity: 0; }
+        .landing-panel--arrived .landing-panel__nav a.landing-panel__link--fanned:not(.landing-panel__link--active) { opacity: 1; }
         @keyframes landing-panel-fan {
           0% {
             opacity: 0;
@@ -276,14 +276,14 @@ export function LandingPanel() {
             transform: translateY(0) rotate(0deg);
           }
         }
-        .landing-panel--arrived .landing-panel__nav a:not(.active):not(.fanned) {
+        .landing-panel--arrived .landing-panel__nav a:not(.landing-panel__link--active):not(.landing-panel__link--fanned) {
           animation: landing-panel-fan 0.6s cubic-bezier(0.3, 1.2, 0.5, 1) both;
           animation-delay: calc(0.25s + var(--afd, 0s));
         }
         /* the way out, once the sidebar is meaningfully leaving: the links
            fly BACK to the active link's spot — reverse of how they came,
            with the farthest link leaving first */
-        .landing-panel--leaving .landing-panel__nav a:not(.active) {
+        .landing-panel--leaving .landing-panel__nav a:not(.landing-panel__link--active) {
           animation: landing-panel-fan-out 0.4s cubic-bezier(0.5, 0, 0.75, 0.6) both;
           animation-delay: var(--afo, 0s);
         }
@@ -303,8 +303,8 @@ export function LandingPanel() {
            sends its fill from the left — the mirrored one keeps the
            same sweep direction on the way out). No re-fan, no
            disappear/reappear. */
-        .landing-panel__nav a.active.wipe { animation: landing-panel-wipe-in 0.4s ease-out both; }
-        .landing-panel__nav a.was {
+        .landing-panel__nav a.landing-panel__link--active.landing-panel__link--wipe { animation: landing-panel-wipe-in 0.4s ease-out both; }
+        .landing-panel__nav a.landing-panel__link--was {
           background-image: linear-gradient(to right, ${INK} 0% 50%, ${WHITE} 50% 100%);
           animation: landing-panel-wipe-out 0.4s ease-out both;
         }
@@ -318,7 +318,7 @@ export function LandingPanel() {
         }
         @media (prefers-reduced-motion: reduce) {
           /* the sweep jumps to its end pose; the static positions hold */
-          .landing-panel__nav a.active.wipe, .landing-panel__nav a.was { animation-duration: 0s; }
+          .landing-panel__nav a.landing-panel__link--active.landing-panel__link--wipe, .landing-panel__nav a.landing-panel__link--was { animation-duration: 0s; }
         }
 
         /* the pool menu (the sticky footer band's) owns the corner while
@@ -340,7 +340,7 @@ export function LandingPanel() {
             display: none;
           }
           .landing-panel__nav { position: static; gap: 3vh; }
-          .landing-panel__nav a:not(.active) { opacity: 1; animation: none; } /* plainly listed */
+          .landing-panel__nav a:not(.landing-panel__link--active) { opacity: 1; animation: none; } /* plainly listed */
           .landing-panel__nav a { transform: none !important; }
         }
       `}</style>
@@ -352,10 +352,11 @@ export function LandingPanel() {
           const fd = active - i;
           const dist = Math.abs(fd);
           const cls = [
-            i === active ? 'active' : '',
-            wipe.gain === i ? 'wipe' : '',
-            wipe.was === i ? 'was' : '',
-            fanned.includes(i) ? 'fanned' : '',
+            'landing-panel__link',
+            i === active ? 'landing-panel__link--active' : '',
+            wipe.gain === i ? 'landing-panel__link--wipe' : '',
+            wipe.was === i ? 'landing-panel__link--was' : '',
+            fanned.includes(i) ? 'landing-panel__link--fanned' : '',
           ]
             .filter(Boolean)
             .join(' ');

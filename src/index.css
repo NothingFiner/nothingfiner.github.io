@@ -85,8 +85,8 @@ input:focus-visible,
   outline-offset: 2px;
 }
 
-.panel:focus-visible,
-.panel-hover:focus-visible {
+.site-panel:focus-visible,
+.site-panel--hover:focus-visible {
   outline: 2px solid var(--color-accent-green);
   outline-offset: 2px;
 }
@@ -128,19 +128,22 @@ body {
   color: var(--color-fg);
 }
 
-/* ── the solid panel (plan Task 13): opaque fill + 1px keyline + the
-   hard shadow ladder (hard offsets, no blur — the site's print-stack
-   ink). This replaces the frosted glass; the class names are new
-   because the paint physics changed. ── */
+/* ── the site-panel: the ONE sanctioned cross-block look-layer
+   (the css-naming-refactor's D7 verdict): opaque fill + 1px keyline +
+   the hard shadow ladder (hard offsets, no blur — the site's
+   print-stack ink). It replaced the frosted glass. Paint only — no
+   layout; any component composes it beside its own classes, and a
+   retuning lands here once. The hover lift rides the --hover modifier
+   on the same node. ── */
 @layer components {
-  .panel {
+  .site-panel {
     background: var(--panel-fill);
     border: 1px solid var(--panel-keyline);
     box-shadow: 2px 2px 0 rgba(13, 2, 33, 0.56), 4px 4px 0 rgba(13, 2, 33, 0.4), 6px 6px 0 rgba(13, 2, 33, 0.24);
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .panel-hover:hover {
+  .site-panel--hover:hover {
     border-color: var(--panel-hover-keyline);
     box-shadow: 3px 3px 0 rgba(13, 2, 33, 0.56), 5px 5px 0 rgba(13, 2, 33, 0.4), 7px 7px 0 rgba(13, 2, 33, 0.24);
   }
