@@ -109,22 +109,22 @@ body {
 }
 
 /* Blog content paragraph spacing */
-.blog-content p {
+.blog-post__content p {
   margin-bottom: 1.5rem;
   line-height: 1.8;
 }
 
-.blog-content p:last-child {
+.blog-post__content p:last-child {
   margin-bottom: 0;
 }
 
-.blog-content a {
+.blog-post__content a {
   color: var(--color-accent-green);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.blog-content a:hover {
+.blog-post__content a:hover {
   color: var(--color-fg);
 }
 

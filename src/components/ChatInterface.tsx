@@ -138,33 +138,33 @@ const ChatInterface = () => {
 
   return (
     <div
-      class={`chat-stem ${hasMessages ? 'chat-stem-card' : ''}`}
+      class={`chat__stem ${hasMessages ? 'chat__stem--card' : ''}`}
       onClick={enterChat}
       onFocusCapture={enterChat}
     >
 
       {/* the chat card — in only once the user has sent */}
       {hasMessages && (
-        <div class="chat-card" ref={chatContainerRef}>
+        <div class="chat__card" ref={chatContainerRef}>
           <ChatLog isStreaming={isStreaming} conversation={conversation} />
         </div>
       )}
 
       {/* the compose block: the input, with the status tab and the
           disclaimer hanging under it */}
-      <div class="chat-compose">
-        <form class="chat-form" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+      <div class="chat__compose">
+        <form class="chat__form" onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
           <div
             ref={inputRef}
             contentEditable={true}
             role="textbox"
             aria-label="Ask about Elie"
-            class="chat-field"
+            class="chat__field"
             onInput={handleInput}
             onKeyDown={handleKeyDown}
             data-placeholder="Ask About Elie"
           />
-          <button type="submit" disabled={isProcessing} class="chat-send" aria-label="Submit">
+          <button type="submit" disabled={isProcessing} class="chat__send" aria-label="Submit">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
               <path d="M2 8H15M10 3L15 8L10 13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -175,7 +175,7 @@ const ChatInterface = () => {
             chat (nothing shows before that); then the hook's state
             machine drives it ("Model Not Loaded." on the yellow plate) */}
         {enteredChat && (
-          <div class="chat-tab" style={{ background: tabPlate.bg }}>
+          <div class="chat__tab" style={{ background: tabPlate.bg }}>
             <span style={{ color: tabPlate.fg }}>{tabPlate.msg}</span>
           </div>
         )}
@@ -184,11 +184,11 @@ const ChatInterface = () => {
             the first send, the violet small-model note once the chat
             has begun */}
         {hasMessages ? (
-          <p class="chat-note chat-note-disclaimer">
+          <p class="chat__note chat__note--disclaimer">
             This is a very small model and therefore has all of the associated problems. For accurate information about me, please consult <a href="#/resume">my resume.</a>
           </p>
         ) : (
-          <p class="chat-note chat-note-warn" role="alert">
+          <p class="chat__note chat__note--warn" role="alert">
             Submitting this form will download a ~6mb model to your browser.
           </p>
         )}

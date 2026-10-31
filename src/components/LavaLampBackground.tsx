@@ -298,7 +298,7 @@ void main() {
        sanctioned soft paint. Blur and alpha print the drifting colour field;
        every other layer stays solid. The WebGL path is unaffected by this
        fallback's blur — it paints its own canvas. */
-    .lava-fallback-blob {
+    .lava-lamp-background__fallback-blob {
       position: absolute;
       border-radius: 50%;
       filter: blur(40px);
@@ -328,7 +328,7 @@ function CssFallback({ color, palette }: CssFallbackProps) {
       {(color ? [color, color, color] : tones).slice(0, 6).map((hex, i) => (
         <div
           key={i}
-          class="lava-fallback-blob"
+          class="lava-lamp-background__fallback-blob"
           style={{
             width: `${55 - i * 5}vw`,
             height: `${55 - i * 5}vw`,

@@ -23,15 +23,15 @@ const ChatLog = memo(({conversation, isStreaming}: ChatLogProps) => {
 
     const buildPlate = (role: ChatRole) => {
         if (role === ChatRole.User) {
-            return 'chat-plate chat-plate-user';
+            return 'chat-log__plate chat-log__plate--user';
         }
-        return 'chat-plate chat-plate-assistant';
+        return 'chat-log__plate chat-log__plate--assistant';
     }
 
     return (
         <div class="chat-log" aria-live="polite" aria-busy={isStreaming}>
             <style>{`
-                .chat-plate {
+                .chat-log__plate {
                     display: block;
                     width: fit-content;
                     max-width: 380px;
@@ -43,7 +43,7 @@ const ChatLog = memo(({conversation, isStreaming}: ChatLogProps) => {
                     clip-path: ${CUT};
                 }
                 /* user: right-aligned teal plate, ink body type */
-                .chat-plate-user {
+                .chat-log__plate--user {
                     margin-left: auto;
                     background: ${ECHO};
                     color: ${INK};
@@ -52,7 +52,7 @@ const ChatLog = memo(({conversation, isStreaming}: ChatLogProps) => {
                     line-height: 20px;
                 }
                 /* assistant: left-aligned crimson plate, mono type */
-                .chat-plate-assistant {
+                .chat-log__plate--assistant {
                     margin-right: auto;
                     background: ${RED};
                     color: ${PAPER};
@@ -64,17 +64,17 @@ const ChatLog = memo(({conversation, isStreaming}: ChatLogProps) => {
                 /* while thinking the mock holds the plate at its wide
                    pose (the dots readout — text arrives, the plate
                    rides the turn's own width again) */
-                .chat-plate-assistant:has(.chat-dots) {
+                .chat-log__plate--assistant:has(.chat-log__dots) {
                     min-width: 358px;
                 }
-                .chat-dots {
+                .chat-log__dots {
                     letter-spacing: 0.2em;
                     font-weight: 500;
                 }
-                .chat-dots span { animation: chat-dot-blink 1.1s ease-in-out infinite; }
-                .chat-dots span:nth-child(2) { animation-delay: 180ms; }
-                .chat-dots span:nth-child(3) { animation-delay: 360ms; }
-                @keyframes chat-dot-blink {
+                .chat-log__dots span { animation: chat-log-dot-blink 1.1s ease-in-out infinite; }
+                .chat-log__dots span:nth-child(2) { animation-delay: 180ms; }
+                .chat-log__dots span:nth-child(3) { animation-delay: 360ms; }
+                @keyframes chat-log-dot-blink {
                     0%, 100% { opacity: 0.25; }
                     50% { opacity: 1; }
                 }
@@ -84,7 +84,7 @@ const ChatLog = memo(({conversation, isStreaming}: ChatLogProps) => {
                     return (
                         <div class={buildPlate(message.role)} key={index}>
                             {message.role === ChatRole.Assistant && !message.content ? (
-                                <span class="chat-dots" role="status">
+                                <span class="chat-log__dots" role="status">
                                     <span>.</span><span>.</span><span>.</span>
                                 </span>
                             ) : (

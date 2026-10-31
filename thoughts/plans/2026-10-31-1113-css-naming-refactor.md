@@ -58,17 +58,21 @@
 
 ## Phase 2 — legacy pages + chrome
 
-**Files:** `src/components/MenuDrawer.tsx`, `StickyHeader.tsx`, `ThemeToggle.tsx`, `LavaLampBackground.tsx`, `src/games/dark-forest/DarkForestGame.tsx`, `src/pages/DarkForest.tsx`, `Chat.tsx`, `ChatInterface.tsx`, `ChatLog.tsx`, `Blog.tsx`, `BlogPost.tsx`, `Resume.tsx`, `About.tsx`.
+- [x] **Correction recorded mid-phase:** DarkForest is OUT of every later phase by Eliot's order (11:23 "leave darkforest alone") — its `button`/`button-container`/`status`/`menu-container`/`dark-forest` names stay camp-C; the census's C3 list is unchanged for it. No capture taken; nothing touched (`src/games/dark-forest/DarkForestGame.tsx`, `src/pages/DarkForest.tsx` diff-free).
+- [x] **Correction — the chat trio's block mapping:** the plan's chat-interface__* read was WRONG; the code's own anatomy comment (Chat.tsx:138-142) declares the page's classes PAGE-PRIVATE ("page-private classes live in the page's block; the component composes but prints no styles. Moved verbatim") — the block is the PAGE: `chat` (root) + `chat__*` across Chat.tsx + ChatInterface.tsx's JSX; ChatLog stays ITS OWN block (its classes + css live in its own sheet): `chat-log` root kept, `chat-log__plate`/`--user`/`--assistant`/`__dots`, keyframe `chat-log-dot-blink`.
+- [x] StickyHeader renamed 1:1 with D1's grammar — `stky` → `sticky-header`, `stky-shrunk`/`stky-idle` → `--shrunk`/`--idle` (state modifiers), `stky-titleline` → `sticky-header__titleline`, the four name segments → `sticky-header__name` + `--elie/--asenoth/--gaspar/--finer` (variant modifiers; the four spans are STATIC strings — no interpolation). **Verification posture change, recorded:** StickyHeader + ThemeToggle paint on NO live route (app.tsx's isBareStage gate excludes every non-home route — mounted nowhere), and MenuDrawer mounts but is unopenable (its only opener is StickyHeader's button) — so their renames verify by string-consistency (grep = zero old names) + tsc/build, not pixels; the pixel-proof covers the visible surfaces only.
+- [x] MenuDrawer: `menu-drawer__close-btn`.
+- [x] Chat page + interface: root `chat`, `chat__head`, `chat__stem`/`--card`, `chat__card` (+ its scrollbar rules), `chat__compose`, `chat__form`, `chat__field` (+ focus + :empty::before), `chat__send` (+ hover/active/disabled), `chat__tab` (+ mobile flip), `chat__note`/`--warn`/`--disclaimer`; the one-screen gates `#main-content:has(.chat)` (×4 selectors, the `> .lf-band` part riding UNTOUCHED until the band's phase 3 rename).
+- [x] ChatLog: as above (13 pairs incl. the keyframe + its two nth-child delays).
+- [x] BlogPost + index.css: `blog-content` → `blog-post__content` (4 selectors in index.css:112-127 + the JSX token).
+- [x] LavaLampBackground: `lava-lamp-background__fallback-blob` (css + JSX; the `lava-fallback-styles` ID is not a class — stays).
+- [x] Verify: tsc clean; build ✓ + prerender wrote; 7/7 loads × the standing checks at 0 console errors / 0 pageerrors / scrollWidth == clientWidth; BEFORE/AFTER pixel-diff: **0 pixels on all seven pairs** (chat + blog-index + one post × 1440/390 + one scrolled post at 1440).
+- [x] Commit (`css-standards: phase 2 — the chat, blog, header and lamp chrome on the naming law`).
 
-- [ ] StickyHeader: `stky-*` → `sticky-header__*` (7 names; the four name-spans first checked for interpolation per D6); its CSS is the component's own style block.
-- [ ] MenuDrawer: `menu-drawer-close-btn` → `menu-drawer__close-btn`; the rest of its classes are already utilities (stay).
-- [ ] DarkForest page + game: `dark-forest` root stays as block; `button`/`button-container`/`status`/`menu-container` → `dark-forest__button` / `__button-container` / `__status` / `__menu-container` (1:1 — semantics not editorialized); the game's css + any reduced-motion reads update in step.
-- [ ] The chat trio: Chat.tsx's page layer — root `.chat-page` → `chat` (the block), `chat-head` → `chat__head`; the `#main-content:has(.chat-page)` gate → `:has(.chat)`; ChatInterface's own classes → `chat-interface__*` (10 names), ChatLog's → `chat-log__*` / the dots rule; the pages' css blocks retarget with the classes (css.md: component name is the block — ChatInterface/ChatLog are their own blocks).
-- [ ] BlogPost: `blog-content` → `blog-post__content` (the post page is the block; Blog page has no custom classes — nothing).
-- [ ] Resume/About/ThemeToggle/DarkForest page root: re-read only — all-utilities surfaces unchanged (ThemeToggle's `panel` rides D7's defer; nothing renames yet).
-- [ ] LavaLampBackground: `lava-fallback-blob` → `lava-lamp-background__fallback-blob` (+ its css read; check for reduced-motion refs).
-- [ ] Verify: tsc + build + 0 errors; before/after screenshots: the routes `/chat`, `/blog`, one post, `/resume`, `/about`, `/games/dark-forest` at 1440 + 390; scrollWidth checks (the chat trio's `:has` gate is layout-relevant) — pixel-identical REQUIRED.
-- [ ] Tick, commit (`css-standards: phase 2 — legacy pages + chrome on the naming law`), STOP.
+>> **Run record — Phase 2**
+>> Driver: /tmp/nfNR2-driver.mjs; steps = chat/post/blog bases at 1440+390 + one scrolled post (covers nothing renamed — kept as coverage; the drawer + open steps CUT: unopenable chrome, see above). The rename itself applied in one verified python batch (~70 exact pairs, count-asserted, abort-without-write semantics); a leaker bug (`fail` shared across files) silently skipped 4 files on the first pass — caught by the leftover grep (ChatInterface still had old names with no abort line); re-applied per-file with per-file fail flags. Lesson recorded: per-file failure isolation in every future batch.
+>> **Harness lesson (standing):** the captures run under `reducedMotion: 'reduce'` (Playwright context option) — the lava lamp parks at its first pose (LavaLampBackground.tsx:464-469 `if (reduced) time = 0`), the dots/keyframes land rest-state, and back-to-back shots went 0-diff on a JS-animated route (proved pre-phase with /chat twice). The prior diff noise (131k px on /chat, ~1.4k on the post) was the lamp's rAF blobs — no rename delta at all under the corrected harness.
+>> Holds: none new (the path-form/driver lessons carried from Phase 1).
 
 ## Phase 3 — the shared band + glyphs
 

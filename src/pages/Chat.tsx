@@ -57,7 +57,7 @@ const OUTLINE = {
 
 export function Chat() {
   return (
-    <div class="chat-page">
+    <div class="chat">
       <style>{`
         /* ONE SCREEN: the band mounts in flow after this page's slot —
            so the MAIN (the stage's flow parent) flexes to the viewport
@@ -65,26 +65,26 @@ export function Chat() {
            foot read as one screen, no scroll, at any size. The stage's
            own wrapper div (its real flow parent) rides the fill too —
            the stage's min-height:100% chain needs it */
-        #main-content:has(.chat-page) {
+        #main-content:has(.chat) {
           display: flex;
           flex-direction: column;
           min-height: 100vh;
         }
-        #main-content:has(.chat-page) > div {
+        #main-content:has(.chat) > div {
           flex: 1 1 auto;
           display: flex;
           flex-direction: column;
         }
         /* EXCEPT the band itself (also a div child): it keeps its own
            height — the stage's the one filling */
-        #main-content:has(.chat-page) > .lf-band {
+        #main-content:has(.chat) > .lf-band {
           flex: 0 0 auto;
         }
-        #main-content:has(.chat-page) .chat-page {
+        #main-content:has(.chat) .chat {
           flex: 1 1 auto;
           min-height: 0;
         }
-        .chat-page {
+        .chat {
           position: relative;
           /* the ground is the site's lava lamp (recolored to the new
              inks on its paper base, behind this page's plates) — the
@@ -93,10 +93,10 @@ export function Chat() {
           overflow: hidden;
           font-family: var(--f-body, 'Inter', sans-serif);
         }
-        .chat-page * { margin: 0; box-sizing: border-box; }
+        .chat * { margin: 0; box-sizing: border-box; }
 
         /* ── the headline — the entered mock's top-left pose from load ── */
-        .chat-head {
+        .chat__head {
           position: absolute;
           left: 3.1vw;
           top: 6vh;
@@ -111,8 +111,8 @@ export function Chat() {
 
         /* ── mobile: the composition stacks in the flow ─────────── */
         @media (max-width: 899px) {
-          .chat-page { padding-bottom: 120px; }
-          .chat-head { position: static; padding: 56px 6vw 0; }
+          .chat { padding-bottom: 120px; }
+          .chat__head { position: static; padding: 56px 6vw 0; }
         }
 
         /* the page's class layer: the stem/card/compose/tab/note rules that
@@ -126,7 +126,7 @@ export function Chat() {
            differences hang off the input, not where it stands); only
            the card's arrival re-anchors the stem (it carries a card +
            its air, which claims the drop the submitted mock shows) */
-        .chat-stem {
+        .chat__stem {
           position: absolute;
           left: 0;
           right: 0;
@@ -137,10 +137,10 @@ export function Chat() {
           z-index: 1;
           transition: bottom 0.5s cubic-bezier(0.25, 1, 0.4, 1);
         }
-        .chat-stem-card { bottom: 20.8vh; }
+        .chat__stem--card { bottom: 20.8vh; }
 
         /* ── the chat card (the submitted mock's big light panel) ── */
-        .chat-card {
+        .chat__card {
           width: 546px;
           max-width: 88vw;
           height: 364px;
@@ -151,18 +151,18 @@ export function Chat() {
           overflow-y: auto;
           scrollbar-width: thin;
         }
-        .chat-card::-webkit-scrollbar { width: 6px; }
-        .chat-card::-webkit-scrollbar-thumb { background: ${RIM}; }
+        .chat__card::-webkit-scrollbar { width: 6px; }
+        .chat__card::-webkit-scrollbar-thumb { background: ${RIM}; }
 
         /* ── the compose block: input + status tab + disclaimer ──── */
-        .chat-compose {
+        .chat__compose {
           position: relative;
           width: 546px;
           max-width: 88vw;
         }
 
         /* ── the input row: the mock's paper field + outlined arrow ─ */
-        .chat-form {
+        .chat__form {
           position: relative;
           display: flex;
           align-items: center;
@@ -170,7 +170,7 @@ export function Chat() {
           border: 1px solid ${RIM};
           height: 55px;
         }
-        .chat-field {
+        .chat__field {
           flex: 1;
           padding: 0 20px;
           /* the field's mono type centers in the 55px row */
@@ -184,13 +184,13 @@ export function Chat() {
         /* the mock's field carries only its 1px rim — the global
            :focus-visible ring stays on the rest of the site's controls,
            not the chat's caret row */
-        .chat-field,
-        .chat-field:focus,
-        .chat-field:focus-visible {
+        .chat__field,
+        .chat__field:focus,
+        .chat__field:focus-visible {
           outline: none;
           caret-color: ${GREY};
         }
-        .chat-field:empty::before {
+        .chat__field:empty::before {
           content: attr(data-placeholder);
           color: ${GREY};
         }
@@ -199,7 +199,7 @@ export function Chat() {
            brand-dark ink (see OUTLINE above): rim + arrow the same
            crimson, the fill transparent until hover pours paper-deep
            under it, press steps the plate, disabled greys out */
-        .chat-send {
+        .chat__send {
           position: absolute;
           right: 9px;
           top: 50%;
@@ -217,9 +217,9 @@ export function Chat() {
           padding: 0;
           transition: background 0.18s ease, translate 0.1s ease, color 0.18s ease;
         }
-        .chat-send:hover:not(:disabled) { background: ${OUTLINE['hover-surface']}; }
-        .chat-send:active:not(:disabled) { translate: 1px calc(-50% + 1px); }
-        .chat-send:disabled {
+        .chat__send:hover:not(:disabled) { background: ${OUTLINE['hover-surface']}; }
+        .chat__send:active:not(:disabled) { translate: 1px calc(-50% + 1px); }
+        .chat__send:disabled {
           background: ${OUTLINE['disabled-surface']};
           color: ${OUTLINE['disabled-text']};
           border-color: ${OUTLINE['disabled-border']};
@@ -228,7 +228,7 @@ export function Chat() {
 
         /* ── the status tab: the small mono readout hanging under the
            input's left edge (the mock's plate, moved below the box) ─ */
-        .chat-tab {
+        .chat__tab {
           position: absolute;
           top: 100%;
           left: 15px;
@@ -251,7 +251,7 @@ export function Chat() {
            plate before the first send (the status tab's warning inks,
            same plate geometry as the violet note), the violet disclaimer
            once the chat has begun ── */
-        .chat-note {
+        .chat__note {
           position: absolute;
           top: calc(100% + 50px);
           left: 50%;
@@ -263,41 +263,41 @@ export function Chat() {
           line-height: 1.35;
           padding: 11px 18px;
         }
-        .chat-note-warn {
+        .chat__note--warn {
           background: ${YELLOW};
           border: 1px solid ${INK};
           color: ${INK};
         }
-        .chat-note-disclaimer {
+        .chat__note--disclaimer {
           background: ${VIOLET_PALE};
           border: 1px solid ${VIOLET};
           color: ${VIOLET};
         }
-        .chat-note a { color: inherit; }
+        .chat__note a { color: inherit; }
 
         @media (max-width: 899px) {
-          .chat-stem, .chat-stem-card {
+          .chat__stem, .chat__stem--card {
             position: static;
             margin-top: 14vh;
             padding: 0 6vw;
           }
-          .chat-card { width: 100%; height: 46vh; margin-bottom: 24px; }
+          .chat__card { width: 100%; height: 46vh; margin-bottom: 24px; }
           /* mobile flips the tab's hang: it sits ABOVE the input (the
              note is in the flow right below, so hanging down would drop
              the tab onto it) — same plate, same inks, mirrored anchor */
-          .chat-tab {
+          .chat__tab {
             left: 0;
             min-width: 140px;
             top: auto;
             bottom: calc(100% + 9px);
           }
-          .chat-note { position: static; transform: none; margin-top: 44px; }
-          .chat-send { width: 44px; height: 44px; }
+          .chat__note { position: static; transform: none; margin-top: 44px; }
+          .chat__send { width: 44px; height: 44px; }
         }
       `}</style>
 
       {/* the headline: solid crimson, top-left, from load */}
-      <h2 class="chat-head">Resume RAG</h2>
+      <h2 class="chat__head">Resume RAG</h2>
 
       <ChatInterface />
     </div>

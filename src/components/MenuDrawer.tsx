@@ -36,7 +36,7 @@ export function MenuDrawer({ isOpen, onClose, onNavigate }: MenuDrawerProps) {
       <div class="p-4 md:p-8 h-full flex flex-col">
         <button
           onClick={onClose}
-          class="self-end mb-8 p-2 rounded-xl panel panel-hover transition-colors menu-drawer-close-btn"
+          class="self-end mb-8 p-2 rounded-xl panel panel-hover transition-colors menu-drawer__close-btn"
           aria-label="Close menu"
         >
           <Icon name="close" size={24} />
