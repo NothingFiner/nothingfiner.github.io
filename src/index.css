@@ -151,7 +151,7 @@ body {
    layer. The host itself is a STACKING CONTEXT (position: fixed
    forms one), so the plates' own z-index only competes INSIDE it —
    the host's z is what actually faces the page, and it must sit
-   above the site's fixed chrome (the band .lf-band z 45, the
+   above the site's fixed chrome (the band .site-footer__band z 45, the
    landing's crimson panel z 40, the chat's compose/status pieces).
    pointer-events: none on the host — the plates take the pointer
    themselves while they hold the page (phase covered/push).

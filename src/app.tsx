@@ -84,7 +84,7 @@ function AppContent() {
           every route) so document order + screen readers always find it.
           No other h1 is declared on any route (the pages' headlines are
           h2s — the hero's, the GrowHead sections', every page's). */}
-      <h1 class="lf-sr">Elie Gaspar-Finer - Frontend Focused Engineer - 12+ years of experience</h1>
+      <h1 class="site-footer__sr">Elie Gaspar-Finer - Frontend Focused Engineer - 12+ years of experience</h1>
       {/* background: the line-hatch ground site-wide; the lava blobs per
           route (see lampOn above) */}
       {!isDarkForest && (

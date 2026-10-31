@@ -77,7 +77,7 @@ export function Chat() {
         }
         /* EXCEPT the band itself (also a div child): it keeps its own
            height — the stage's the one filling */
-        #main-content:has(.chat) > .lf-band {
+        #main-content:has(.chat) > .site-footer__band {
           flex: 0 0 auto;
         }
         #main-content:has(.chat) .chat {

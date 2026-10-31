@@ -20,7 +20,7 @@ export function Landing() {
     <div class="w-full relative z-40 flex flex-col">
       {/* the sticky footer band rides LAST so its sticky range spans the
           whole journey (the Phase-4 order keeps it the flow's final
-          item — the tech section now the .lf-band's nearer neighbor on
+          item — the tech section now the .site-footer__band's nearer neighbor on
           top, but the general sibling's reach is DOM-order not
           adjacency): at load it sits over the hero's lower rows; it
           pins at the viewport bottom while the glyph band and the story

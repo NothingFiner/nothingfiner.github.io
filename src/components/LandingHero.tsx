@@ -196,14 +196,14 @@ export function LandingHero() {
            scrolls away with the hero — nothing legal pins mid-scroll)
            and at the band's foot at the very bottom). Same floor
            rhythm the fold riders park at */
-        .lf-hero-legal {
+        .landing-hero__legal {
           position: absolute;
           left: 0;
           bottom: 4.4vh;
           padding-left: 2.3vw;
         }
         @media (max-width: 767px) {
-          .lf-hero-legal { position: static; display: block; margin: 40px 6vw 0; padding-left: 0; opacity: 1; }
+          .landing-hero__legal { position: static; display: block; margin: 40px 6vw 0; padding-left: 0; opacity: 1; }
           .gl-title {
             padding-left: 0;
           }
@@ -277,7 +277,7 @@ export function LandingHero() {
             FooterLegal; the landing's OTHER instance lives at the
             band's foot, at the page's end; Eliot's redraw: two
             positions, nothing between) */}
-        <FooterLegal fade class="lf-hero-legal" />
+        <FooterLegal fade class="landing-hero__legal" />
       </div>
       </div>
 

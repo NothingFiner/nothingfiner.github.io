@@ -23,19 +23,19 @@ const ECHO_OFFSET = '22%';
 const PAIR_SHIFT = -(0.5 + parseFloat(ECHO_OFFSET) / 200);
 
 function GlyphDiv({ copy }: { copy: 'base' | 'echo' }) {
-  return <div class={`gl-glyph gl-${copy}`} />;
+  return <div class={`glyph-pair__glyph glyph-pair__glyph--${copy}`} />;
 }
 
 export function GlyphPair() {
   return (
-    <div class="gl-band">
+    <div class="glyph-pair__band">
       <style>{`
-        .gl-band {
+        .glyph-pair__band {
           /* rows 1-5 (5 rows): grid lines 1 → 6 (line 6 is the row-5/6 boundary) */
           grid-area: 1 / 1 / 6 / 13;
           position: relative;
         }
-        .gl-pair {
+        .glyph-pair__pair {
           --gl-w: max(72vw, 640px);
           position: absolute;
           top: 0;
@@ -49,7 +49,7 @@ export function GlyphPair() {
           left: 50%;
           margin-left: calc(var(--gl-w) * -${Math.abs(PAIR_SHIFT)});
         }
-        .gl-glyph {
+        .glyph-pair__glyph {
           position: absolute;
           top: 0;
           width: 100%;
@@ -58,25 +58,25 @@ export function GlyphPair() {
           -webkit-mask: url('/assets/logo.svg') top / contain no-repeat;
           mask: url('/assets/logo.svg') top / contain no-repeat;
         }
-        .gl-glyph.gl-base {
+        .glyph-pair__glyph.glyph-pair__glyph--base {
           left: 0;
           background: #A6022A;
-          animation: gl-slide-l 1s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both
+          animation: glyph-pair-slide-l 1s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both
         }
-        .gl-glyph.gl-echo {
+        .glyph-pair__glyph.glyph-pair__glyph--echo {
           left: ${ECHO_OFFSET}; /* a fraction of the LOGO width, not the screen */
           background: #14F1C8;
-          animation: gl-slide-r 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both
+          animation: glyph-pair-slide-r 1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both
         }
-        @keyframes gl-slide-l { from { transform: translateX(-110vw); } to { transform: translateX(0); } }
-        @keyframes gl-slide-r { from { transform: translateX(110vw); } to { transform: translateX(0); } }
+        @keyframes glyph-pair-slide-l { from { transform: translateX(-110vw); } to { transform: translateX(0); } }
+        @keyframes glyph-pair-slide-r { from { transform: translateX(110vw); } to { transform: translateX(0); } }
        
         @media (max-width: 767px) {
-          .gl-band { height: 42vh; flex: none; grid-area: auto; }
-          .gl-pair { width: 115vw; }
+          .glyph-pair__band { height: 42vh; flex: none; grid-area: auto; }
+          .glyph-pair__pair { width: 115vw; }
         }
       `}</style>
-      <div class="gl-pair">
+      <div class="glyph-pair__pair">
         <GlyphDiv copy="base" />
         <GlyphDiv copy="echo" />
       </div>

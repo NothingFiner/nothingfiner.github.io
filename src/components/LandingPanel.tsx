@@ -326,8 +326,8 @@ export function LandingPanel() {
            closes: re-applying the animation restarts it from the active
            link's spot) — the general-sibling ~, because the technologies
            section rides between the panel and the band in the flow (the
-           Phase-4 order), so the adjacent sibling is never the .lf-band */
-        .landing-panel:has(~ .lf-band glaphic-pool-menu[open]) .ab-nav a {
+           Phase-4 order), so the adjacent sibling is never the .site-footer__band */
+        .landing-panel:has(~ .site-footer__band glaphic-pool-menu[open]) .ab-nav a {
           animation: none !important;
           opacity: 0 !important;
           pointer-events: none;

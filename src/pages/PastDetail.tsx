@@ -7,7 +7,7 @@
 // prop-shaped. Two axes entangle:
 //   (1) the module-scope held-swap driver's index choreography is
 //       written against the OTHER family's concrete page classes
-//       (.pr-page/.pc-card fade-out, .grow-head-in reverse): a shared
+//       (.pr-page/.pc-card fade-out, .grow-head__in reverse): a shared
 //       driver would grow route-family branches keyed to a SECOND
 //       index's page classes — page-private CSS does not share.
 //   (2) the plate data sources have divergent error contracts: the
@@ -174,7 +174,7 @@ function startDriver(): void {
       animation: pw-band-out 0.4s ease-in both;
     }
     @keyframes pw-band-out { from { opacity: 1; } to { opacity: 0; } }
-    .pw-page.pw-exit-on .grow-head-in {
+    .pw-page.pw-exit-on .grow-head__in {
       animation: gl-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0s reverse both;
     }
     /* the arrival (B + the no-held-swap plain entrance): the bands
@@ -186,7 +186,7 @@ function startDriver(): void {
     @keyframes pw-band-in { from { opacity: 0; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
       .pw-page.pw-exit-on .pw-band,
-      .pw-page.pw-exit-on .grow-head-in,
+      .pw-page.pw-exit-on .grow-head__in,
       .pw-page.pw-in-on .pw-band {
         animation: none;
       }
@@ -781,7 +781,7 @@ export function PastDetail() {
           the plates are static, the stacked foot needs no shift) */}
       <style>{`
         @media (min-width: 900px) {
-          #main-content:has(.ptd-page) .lf-band-footer .lf-foot {
+          #main-content:has(.ptd-page) .site-footer__band--footer .site-footer__foot {
             padding-left: 37.5vw;
           }
         }

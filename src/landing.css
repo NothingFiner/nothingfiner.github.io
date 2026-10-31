@@ -30,7 +30,7 @@
   line-height: 1.05;
   letter-spacing: -0.02em;
 }
-.grow-head-in {
+.grow-head__in {
   display: inline-block;
   /* the mock's warm-white fill — a hair off the paper ground so the
      letters read as a paler print over it */
@@ -38,7 +38,7 @@
 }
 /* plays once when the section's reveal flag lands; the `both` fill
    parks the stack at its full depth */
-.grow-head-in.grow-on {
+.grow-head__in.grow-head--on {
   animation: gl-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0.15s both;
 }
 
@@ -52,7 +52,7 @@
    the fill keeps parking the element at its final state (full shadow
    stack), while none would strip the stack and change the at-rest look */
 @media (prefers-reduced-motion: reduce) {
-  .grow-head-in.grow-on {
+  .grow-head__in.grow-head--on {
     animation-duration: 1ms;
     animation-delay: 0s;
   }
@@ -83,12 +83,12 @@
    very bottom. Nothing repeats in between. */
 
 /* base: a transparent stage; the interactive children lift onto it */
-.lf-band {
+.site-footer__band {
   pointer-events: none;
 }
 
 /* the landing's journey pose — the sticky ride (patch + icons only) */
-.lf-band-journey {
+.site-footer__band--journey {
   position: sticky;
   bottom: 0;
   /* above the crimson sidebar (fixed, z 40), under nothing */
@@ -111,27 +111,27 @@
 }
 
 /* the default footer pose — the page's own bottom block */
-.lf-band-footer {
+.site-footer__band--footer {
   position: static;
   height: auto;
   margin-top: 0;
 }
-.lf-band a,
-.lf-band button,
-.lf-band glaphic-pool-menu {
+.site-footer__band a,
+.site-footer__band button,
+.site-footer__band glaphic-pool-menu {
   pointer-events: auto;
 }
 
 /* the pinned pool menu — EVERY page keeps the navigation's corner.
    (In the footer pose this is the only pinned piece of the band.) */
-.lf-menu {
+.site-footer__menu {
   position: fixed;
   right: 2.3vw;
   bottom: 11vh;
   z-index: 45;
   pointer-events: none;
 }
-.lf-menu glaphic-pool-menu {
+.site-footer__menu glaphic-pool-menu {
   pointer-events: auto;
 }
 
@@ -140,7 +140,7 @@
    ~2vh off the floor) — the icon row pulls a hair LOWER still so its
    top clears the pinned patch's bottom edge (patch floor 4.4vh + its
    ~52px): the corner stacks patch-over-icons, one piece, no overlap */
-.lf-foot {
+.site-footer__foot {
   position: relative;
   display: flex;
   align-items: flex-end;
@@ -148,7 +148,7 @@
   column-gap: 4vw;
   padding: 6vh 2.3vw 4vh;
 }
-.lf-foot-brand {
+.site-footer__foot-brand {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -156,12 +156,12 @@
 }
 /* the foot's mark sits at the logo's own size (124px = 8.6vw at the
    mock's 1440 artboard), not the journey's vw scale */
-.lf-foot .lf-glyph {
+.site-footer__foot .site-footer__glyph {
   width: min(8.6vw, 124px);
 }
-.lf-foot .lf-legal { margin-left: 0; }
+.site-footer__foot .site-footer__legal { margin-left: 0; }
 /* the icon row lands just under the pinned patch */
-.lf-band-footer .lf-social {
+.site-footer__band--footer .site-footer__social {
   align-self: flex-end;
 }
 
@@ -169,12 +169,12 @@
    only ever SEEN at the bottom pose (Eliot: nothing legal/branded
    pinned mid-scroll). It floor-anchors to the band's own slot (the
    box's last 37.5vh — at rest that is exactly the page's end) and is
-   only ever revealed there: the rest sentinel (.lf-rest-sentinel — a
+   only ever revealed there: the rest sentinel (.site-footer__rest-sentinel — a
    zero-height flow element after the band: its entering the viewport
    happens exactly at the rest) hands the reveal to the component's
-   lf-foot-in (which sits on the band root, so it reads as a modifier
+   site-footer__band--foot-in (which sits on the band root, so it reads as a modifier
    of the same element); the opacity fade is the foot's own arrival */
-.lf-band-journey .lf-foot {
+.site-footer__band--journey .site-footer__foot {
   position: absolute;
   left: 0;
   right: 0;
@@ -182,38 +182,40 @@
   opacity: 0;
   pointer-events: none;
 }
-.lf-band-journey.lf-foot-in .lf-foot {
+.site-footer__band--journey.site-footer__band--foot-in .site-footer__foot {
   opacity: 1;
   pointer-events: auto;
   transition: opacity 0.7s ease-out 0.15s;
 }
-.lf-rest-sentinel {
+.site-footer__rest-sentinel {
   display: block;
   height: 0;
 }
 
 /* fades — the JOURNEY riders' arrival choreography (the footer pose
    renders no fades: its footer just sits at the page's bottom) */
-.lf-fade {
+.site-footer__legal--fade,
+.site-footer__social--fade {
   opacity: 0;
   /* the three riders (legal, icons, and — via the component's
      menuDelay prop — the pool-menu patch) share ONE clock, matched to
      the hero glyph pair's entrance (GlyphPair: the copies slide in on
      0.05s/0.15s over 1s) so the band's arrivals read as one piece WITH
      the logos entering, not a beat after the headline's typing */
-  animation: lf-band-fade-in 0.7s ease-out var(--lf-fold-in, 0s) forwards;
+  animation: site-footer-fade-in 0.7s ease-out var(--lf-fold-in, 0s) forwards;
 }
-@keyframes lf-band-fade-in {
+@keyframes site-footer-fade-in {
   to { opacity: 1; }
 }
 /* the no-arrival pose (menuDelay 0 — the chat page): the riders skip
    the fold choreography and enter with the page */
-.lf-band-now .lf-fade {
+.site-footer__band--now .site-footer__legal--fade,
+  .site-footer__band--now .site-footer__social--fade {
   animation: none;
   opacity: 1;
 }
 
-.lf-glyph {
+.site-footer__glyph {
   aspect-ratio: 124 / 59;
   background: #A6022A;
   /* the mock's footer mark is the eee logo mirrored — rotate the
@@ -223,7 +225,7 @@
   mask: url('/assets/logo.svg') center / contain no-repeat;
   margin-bottom: 0;
 }
-.lf-legal {
+.site-footer__legal {
   font-family: var(--f-mono, monospace);
   color: #686474;
   font-size: 11px;
@@ -231,11 +233,11 @@
 }
 /* (the journey's mid-scroll legal/brand riders are GONE — the hero
    carries the fold legal in its own flow (LandingHero's
-   .lf-hero-legal) and the band's foot holds the bottom pair) */
+   .landing-hero__legal) and the band's foot holds the bottom pair) */
 
 /* ── the journey's right cluster: pool menu above the icons ─────────
-   (the footer pose pins the menu in .lf-menu instead) */
-.lf-cluster {
+   (the footer pose pins the menu in .site-footer__menu instead) */
+.site-footer__cluster {
   position: absolute;
   right: 2.3vw;
   bottom: 4.4vh;
@@ -249,33 +251,33 @@
    properties through its shadow tree) — paper on the plate, fluro on
    hover; outer-tree rules beat the shadow's ::slotted (Tailwind
    preflight's plain 'a' color rule would otherwise win) */
-.lf-band glaphic-pool-menu {
+.site-footer__band glaphic-pool-menu {
   --glaphic-pool-menu-item-ink: #F9FAF4;
   --glaphic-pool-menu-item-hover-ink: #14F1C8;
   --glaphic-pool-menu-line-ink: #F9FAF4;
 }
-.lf-band glaphic-pool-menu > a { color: #F9FAF4; }
-.lf-band glaphic-pool-menu > a:hover,
-.lf-band glaphic-pool-menu > a:focus-visible { color: #14F1C8; }
+.site-footer__band glaphic-pool-menu > a { color: #F9FAF4; }
+.site-footer__band glaphic-pool-menu > a:hover,
+.site-footer__band glaphic-pool-menu > a:focus-visible { color: #14F1C8; }
 
 /* the contact icon row — DARK ink by default (the footer pose's plain
    read and the journey's own fold pose); on the landing the ride
    switches it to paper while the crimson sidebar is active (a hard
    switch, not a fade) */
-.lf-social {
+.site-footer__social {
   display: flex;
   align-items: center;
   gap: 24px;
   color: #0D0221;
 }
-.lf-band-journey .lf-social {
+.site-footer__band--journey .site-footer__social {
   --lf-si: clamp(0, calc((var(--lf-x, 0) - 0.2) / 0.1), 1);
   color: color-mix(in srgb, #0D0221, #F9FAF4 calc(var(--lf-si) * 100%));
 }
-.lf-social a { color: inherit; display: inline-flex; }
+.site-footer__social a { color: inherit; display: inline-flex; }
 
 /* ── LEARN MORE — the hero-fold invite (only the landing mounts it) ── */
-.lf-learn-wrap {
+.site-footer__learn-wrap {
   position: absolute;
   left: 0;
   right: 0;
@@ -289,7 +291,7 @@
      out of the stage's own floor edge when it earns itself */
   overflow: hidden;
 }
-.lf-learn-more {
+.site-footer__learn-more {
   background: #14F1C8;
   border: 2px solid #0D0221;
   color: #0D0221;
@@ -302,13 +304,13 @@
   transition: transform 0.35s ease-out, opacity 0.35s ease-out;
   pointer-events: none;
 }
-.lf-learn-more.near {
+.site-footer__learn-more.site-footer__learn-more--near {
   pointer-events: auto;
   transform: translateY(0);
   opacity: 1;
 }
 /* the pre-invite pose (the button slides up from below the wrap) */
-.lf-learn-more:not(.near) {
+.site-footer__learn-more:not(.site-footer__learn-more--near) {
   transform: translateY(130%);
   opacity: 0;
 }
@@ -318,42 +320,42 @@
    backwards fill only (a FORWARDS fill kept the wrapper composited,
    which trapped the pool plates' multiply blend inside it and posed
    them run-to-run; it releases as soon as the animation ends) */
-.lf-menu-arrive {
+.site-footer__menu-arrive {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
-.lf-menu-arrive.lf-shown {
+.site-footer__menu-arrive.site-footer__menu-arrive--shown {
   opacity: 1;
   transform: none;
-  animation: lf-menu-in 0.5s ease-out backwards;
+  animation: site-footer-menu-in 0.5s ease-out backwards;
 }
-@keyframes lf-menu-in {
+@keyframes site-footer-menu-in {
   from { opacity: 0; transform: translateY(10px); }
 }
 /* the no-arrival pose (menuDelay 0 — the chat page) skips it too */
-.lf-band-now .lf-menu-arrive {
+.site-footer__band--now .site-footer__menu-arrive {
   animation: none;
 }
 
-.lf-band-journey .lf-foot .lf-social {
+.site-footer__band--journey .site-footer__foot .site-footer__social {
   display: none;
 }
 
-.lf-legal-tape {
+.site-footer__legal-tape {
   display: none;
 }
 @media (max-width: 899px) {
-  .lf-cluster .lf-social {
+  .site-footer__cluster .site-footer__social {
     display: none;
   }
-  .lf-band-journey .lf-foot .lf-social {
+  .site-footer__band--journey .site-footer__foot .site-footer__social {
     display: flex;
   }
-  .lf-band-journey .lf-foot {
+  .site-footer__band--journey .site-footer__foot {
     opacity: 1;
   }
-  .lf-cluster {
+  .site-footer__cluster {
     position: fixed;
     right: 6vw;
     bottom: 10vh;
@@ -373,66 +375,66 @@
      the icons STAY PINNED with the menu (the landing's sticky exception
      applies on mobile too). Footer: the foot stacks — brand over
      legal, the icon row under them — and only the pinned menu rides. */
-  .lf-band {
+  .site-footer__band {
     position: static;
     height: auto;
     margin-top: 0;
     --lf-x: 0;
   }
-  .lf-band-journey { padding-bottom: 24px; }
+  .site-footer__band--journey { padding-bottom: 24px; }
   /* the landing flow's mobile order: DOM puts the band last (after the
      panel); the orders restore the mock's read — the hero's band slot
      between the hero and the story section */
   .landing-hero { order: -1; }
   .landing-about { order: 1; }
-  .lf-learn-wrap { position: static; margin: 28px 6vw 0; }
+  .site-footer__learn-wrap { position: static; margin: 28px 6vw 0; }
   /* the invite on mobile: no pointer will ever earn the low-mouse
      slide, so it FADES IN with the band's own fold clock instead and
      reads as a plain tap CTA (a tap scrolls to #about; desktop keeps
      the hover-earned slide) */
-  .lf-learn-more:not(.near) {
+  .site-footer__learn-more:not(.site-footer__learn-more--near) {
     opacity: 0;
     transform: none;
     pointer-events: auto;
-    animation: lf-band-fade-in 0.7s ease-out var(--lf-fold-in, 0s) forwards;
+    animation: site-footer-fade-in 0.7s ease-out var(--lf-fold-in, 0s) forwards;
   }
 
   /* the footer pose: the block stacks; the pinned menu keeps its corner
      (the icon row stacks left under the brand — the patch holds the
      right corner, no horizontal collision) */
-  .lf-foot {
+  .site-footer__foot {
     column-gap: 0;
     gap: 22px;
     padding: 40px 6vw 24px;
   }
-  .lf-band-footer .lf-social {
+  .site-footer__band--footer .site-footer__social {
     justify-content: center;
     margin-bottom: 0;
   }
-  .lf-foot-brand {
+  .site-footer__foot-brand {
     align-items: flex-start;
   }
-  .lf-foot .lf-glyph {
+  .site-footer__foot .site-footer__glyph {
     width: 10vw;
   }
-  .lf-menu {
+  .site-footer__menu {
     right: 4vw;
     bottom: 10vh;
   }
-  .lf-legal {
+  .site-footer__legal {
     display:flex;
     flex-direction: column-reverse;
   }
-  .lf-legal-year {
+  .site-footer__legal-year {
     display: flex;
     align-items: center;
   }
-  .lf-legal-tape {
+  .site-footer__legal-tape {
     display: block;
     width: 100%;
     height: .85em;
   }
-  .lf-legal-divider {
+  .site-footer__legal-divider {
     display: none;
   }
 }
@@ -440,7 +442,7 @@
 /* the site's one accessible page heading — visually hidden, mounted
    once at the app level so it stands on every route (no other h1 on
    any route: the pages' own headlines are h2s) */
-.lf-sr {
+.site-footer__sr {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -452,7 +454,7 @@
   white-space: nowrap;
   border: 0;
 }
-.lf-sr:focus-visible {
+.site-footer__sr:focus-visible {
   position: fixed;
   width: auto;
   height: auto;

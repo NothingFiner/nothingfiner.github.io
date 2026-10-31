@@ -37,7 +37,7 @@
 //
 //   <FooterLegal fade class="…">   the `////` legal (year + the ramp
 //                                  tape + the name) — `fade` adds the
-//                                  fold-arrival .lf-fade (the hero's
+//                                  fold-arrival .site-footer__legal--fade (the hero's
 //                                  from-load beat)
 //   <FooterBrand>{legal}</FooterBrand>  the mirrored eee mark over a
 //                                  legal (the foot's left column)
@@ -63,12 +63,12 @@ import { Icon } from './Icon';
 export function FooterLegal({ class: cls = '', fade = false }: { class?: string; fade?: boolean }) {
   const year = new Date().getFullYear();
   return (
-    <div class={`lf-legal ${fade ? 'lf-fade' : ''} ${cls}`}>
-      <span class="lf-legal-year">
+    <div class={`site-footer__legal ${fade ? 'site-footer__legal--fade' : ''} ${cls}`}>
+      <span class="site-footer__legal-year">
         ©{year}
-        <glaphic-tape pattern="ramp" class="lf-legal-tape" />
+        <glaphic-tape pattern="ramp" class="site-footer__legal-tape" />
       </span>
-      <span class="lf-legal-divider">
+      <span class="site-footer__legal-divider">
         &nbsp;////&nbsp;
       </span>
       <span>
@@ -80,11 +80,11 @@ export function FooterLegal({ class: cls = '', fade = false }: { class?: string;
 
 /** the mirrored eee mark as the foot's left column; pass the legal (or
     anything else) through as its child — the column's 1.6vh gap is the
-    .lf-foot-brand's own */
+    .site-footer__foot-brand's own */
 export function FooterBrand({ class: cls = '', children = null }: { class?: string; children?: ComponentChildren }) {
   return (
-    <div class={`lf-foot-brand ${cls}`}>
-      <div class="lf-glyph" />
+    <div class={`site-footer__foot-brand ${cls}`}>
+      <div class="site-footer__glyph" />
       {children}
     </div>
   );
@@ -94,7 +94,7 @@ export function FooterBrand({ class: cls = '', children = null }: { class?: stri
     pins it with the fold fade; the footer pose sets it in the foot */
 export function FooterSocial({ class: cls = '', fade = false }: { class?: string; fade?: boolean }) {
   return (
-    <div class={`lf-social ${fade ? 'lf-fade' : ''} ${cls}`}>
+    <div class={`site-footer__social ${fade ? 'site-footer__social--fade' : ''} ${cls}`}>
       <a href="https://github.com/nothingfiner" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
         <Icon name={'github'} size={22} />
       </a>
@@ -185,7 +185,7 @@ export function SiteFooter({ variant = 'footer', learnMore = false, menuDelay = 
     if (!learnMore) return;
     const atHero = () => window.scrollY < window.innerHeight * 0.5;
     const menuOpen = () => !!document.querySelector('glaphic-pool-menu[open]');
-    const EXCLUDE = '.lf-cluster, .lf-menu, .lf-social, glaphic-pool-menu';
+    const EXCLUDE = '.site-footer__cluster, .site-footer__menu, .site-footer__social, glaphic-pool-menu';
     const onMove = (e: MouseEvent) => {
       if (menuOpen()) return;
       if ((e.target as Element | null)?.closest?.(EXCLUDE)) return;
@@ -212,10 +212,10 @@ export function SiteFooter({ variant = 'footer', learnMore = false, menuDelay = 
   }, [learnMore]);
 
   // the menu patch — mounted at the menu beat; its arrival plays the
-  // one-shot lf-menu-in (the forwards fill kept the wrapper composited,
+  // one-shot site-footer-menu-in (the forwards fill kept the wrapper composited,
   // which trapped the pool plates' multiply blend — backwards only)
   const patch = showMenu && (
-    <div class="lf-menu-arrive lf-shown">
+    <div class="site-footer__menu-arrive site-footer__menu-arrive--shown">
       <glaphic-pool-menu anchor="bottom-right" label="Menu">
         <a href="#/">Home</a>
         <a href="#/projects">Projects</a>
@@ -230,17 +230,17 @@ export function SiteFooter({ variant = 'footer', learnMore = false, menuDelay = 
   return (
     <>
       <div
-        class={`lf-band ${journey ? 'lf-band-journey' : 'lf-band-footer'} ${menuDelay === 0 ? 'lf-band-now' : ''} ${footIn ? 'lf-foot-in' : ''}`}
+        class={`site-footer__band ${journey ? 'site-footer__band--journey' : 'site-footer__band--footer'} ${menuDelay === 0 ? 'site-footer__band--now' : ''} ${footIn ? 'site-footer__band--foot-in' : ''}`}
       >
         {journey ? (
-            <div class="lf-cluster">
+            <div class="site-footer__cluster">
               {patch}
               <FooterSocial fade />
             </div>
           ) : (
-             <div class="lf-menu">{patch}</div>
+             <div class="site-footer__menu">{patch}</div>
           )}
-            <div class="lf-foot">
+            <div class="site-footer__foot">
               <FooterBrand>
                 <FooterLegal />
               </FooterBrand>
@@ -249,10 +249,10 @@ export function SiteFooter({ variant = 'footer', learnMore = false, menuDelay = 
 
         {/* LEARN MORE — rides the sticky band across both pages (landing) */}
         {learnMore && (
-          <div class="lf-learn-wrap">
+          <div class="site-footer__learn-wrap">
             <button
               onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-              class={`lf-learn-more ${nearBottom ? 'near' : ''}`}
+              class={`site-footer__learn-more ${nearBottom ? 'site-footer__learn-more--near' : ''}`}
             >
               LEARN MORE
             </button>
@@ -262,7 +262,7 @@ export function SiteFooter({ variant = 'footer', learnMore = false, menuDelay = 
 
       {/* the rest sentinel: zero height, the flow's true end — its
           entering the viewport IS the landing's bottom pose */}
-      {journey && <i class="lf-rest-sentinel" ref={sentinelRef} aria-hidden="true" />}
+      {journey && <i class="site-footer__rest-sentinel" ref={sentinelRef} aria-hidden="true" />}
     </>
   );
 }

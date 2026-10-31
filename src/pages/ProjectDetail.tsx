@@ -193,7 +193,7 @@ function startDriver(): void {
       animation: pd-index-card-out 0.4s ease-in both;
     }
     @keyframes pd-index-card-out { from { opacity: 1; } to { opacity: 0; } }
-    .pr-page.pr-exit-on .grow-head-in {
+    .pr-page.pr-exit-on .grow-head__in {
       animation: gl-grow 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) 0s reverse both;
     }
     /* the arrival (B + the no-held-swap plain entrance): the index's
@@ -205,7 +205,7 @@ function startDriver(): void {
     @keyframes pd-index-card-in { from { opacity: 0; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
       .pr-page.pr-exit-on .pc-card,
-      .pr-page.pr-exit-on .grow-head-in,
+      .pr-page.pr-exit-on .grow-head__in,
       .pr-page.pr-in-on .pc-card {
         animation: none;
       }
@@ -591,7 +591,7 @@ export function ProjectDetail() {
 
         /* TOP-RIGHT — the back-to-index button: the glaphic-button's
            OUTLINE recipe, pinned to the viewport's top-right corner at
-           the pool-menu button's EXACT pinned offsets — .lf-menu's
+           the pool-menu button's EXACT pinned offsets — .site-footer__menu's
            geometry mirrored to the top corner (its right 2.3vw and its
            4.4vh corner offset). The pin also lifts the button out of
            the 12-col grid's track, so the label's one line can never
@@ -824,7 +824,7 @@ export function ProjectDetail() {
              patch of corner) */
           .pd-image-block-container, .pd-next-wrap { grid-column: auto; margin-right: 0; margin-top: 6vh; }
           /* the back button rides the pool-menu button's mobile pin
-             exactly (12px, .lf-menu's mobile geometry, mirrored to the
+             exactly (12px, .site-footer__menu's mobile geometry, mirrored to the
              top corner) */
           .pd-back-row {
             position: fixed;
@@ -844,7 +844,7 @@ export function ProjectDetail() {
           static, the stacked foot needs no shift) */}
       <style>{`
         @media (min-width: 900px) {
-          #main-content:has(.pd-page) .lf-band-footer .lf-foot {
+          #main-content:has(.pd-page) .site-footer__band--footer .site-footer__foot {
             padding-left: 37.5vw;
           }
         }

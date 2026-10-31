@@ -8,7 +8,7 @@
 export function GrowHead(props: { text: string; inView: boolean; class?: string }) {
   return (
     <h2 class={`grow-head ${props.class ?? ''}`}>
-      <span class={`grow-head-in ${props.inView ? 'grow-on' : ''}`}>{props.text}</span>
+      <span class={`grow-head__in ${props.inView ? 'grow-head--on' : ''}`}>{props.text}</span>
     </h2>
   );
 }
