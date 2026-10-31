@@ -392,6 +392,56 @@ Amends the Phase-2 build in place; scope stays `src/components/LandingNow.tsx` O
 
 ## Phase 5 — the final record
 
-- [ ] The full-journey capture set ×3 widths (hero → about-parked → what → past → tech → page-end → top: 0 errors, clean overflow per stop, every capture vp-suffixed nf31r-*).
-- [ ] The settled numbers table + holds ledger (full-bleed both bands — `e649834`; the unchanged technologies section; the stable component contracts) + the D6/D7/D13 provenance notes (placeholder portraits pending; drafted bullets tagged; novel unrouted) appended as "## After all phases" to this file; tick this phase's boxes.
-- [ ] Commit: "docs: the below-fold revamp's plan record (settled numbers + journey captures)". STOP.
+- [x] The full-journey capture set ×3 widths (hero → about-parked → what → past → tech → page-end → top: 0 errors, clean overflow per stop, every capture vp-suffixed nf31r-*).
+- [x] The settled numbers table + holds ledger (full-bleed both bands — `e649834`; the unchanged technologies section; the stable component contracts) + the D6/D7/D13 provenance notes (placeholder portraits pending; drafted bullets tagged; novel unrouted) appended as "## After all phases" to this file; tick this phase's boxes.
+- [x] Commit: "docs: the below-fold revamp's plan record (settled numbers + journey captures)". STOP.
+
+## After all phases
+
+**The journey** (the Phase-4 order, held): Hero → About → What I'm up to → Past Work → Panel → Technologies → Band. Mobile: hero -1, band 0, about 1, now 2, past 3, tech 4.
+
+### The settled numbers (the last pass per claim)
+
+| Read | Number | Reference |
+|---|---|---|
+| the --ab-p journey clock's ride (1440×900) | 620px pre-D9 → **496px** post (the 0.55 divisor, ~495 modeled) | Phase-4 record |
+| the now section's bands | 30vh = **270.0px** @900; the shot ratio **0.62 / fluro 0.38** exact | Round-A record (Now) |
+| the now midline | 12px crimson; center offset **0.0** from every band's middle, z under the glyphs | Round-A record (Now) |
+| the now titles | Rite the 270px em-box fill · glaphicUI **135.6** (fit) · Novel **244.16**; the ink stays in-band | Round-A record (Now) |
+| the now entry rotations | the pre-reveal matrices' b **+0.0349/−0.0349/+0.0349** (±2deg, the second band turning opposite), settled none | Round-A record (Now) |
+| the bloom band | ground + resting fill = **grey** (`#686474`); arrive = the **±88px x+-** rungs + the fill → warm white | Round-A record (Now) |
+| the past pair's flush | right edge **1094.41 @1440 = 1440 − 24vw** (the panel's standoff); halves 538.56/538.58; equal heights 535.53 | Phase-3 record |
+| the past names' fit | the chunk model **ADVANCE_EM 0.62 · SHARE 36** (the measured advances 0.607/0.578); the runs inside the shot | Phase-3 record |
+| the past copy | 2 cyan plates, **4 labels · 16 bullets** verbatim, 2 DRAFT tags; the tail **45.5vh = 409.5px** | Phase-3 record |
+| the sidebar's fan | `--afd` dist×0.09 (0/.09/.18/.27); **`--afo` (4−dist)×0.09 ≥ 0** (0.27/0.36/0.27/0.18/0.09); the 1250ms park settles **five** | Phase-4 record |
+| the follow | about → now → past → tech, tops vs vh*0.5 (the deepest wins); every anchor's REAL click → top == 0 | Phase-4 record |
+| the parked panel | 24vw flush right; the icons' ink `#0D0221` → warm white across `--lf-x` (the crossfade rides unchanged) | Phase-4 record |
+| the mobile map | the computed orders −1/0/1/2/3/4 AND the rendered sequence | Phase-4 record |
+| overflow | scrollWidth == clientWidth at EVERY stop, all widths, every round's driver | nf31r record |
+
+### The holds ledger (what keeps holding)
+
+| Hold | Evidence |
+|---|---|
+| full-bleed both bands | `e649834` (the technologies band's fix; the now/past flushes ride the same −3.9vw/20.1vw item read — the 1094.41 panel standoff measured) |
+| the unchanged technologies section | the chip cloud + the rails untouched across the whole revamp — only the mobile order value (4) + its map comment joined |
+| the stable component contracts | the exports and root classes/ids stand: LandingAbout/.landing-about/#about · LandingNow/.landing-now/#now · LandingPast/.landing-past/#past · LandingTechnologies/.landing-tech/#technologies — the panel's want-logic queries and the sidebar's five targets key off them |
+| the arrival gates | the about/tech/past latch once on the −64% band; the now section keeps the two-way ride as its signature; reduced motion parks every rest state |
+| the rides | rideOutUp per section — transform-only, scroll-clocked, reversible; the plan's per-phase records hold the numbers |
+
+### The provenance notes (D6 / D7 / D13)
+
+- **D6 — the placeholder portraits pending:** the about's ASCII portraits cycle Eliot's placeholder frames (the 0.4s step / 12.8s loop verified in About round C); the real art stays pending — a swap rides the frames property, nothing else.
+- **D7 — the category mapping default:** E-Commerce = `forever_21 · reformation · brooks_brothers`, Custom Application Development = `batesville` — the mapping is the past section's own module-scope arrays (the data file untouched); a remap is one array edit. The bands' images = the head entry's main image (Forever 21 for E-Commerce, Batesville for its own band).
+- **D13 — copy provenance:** nothing drafted passes as sourced — the past pair's 16 bullets print under DRAFT tags; glaphicUI/novel's band copy stays draft + tagged; Rite's copy = the live slide description verbatim; **novel unrouted** (no CTA, no path — the band carries the name without a route); the poetry plate carries only the paragraph (the lead line retired per the About round-B default).
+
+>> (Phase-5 run — 2026-10-31 ~10:4x: driver /tmp/nf31r.mjs, results + capture
+>> set nf31r-* in /tmp. FOURTEEN journey stops (7 per width at 1440 / 1024 /
+>> 390): hero@0 -> top@0 -> about-parked@1120 (1024@1120, 390@1165) ->
+>> what@3846/@3738/@4186 -> past@5324/@5193/@5942 -> tech -> page-end (the
+>> tech and page-end stops coincide at 1440/1024 — the last content
+>> section's floor IS the page's end, the tech's parked footer read) —
+>> 0 console/page errors and scrollWidth == clientWidth at EVERY stop;
+>> the top-after-the-round-trip capture clean. The captures: hero/top/
+>> about-parked/what/past/tech/page-end both widths + the 390 set +
+>> the 390 mobile order print. STOP — the revamp's plan record complete.)
