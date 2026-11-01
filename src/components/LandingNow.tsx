@@ -165,7 +165,7 @@ export function LandingNow() {
           height: auto;
           padding-bottom: calc(37.5vh + 8vh);
           overflow: hidden;
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
         }
         .landing-now * { margin: 0; box-sizing: border-box; }
 

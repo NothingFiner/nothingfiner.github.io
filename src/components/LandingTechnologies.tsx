@@ -91,7 +91,7 @@ export function LandingTechnologies() {
           height: auto;
           padding-bottom: calc(37.5vh + 8vh);
           overflow: hidden;
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
         }
         .landing-technologies * { margin: 0; box-sizing: border-box; }
 

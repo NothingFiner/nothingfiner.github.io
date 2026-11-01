@@ -63,7 +63,7 @@ export function Projects() {
              stage does; the cards' solid plates carry themselves.
              The shared band is the FOOTER pose now (in flow, no sticky
              pull-up) so no clip is needed for a band margin */
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
         }
         .projects * { margin: 0; box-sizing: border-box; }
 

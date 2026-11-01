@@ -118,7 +118,7 @@ export function LandingPast() {
           /* the tail reserves the sticky band's page-end slot; the 8vh
              exhale keeps the see-all clear of the landing's rest read */
           padding-bottom: calc(37.5vh + 8vh);
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
         }
         .landing-past * { margin: 0; box-sizing: border-box; }
 

@@ -384,7 +384,7 @@ export function PastDetail() {
           /* the stage is CLEAR over the site's lava lamp (mounted by
              app.tsx for this route) — the pinned plates carry their
              own solid paints, the stream rides the scroll under them */
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
           color: ${INK};
           /* the shared band's fractional -37.5vh margin leaks a hair
              of scroll past the page's end — clip it (clip is NOT a

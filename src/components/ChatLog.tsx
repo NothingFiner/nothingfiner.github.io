@@ -47,7 +47,7 @@ const ChatLog = memo(({conversation, isStreaming}: ChatLogProps) => {
                     margin-left: auto;
                     background: ${ECHO};
                     color: ${INK};
-                    font-family: var(--f-body, 'Inter', sans-serif);
+                    font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
                     font-size: 16px;
                     line-height: 20px;
                 }

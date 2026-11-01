@@ -91,7 +91,7 @@ export function Chat() {
              page itself stays CLEAR so the lamp's paper shows through */
           min-height: 100%;
           overflow: hidden;
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
         }
         .chat * { margin: 0; box-sizing: border-box; }
 

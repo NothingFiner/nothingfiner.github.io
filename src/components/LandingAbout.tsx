@@ -367,7 +367,7 @@ export function LandingAbout() {
              section's head ~15vh over the band's resting slot */
           padding-bottom: calc(37.5vh + var(--ab-bottom-gap));
           overflow: hidden;
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
           /* F2, the portrait's seat ≈ 2×: the mid row's height — and the
              art's own box follows it exactly (the frame's borders are
              retired on this instance, so the 49-type-line column fills
@@ -657,7 +657,7 @@ export function LandingAbout() {
              typed LEAD cut (their model) overrides it to the body face
              the same way; the desktop then holds exactly the scripts'
              2/1 pre-broken line boxes */
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
         }
         /* the typed boxes' line reserves: the pre-broken scripts print a
            known line count desktop, so the <p> holds that height from

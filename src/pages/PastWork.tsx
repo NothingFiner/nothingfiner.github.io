@@ -64,7 +64,7 @@ export function PastWork() {
              lights the blobs for the past family, as it does for the
              projects/chat stages) — the bands' solid plates carry
              themselves */
-          font-family: var(--f-body, 'Inter', sans-serif);
+          font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
         }
         .past-work * { margin: 0; box-sizing: border-box; }
 
