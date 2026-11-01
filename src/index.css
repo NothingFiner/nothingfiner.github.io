@@ -103,11 +103,6 @@ body {
   min-height: 100vh;
 }
 
-/* Menu drawer close button - uses theme color */
-.menu-drawer__close-btn {
-  color: var(--color-fg);
-}
-
 /* Blog content paragraph spacing */
 .blog-post__content p {
   margin-bottom: 1.5rem;

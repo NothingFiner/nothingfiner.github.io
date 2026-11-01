@@ -4,7 +4,6 @@ import { useState, useEffect } from 'preact/hooks';
 // Suspense comes from preact/compat only — preact's root module doesn't
 // re-export it (10.28's index.d.ts); hooks do come from preact/hooks
 import { Suspense } from 'preact/compat';
-import { MenuDrawer } from './components/MenuDrawer';
 import { StickyHeader } from './components/StickyHeader';
 import { LavaLampBackground } from './components/LavaLampBackground';
 import { SiteFooter } from './components/SiteFooter';
@@ -24,7 +23,6 @@ import { getPageTitle, isHomePage } from './data/pages';
 import { PageWipe } from './components/PageWipe';
 
 function AppContent() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   // the path STATE initializes from the router's own first snapshot —
   // an empty '' read as the HOME page for the first frame, which
   // mounted the landing (its "Hi, I'm Elie." typing starting) on every
@@ -35,19 +33,7 @@ function AppContent() {
 
   useEffect(() => {
     setCurrentPath(location);
-    if (location.startsWith('/projects/') && location !== '/projects') {
-      setIsDrawerOpen(false);
-    }
-    // the past details join: a deep link into an agency plate should
-    // never arrive with the drawer parked open (the projects mirror)
-    if (location.startsWith('/past/') && location !== '/past') {
-      setIsDrawerOpen(false);
-    }
   }, [location]);
-
-  const handleMenuToggle = (open: boolean) => {
-    setIsDrawerOpen(open);
-  };
 
   const isDarkForest = currentPath.startsWith('/games/dark-forest');
   const isHome = isHomePage(currentPath);
@@ -92,7 +78,9 @@ function AppContent() {
           <LavaLampBackground lamp={lampOn} />
         </div>
       )}
-      {!isDarkForest && <MenuDrawer isOpen={isDrawerOpen} onClose={() => handleMenuToggle(false)} onNavigate={() => handleMenuToggle(false)} />}
+      {/* the band's pool menu is the chrome on every page — the legacy
+          drawer and its opener left with the old-site chrome (the
+          MenuDrawer removal; its own research appendix archived the file) */}
 
       {isSplitLayout && !isDarkForest ? (
         // the home route's chrome gate: the landing page (src/pages/Landing.tsx)
@@ -107,12 +95,10 @@ function AppContent() {
               corners), so no header rides over it */}
           {!isDarkForest && !isBareStage && (
             <StickyHeader
-              isDrawerOpen={isDrawerOpen}
-              onMenuClick={() => handleMenuToggle(true)}
               pageTitle={pageTitle}
             />
           )}
-          <main id="main-content" class={`relative z-10 flex-1 transition-all duration-300 ${!isDarkForest && isDrawerOpen ? 'md:ml-80 ml-0' : 'ml-0'}`}>
+          <main id="main-content" class="relative z-10 flex-1 ml-0">
             <div class={!isDarkForest && !isBareStage ? 'pt-24' : ''}>
               <Suspense fallback={<div class="min-h-screen flex items-center justify-center text-theme">Loading...</div>}>
                 <Route path="/projects" component={Projects} />

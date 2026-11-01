@@ -1,16 +1,13 @@
 import { useState, useEffect } from 'preact/hooks';
 import { ThemeToggle } from './ThemeToggle';
-import { Icon } from './Icon';
 
 interface StickyHeaderProps {
-  isDrawerOpen: boolean;
-  onMenuClick: () => void;
   pageTitle?: string;
   showTitle?: boolean;
   showThemeToggle?: boolean;
 }
 
-export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThemeToggle = true }: StickyHeaderProps) {
+export function StickyHeader({ pageTitle, showTitle = true, showThemeToggle = true }: StickyHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -45,13 +42,6 @@ export function StickyHeader({ onMenuClick, pageTitle, showTitle = true, showThe
       `}</style>
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <button
-            onClick={onMenuClick}
-            class={`p-2.5 rounded-xl transition-all text-theme flex-shrink-0 focus:outline-none flex items-center`}
-            aria-label="Open menu"
-          >
-            <Icon name="menu" size={24} />
-          </button>
           {showTitle && (
             <div class="sticky-header__titleline flex items-center text-theme gap-2 overflow-hidden">
               <span class="sr-only">Elie Asenoth Gaspar-Finer</span>
