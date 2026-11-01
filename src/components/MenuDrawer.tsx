@@ -28,9 +28,13 @@ export function MenuDrawer({ isOpen, onClose, onNavigate }: MenuDrawerProps) {
   };
 
   return (
+    // the parked pose clears the look-layer's own shadow ladder (+8px): it
+    // paints to the RIGHT of the translated box, so at -100% the closed
+    // drawer's ladder still peeked 0–6px past the viewport's left edge on
+    // every route it mounts (readable since the frosted glass went solid)
     <div
       class={`fixed left-0 top-0 h-full md:w-1/4 w-full site-panel transition-transform duration-300 z-[60] ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
+        isOpen ? 'translate-x-0' : 'translate-x-[calc(-100%-8px)]'
       }`}
     >
       <div class="p-4 md:p-8 h-full flex flex-col">
