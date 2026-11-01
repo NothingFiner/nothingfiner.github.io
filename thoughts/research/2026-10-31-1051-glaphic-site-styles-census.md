@@ -98,3 +98,13 @@ The directive's census surfaced the grow treatment mid-pass; scoped separately h
 2. **Tokens-only (the fallback)** — decouples the NUMBERS but not the sheet: a stepped text-shadow print cannot live in custom properties; the keyframes must be written somewhere, and a "library publishes the keyframe name for pages to consume" route couples pages to a library-internal animation identifier. Not recommended; `-fill`/`-ink` tokens ride along on route 1 regardless.
 
 **What stays page-side either way** (same verdicts as Topics 1-4): the type voice + fonts, the section's reveal flag/observers, each consumer's placement class, the reverse choreography's page-level timing. Site-side residue after the ask: GrowHead → a one-attribute wrapper (or dies if pages adopt the element directly), landing.css keeps only the `.grow-head` placement/voice rules.
+## Addendum — ask #1 resolved (2026-11-01 13:52, "why is marquee reverse still a style rule in the site?")
+
+Eliot's question = the ruling the ask was parked on. **The answer's shape:** the rule could not MOVE into the component until glaphic-marquee grew a direction control — its public API was `strings`/`speed`/`copies` only, so the reversal rode the documented `::part(track)` styling API (lit.md's sanctioned styling path) as the census's Topic-1 #3 — parked there "until Eliot rules."
+
+**The move, done:**
+- glaphic-marquee: the `reverse` boolean property + reflected attribute; `:host([reverse]) .track { animation-direction: reverse }` in the shadow sheet; the doc block carries the Direction paragraph (the ask's own analysis: a behavior toggle = a property, not a token — not the Tier-2 var form that ask #1 also offered as the alternative).
+- The storybook: the argType + a `Reversed` story (draft copy, the house's `!dev/!test` tags).
+- The site: LandingAbout's `.landing-about__marquee-rev::part(track)` one-liner DELETED (the class with it); the second instance now runs the attribute: `<glaphic-marquee class="landing-about__marquee" reverse>`.
+- **Verified at runtime (the ask's own test, redone on the live dist):** the reversed runner's track reads `animation-direction: reverse` AND drifts POSITIVE over a 0.5s window (+47px) while every other landing instance drifts NEGATIVE (−47/−45.7) — the behavior proven, not assumed. 5 instances now ride the landing (the about band grew a third under Eliot's hand edits).
+- **Commit state:** the site's half committed (LandingAbout.tsx); glaphicUI's half rides its working tree UNCOMMITTED — its whole src tree is untracked (HEAD sits far behind the sources), so no surgical commit is possible without sweeping Eliot's in-flight files; his boundary, his commit.

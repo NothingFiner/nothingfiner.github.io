@@ -493,14 +493,6 @@ export function LandingAbout() {
         /* band 1's sandwich reads TIGHT: the middle row hugs the leader
            band above it, and the reversed runner hugs the row below (the
            wrapper owns every other gap) */
-
-        /* the second instance's track runs the OPPOSITE direction — D1's
-           one-liner on the library's EXPOSED part: the shadow's scroll
-           keyframes still translate 0 to -50%, the reversed direction
-           plays them the other way; nothing in the library changes.
-           Runtime-verified by the driver (computed direction + drift) */
-        .landing-about__marquee-rev::part(track) { animation-direction: reverse; }
-
         /* ── band 1's middle row: headline left, portraits right ─────
            full non-sidebar width via the strip grammar (flush left, flush
            AT the parked panel's edge — the phase-1 bands' settled read);
@@ -853,11 +845,13 @@ export function LandingAbout() {
               label="A cycling ASCII portrait, thirty drawn frames"
             />
           </div>
-          {/* the reversed runner: same band voice, track running the other
-              way (see the ::part rule above) */}
+          {/* the reversed runner: same band voice, the track's direction
+              rides the component's own `reverse` attribute now (the
+              library owns the behavior) */}
           <glaphic-marquee
             ref={marqueeRevRef}
-            class="landing-about__marquee landing-about__marquee-rev"
+            class="landing-about__marquee"
+            reverse
             aria-hidden="true"
           />
         </div>
