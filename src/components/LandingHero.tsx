@@ -184,7 +184,11 @@ export function LandingHero() {
           padding-left: 2.3vw;
           font-family: var(--f-disp, sans-serif);
           font-weight: 700;
-          font-size: clamp(48px, 8vw, 116px);
+          /* the mobile floor is Eliot's 64px greeting read, bounded by
+             the row's own fit: the greeting runs ~4.83em in the display
+             face, so below ~352px the floor eases to 88vw / 4.83 and
+             the one typed line always clears the copy's 6vw margins */
+          font-size: clamp(min(64px, 18.2vw), 8vw, 116px);
           letter-spacing: -0.02em;
           min-height: 1.05em;
           margin: 0;
