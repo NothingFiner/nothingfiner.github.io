@@ -49,10 +49,40 @@ export function LandingHero() {
   }, []);
 
   // the hero's content rides out the top as the about arrives (the
-  // same ride every landed section carries)
+  // same ride every landed section carries). Round 9: the ride also
+  // publishes --gl-hero-ride on the root element so the world-pair
+  // mirror (GlyphPair) rides in lockstep — via a layout var (its `top`
+  // calc), never a transform of its own: a transformed mirror would
+  // re-stack and re-isolate its blend from the ground.
+  // Round 9b: DESKTOP-ONLY ride. The mobile fold is content-height
+  // (~531px, not 100vh) — rideOutUp's trigger (innerHeight − bottom)
+  // reads a compact section as already-exiting and would lift the fold
+  // 156px at load. A compact hero just scrolls; wire/unwire on the
+  // breakpoint so rotation stays correct.
   useEffect(() => {
     const section = document.querySelector('.landing-hero') as HTMLElement | null;
-    return rideOutUp({ current: section }, heroRideRef, 0.5);
+    const mq = window.matchMedia('(min-width: 768px)');
+    let cancel: (() => void) | null = null;
+    const wire = () => {
+      if (mq.matches && !cancel) {
+        const onRide = (dy: number) =>
+          document.documentElement.style.setProperty('--gl-hero-ride', `${dy}px`);
+        cancel = rideOutUp({ current: section }, heroRideRef, 0.5, onRide);
+      } else if (!mq.matches && cancel) {
+        cancel();
+        cancel = null;
+        if (heroRideRef.current) heroRideRef.current.style.transform = '';
+        document.documentElement.style.setProperty('--gl-hero-ride', '0px');
+      }
+    };
+    wire();
+    mq.addEventListener('change', wire);
+    return () => {
+      mq.removeEventListener('change', wire);
+      cancel?.();
+      cancel = null;
+      document.documentElement.style.setProperty('--gl-hero-ride', '0px');
+    };
   }, []);
 
   return (
@@ -77,8 +107,15 @@ export function LandingHero() {
           .landing-hero {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            position: relative; }
+            /* round 9b: content-height — the fold's 100vh hold dies on
+               mobile so no hole sits between the mark and the copy: the
+               band (snug to the ink) and the strip flow right after, and
+               the about arrives below. The ride grid's row tracks get
+               their own mobile override further down (cascade order) */
+            height: auto;
+            min-height: 0;
+            position: relative;
+          }
         }
 
         /* the ride wrapper: THE RIDE GROUP IS THE GRID — the hero's grid
@@ -107,6 +144,15 @@ export function LandingHero() {
         }
         @media (max-width: 767px) {
           .landing-hero__strip { display: block; margin-top: 20px; padding-bottom: 28px; }
+          /* round 9b — CASCADE-PLACED AFTER the ride's base rule above: the
+             desktop rows are 8 minmax(0,1fr) over a definite 100vh; with
+             the hero going content-height on mobile, those fr rows
+             content-resolve (to max-content) and the hero explodes.
+             One auto row: the band sits in row 1, the strip's placed
+             rows 6-8 resolve implicitly to its own content, and the
+             empty rows between collapse to 0 — the strip rides up behind
+             the band */
+          .landing-hero__ride { grid-template-rows: auto; }
         }
 
         /* the typed copy block — the strip's bottom edge; the right 32vw

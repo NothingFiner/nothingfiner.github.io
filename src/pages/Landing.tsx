@@ -34,8 +34,8 @@ export function Landing() {
       {/* the What I'm up to. section — the three project bands between
           the ticker borders (#now, a sidebar target) */}
       <LandingNow />
-      {/* the Past Work. section — the two category bands (#past, the
-          sidebar's fourth target) */}
+      {/* the Past Work. section — the three-column tray track between
+          the ticker rails (#past, the sidebar's fourth target) */}
       <LandingPast />
       {/* the crimson sidebar: fixed, full viewport height, everything
           past the first fold — slides in on the --ab-p journey clock

@@ -33,6 +33,11 @@ function AppContent() {
 
   useEffect(() => {
     setCurrentPath(location);
+    // hash routing carries the old page's scroll across the swap (wouter
+    // never resets it) and every routed page mounts expecting the top;
+    // the wipe's full overlay screens the move, and the detail driver's
+    // exits play from fully-off poses (see src/pages/ProjectDetail.tsx)
+    window.scrollTo(0, 0);
   }, [location]);
 
   const isDarkForest = currentPath.startsWith('/games/dark-forest');
@@ -58,10 +63,10 @@ function AppContent() {
   // the background's two layers are split: the LINE-GROUND hatch paints
   // site-wide (it is LavaLampBackground's own fixed layer), but the lava
   // BLOBS are opt-in per route — on (projects + project detail + chat +
-  // the past family, whose stages read as clear paper over the lamp)
-  // and OFF on the landing (lines only) and every legacy page. DarkForest
-  // mounts neither layer.
-  const lampOn = !isDarkForest && (isProjects || isChat || isPast);
+  // the past family + blog + resume, whose stages read as clear paper
+  // over the lamp) and OFF on the landing (lines only) and every legacy
+  // page. DarkForest mounts neither layer.
+  const lampOn = !isDarkForest && (isProjects || isChat || isPast || isBlog || isResume);
 
   return (
     <div class="flex min-h-screen relative">
@@ -78,6 +83,19 @@ function AppContent() {
           <LavaLampBackground lamp={lampOn} />
         </div>
       )}
+      {/* the world-paint floor (round 9): a page-anchored INERT sibling
+          between the fixed ground and the routed shell — the landing's
+          true-multiply surfaces paint INTO it so their mix-blend-mode
+          actually sees the hatch/blobs their ink sits over (see GlyphPair's
+          world-pair mirror; nothing inside <Landing>'s z-40 shell can blend
+          with the ground — blending is stacking-context-local, probe 9
+          measured the pair's ink stuck on the raw token because of exactly
+          that wall). It must stay a bare, unstyled box: any stacking
+          context added here or anywhere on the mirror's path (z-index,
+          transform, filter, opacity) re-walls the blend. Paint order is
+          the contract: ground (z-0, first) < this floor < <Landing> (z-40)
+          / <main> (z-10) on top. */}
+      {!isDarkForest && <div id="world-paint" aria-hidden="true"></div>}
       {/* the band's pool menu is the chrome on every page — the legacy
           drawer and its opener left with the old-site chrome (the
           MenuDrawer removal; its own research appendix archived the file) */}

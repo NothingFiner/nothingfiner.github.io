@@ -19,11 +19,12 @@
 //                 Loaded." / the load progress %), teal-green (the CYAN ink)
 //                 once the engine reports ready, crimson on a load
 //                 error.
-//   disclaimer    the note under the input, state-driven: before the
-//                 first send it is the YELLOW warning plate (the same
-//                 warning ink the status tab uses) naming the download
-//                 cost; once the chat has begun it swaps to the violet
-//                 note ("resume" jumps to the site's resume page).
+//   note chip     the note under the input, state-driven: the YELLOW
+//                 download warning while the model still has to load
+//                 (a send would start one), the violet note once the
+//                 model reports ready — persisted included, the
+//                 download cost no longer applies — or once the chat
+//                 has begun ("resume" jumps to the site's resume page).
 //   the card      on send the stem re-anchors (the card + its air
 //                 claim the drop the submitted mock shows) and the
 //                 light panel takes the conversation — angular teal
@@ -180,10 +181,12 @@ const ChatInterface = () => {
           </div>
         )}
 
-        {/* the note under the tab: the yellow download warning before
-            the first send, the violet small-model note once the chat
-            has begun */}
-        {hasMessages ? (
+        {/* the note under the tab, state-driven: the yellow download
+            warning while the model still has to load (a send would
+            start one); the violet disclaimer once the model is ready —
+            persisted included, the download cost no longer applies —
+            or once the chat has begun */}
+        {hasMessages || status === RAGStatus.Ready ? (
           <p class="chat__note chat__note--disclaimer">
             This is a very small model and therefore has all of the associated problems. For accurate information about me, please consult <a href="#/resume">my resume.</a>
           </p>

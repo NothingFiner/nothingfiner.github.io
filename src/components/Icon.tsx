@@ -9,6 +9,10 @@ interface IconProps {
 // Icons that use stroke instead of fill
 const strokeIcons = ['email', 'menu', 'close'];
 
+// Icons whose winding reads under the EVEN-ODD rule (the goose mark's
+// subpaths close its eye and beak notches only under evenodd)
+const evenOddIcons = ['goose'];
+
 export function Icon({ name, class: className = '', size = 24 }: IconProps) {
   const path = iconPaths[name];
   
@@ -18,6 +22,7 @@ export function Icon({ name, class: className = '', size = 24 }: IconProps) {
   }
 
   const isStroke = strokeIcons.includes(name);
+  const isEvenOdd = evenOddIcons.includes(name);
 
   return (
     <svg
@@ -34,7 +39,7 @@ export function Icon({ name, class: className = '', size = 24 }: IconProps) {
       }}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d={path} />
+      <path d={path} fillRule={isEvenOdd ? 'evenodd' : undefined} />
     </svg>
   );
 }

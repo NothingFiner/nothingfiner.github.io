@@ -36,6 +36,8 @@ export const landingTechnologies = [
   { name: 'Z.ai', icon: 'zai' },
   { name: 'DeepSeek', icon: 'deepseek' },
   { name: 'Claude Code', icon: 'claudecode' },
+  // the agent in the seat: the goose rides with the tooling cluster
+  { name: 'Goose', icon: 'goose' },
   { name: 'Preact', icon: 'preact' },
   { name: 'GraphQL', icon: 'graphql' },
 ];

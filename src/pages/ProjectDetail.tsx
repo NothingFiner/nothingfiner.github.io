@@ -382,6 +382,11 @@ export function ProjectDetail() {
         .project-detail {
           --pd-pad: 3.9vw;   /* the landing flow grid's inline padding */
           --pd-gut: 1.1vw;   /* ...its column gutter */
+          /* the back button's cleared corner patch on mobile: the 12px
+             pin + the outline button's measured 84px box + one 12px pin
+             of air. The width rides the ← label — remeasure it if the
+             label ever grows. */
+          --pd-clear: calc(12px + 84px + 12px - 6vw);
           position: relative;
           /* the stage is CLEAR over the site's lava lamp (mounted by
              app.tsx for this route) — the pinned plates carry their own
@@ -818,11 +823,13 @@ export function ProjectDetail() {
           .project-detail__details {
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - ${px(CUT)}), calc(100% - ${px(CUT)}) 100%, 0 100%);
           }
-          /* the stream's plate: full width but it STILL stops at
-             --pd-clear (the fixed cluster pins bottom-right at 12px on
-             mobile — the landing's own rule — so the button keeps its
-             patch of corner) */
-          .project-detail__image-block-container, .project-detail__next-wrap { grid-column: auto; margin-right: 0; margin-top: 6vh; }
+          /* the stream's plate and the next CTA stop short of the
+             fixed back button's corner patch (--pd-clear): on mobile
+             the in-flow column has no 5/12 grid line to do it */
+          .project-detail__image-block-container, .project-detail__next-wrap { grid-column: auto; margin-right: var(--pd-clear); margin-top: 6vh; }
+          /* the narrowed CTA wraps its label above the title where the
+             one-line pair no longer fits on thin screens */
+          .project-detail__next-in { flex-wrap: wrap; }
           /* the back button rides the pool-menu button's mobile pin
              exactly (12px, .site-footer__menu's mobile geometry, mirrored to the
              top corner) */
@@ -876,10 +883,11 @@ export function ProjectDetail() {
         </aside>
 
         {/* TOP-RIGHT pinned — back to the index (the glaphic-button
-            OUTLINE recipe: 1px ink keyline, transparent fill) */}
+            OUTLINE recipe: 1px ink keyline, transparent fill; the
+            arrow alone per Eliot — the words left with the round) */}
         <nav class="project-detail__back-row">
           <a href="#/projects" aria-label="Back to projects">
-            <glaphic-button variant="outline" size="lg">← INDEX</glaphic-button>
+            <glaphic-button variant="outline" size="lg">←</glaphic-button>
           </a>
         </nav>
       </div>

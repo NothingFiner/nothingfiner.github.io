@@ -39,6 +39,40 @@ $danger: #A34811
 .dark-forest img
   display: none
 
+.dark-forest .home-exit
+  // the pinned home pill: .site-footer__menu's geometry mirrored to the
+  // top-left corner (the band's pill is right 2.3vw / 4.4vh desktop,
+  // 12px mobile). The game's z ladder: menu 100, status 105, pill 110.
+  position: fixed
+  top: 4.4vh
+  left: 2.3vw
+  z-index: 110
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 65px
+  height: 48px
+  color: $neon-green
+  border: 1px solid $neon-green
+  box-shadow: 0 0 2px color.adjust($neon-green, $lightness: 10%, $space: hsl), inset 0 0 2px color.adjust($neon-green, $lightness: 10%, $space: hsl)
+  transition: background-color 0.18s ease-out, color 0.18s ease-out
+  // hover flips to the .button idiom: the mark prints in the sky's ink
+  // over the neon fill (the mark inherits this color)
+  &:hover, &:focus-visible
+    color: #090A0F
+    background: $neon-green
+  // the site's eee home mark — the footer brand's masked logotype, in
+  // the pill's currentColor so the hover flip carries it
+  .home-exit__mark
+    aspect-ratio: 124 / 59
+    width: 38px
+    background: currentColor
+    -webkit-mask: url('/assets/logo.svg') center / contain no-repeat
+    mask: url('/assets/logo.svg') center / contain no-repeat
+  @media (max-width: 899px)
+    top: 12px
+    left: 12px
+
 .dark-forest .menu-container
   position: absolute
   width: 100vw
@@ -49,7 +83,7 @@ $danger: #A34811
   flex-direction: column
 
 .dark-forest .menu
-  h1
+  h2
     width: 100%
   display: flex
   transition: opacity .25s
@@ -59,6 +93,9 @@ $danger: #A34811
   flex-flow: wrap
   z-index: 100
   padding: 5vw
+  // the half-columns' gutter: the two 50% sections print without one
+  // (the copy's right face jams against the instructions' left face)
+  column-gap: 2rem
   background: transparent
   border-color: $neon-green
   border: 1px solid
@@ -71,7 +108,7 @@ $danger: #A34811
     display: none
   section
     line-height: 2
-    width: 50%
+    width: calc(50% - 1rem)
     ul
       line-height: 3rem
   span
@@ -84,28 +121,41 @@ $danger: #A34811
   display: none
   justify-content: center
   align-items: center
+  // the transit row: bars + label print as ONE strip — the label shares
+  // the bars' orange fill, pulse and row stretch; see the PAINT-EXCEPTION
+  // note above for the alpha/blur idiom this block rides on
   &.active
     display: flex
-    &main
-      animation: expand_in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-  span, h1
-    margin: 0 1vw
-    background: color.adjust($danger, $alpha: -.25)
-    animation: pulse 1s linear infinite
-    height: 100%
-  span
-    width: 2vw
-  h1
+  main
     display: flex
-    justify-content: center
-    align-items: center
-    font-size: 6rem
-    width: 60vw
-    font-family: 'Bungee Hairline', cursive
-    color: #090A0F
+    align-items: stretch
+    animation: expand_in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    span, h2
+      margin: 0 1vw
+      background: color.adjust($danger, $alpha: -.25)
+      animation: pulse 1s linear infinite
+    span
+      width: 2vw
+    h2
+      display: flex
+      justify-content: center
+      align-items: center
+      // the cap clears the win label at every width: 'SYSTEM PURGED' is
+      // 13 glyphs ≈ 8.2em wide, and the bars + their margins take the rest
+      font-size: min(6rem, 6.5vw)
+      // one line always: with the fit-content row the label's 80vw cap
+      // never has to shrink it, and a wrapped label breaks the strip's
+      // marquee read
+      white-space: nowrap
+      // the glyphs cut out of the strip in the sky's darkest paint —
+      // nothing else in the palette reads on the orange fill
+      color: #090A0F
   main
     height: 10rem
+    // the row hugs its content (bars + one-line label) up to the 80vw
+    // cap: a fixed 60vw band squeezed the label into a wrap
     max-width: 80vw
+    width: fit-content
     display: flex
     text-align: center
 .button
@@ -190,3 +240,19 @@ $shadows-small:  multiple-box-shadow(400)
   100%
     transform: scale(1)
 
+
+// the transit strip's reduced path: the bars' + label's base styles ARE
+// the rest state (pulse loops, expand_in fills nothing) — parking the
+// animations leaves the strip fully printed
+@media (prefers-reduced-motion: reduce)
+  .dark-forest .status main
+    animation: none
+  .dark-forest .status main span,
+  .dark-forest .status main h2
+    animation: none
+
+// phones stack the menu's columns full width: two 50% half-columns on
+// a ~273px content box wrap the copy into near-single-glyph lines
+@media (max-width: 899px)
+  .dark-forest .menu section
+    width: 100%

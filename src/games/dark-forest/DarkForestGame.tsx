@@ -60,6 +60,17 @@ export function DarkForestGame() {
 
       <div id="dark-forest-stars" class={inTransit ? 'transit' : ''} />
 
+      {/* HOME — the site's mark pinned to the top-left corner at the
+          .site-footer__menu pill's mirrored offsets. The game's z ladder:
+          menu 100, status 105, this pill 110 (it rides every pose).
+          The instructions screen keeps its own BACK TO HOME button —
+          the pill only rides the play/transit/won poses. */}
+      {!isIdle && (
+        <a class="home-exit" href="#/" aria-label="Home — back to the site">
+          <span class="home-exit__mark" />
+        </a>
+      )}
+
       <div class="menu-container">
         <div class={isIdle ? 'menu' : 'menu hide'} id="dark-forest-menu">
           <h2>The Dark Forest</h2>

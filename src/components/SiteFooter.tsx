@@ -80,11 +80,17 @@ export function FooterLegal({ class: cls = '', fade = false }: { class?: string;
 
 /** the mirrored eee mark as the foot's left column; pass the legal (or
     anything else) through as its child — the column's 1.6vh gap is the
-    .site-footer__foot-brand's own */
+    .site-footer__foot-brand's own. The mark is the site's HOME link
+    (round 7): the hash hands the route over; on the landing (already at
+    #/) the click is the scroll back to the fold */
 export function FooterBrand({ class: cls = '', children = null }: { class?: string; children?: ComponentChildren }) {
+  const home = () => {
+    if (window.location.hash !== '#/' && window.location.hash !== '') window.location.hash = '#/';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   return (
     <div class={`site-footer__foot-brand ${cls}`}>
-      <div class="site-footer__glyph" />
+      <a class="site-footer__glyph" href="#/" aria-label="Home — back to the top" onClick={(e) => { e.preventDefault(); home(); }} />
       {children}
     </div>
   );
@@ -172,15 +178,15 @@ export function SiteFooter({ variant = 'footer', learnMore = false, menuDelay = 
   // LEARN MORE slides up from the bottom when the mouse gets close to the
   // bottom edge — ABOVE THE FOLD ONLY: the page being yet at the hero is
   // part of the invite, and any scroll past the hero tucks the button
-  // away (a fresh low-mouse move re-earns it). NOT when the pointer is
-  // over the pool-menu patch (its trigger AND its open panel) or the
-  // contact links: only other low screen areas earn the slide — and the
-  // exclusion holds steady (no re-earn flash when the pointer brushes an
-  // adjacent corner). While a pool menu is open anywhere, the invite
-  // stays TUCKED AWAY (the menu's own `change` event tucks it on open;
-  // an open panel can portal its plate anywhere in the tree, so a
-  // pointer test alone couldn't keep it covered) — closing hands the
-  // low zone back and a fresh low move re-earns the invite.
+  // away (a fresh low-mouse move re-earns it). While the pointer sits on
+  // the pool-menu patch (its trigger AND its open panel) or the
+  // contact links, the invite TUCKS — the icon's own corner reads bare
+  // (a fresh low move beside it re-earns the slide). While a pool menu
+  // is open anywhere, the invite stays TUCKED AWAY (the menu's own
+  // `change` event tucks it on open; an open panel can portal its plate
+  // anywhere in the tree, so a pointer test alone couldn't keep it
+  // covered) — closing hands the low zone back and a fresh low move
+  // re-earns the invite.
   useEffect(() => {
     if (!learnMore) return;
     const atHero = () => window.scrollY < window.innerHeight * 0.5;
@@ -188,7 +194,10 @@ export function SiteFooter({ variant = 'footer', learnMore = false, menuDelay = 
     const EXCLUDE = '.site-footer__cluster, .site-footer__menu, .site-footer__social, glaphic-pool-menu';
     const onMove = (e: MouseEvent) => {
       if (menuOpen()) return;
-      if ((e.target as Element | null)?.closest?.(EXCLUDE)) return;
+      if ((e.target as Element | null)?.closest?.(EXCLUDE)) {
+        setNearBottom(false);
+        return;
+      }
       setNearBottom(atHero() && e.clientY > window.innerHeight - 150);
     };
     const onScroll = () => {
@@ -222,7 +231,8 @@ export function SiteFooter({ variant = 'footer', learnMore = false, menuDelay = 
         <a href="#/chat">Chat with Bot</a>
         <a href="#/blog">Blog</a>
         <a href="#/resume">Resume</a>
-        <a href="#/games/dark-forest">Dark Forest</a>
+        <a href="#/past">Past Work</a>
+        <a href="#/games/dark-forest">Play Dark Forest</a>
       </glaphic-pool-menu>
     </div>
   );

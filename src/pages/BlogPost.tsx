@@ -2,7 +2,7 @@ import { useLocation } from 'wouter-preact';
 import { getPostById } from '../data/blog';
 
 export function BlogPost() {
-  const [location, navigate] = useLocation();
+  const [location] = useLocation();
   const postId = location.split('/').pop() || '';
   const post = getPostById(postId);
 
@@ -11,12 +11,9 @@ export function BlogPost() {
       <div class="min-h-screen p-8 flex items-center justify-center">
         <div class="text-center">
           <h2 class="text-2xl font-heading font-bold text-theme mb-4">Post not found</h2>
-          <button
-            onClick={() => navigate('/blog')}
-            class="px-6 py-3 rounded-xl site-panel site-panel--hover transition-all text-theme"
-          >
-            ← Back to Blog
-          </button>
+          <a href="#/blog" aria-label="Back to blog index">
+            <glaphic-button variant="outline" size="lg">← BACK TO INDEX</glaphic-button>
+          </a>
         </div>
       </div>
     );
@@ -25,15 +22,13 @@ export function BlogPost() {
   return (
     <div class="min-h-screen p-8">
       <div class="max-w-3xl mx-auto">
-        <button
-          onClick={() => navigate('/blog')}
-          class="mb-8 px-4 py-2 rounded-xl site-panel site-panel--hover transition-all text-theme text-sm"
-          aria-label="Back to blog list"
-        >
-          ← Back to Blog
-        </button>
+        <div class="mb-8">
+          <a href="#/blog" aria-label="Back to blog index">
+            <glaphic-button variant="outline" size="lg">← BACK TO INDEX</glaphic-button>
+          </a>
+        </div>
 
-        <article class="site-panel rounded-2xl p-8">
+        <article class="site-panel p-8">
           <time class="text-sm text-grey font-mono block mb-4">
             {new Date(post.date).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -53,13 +48,9 @@ export function BlogPost() {
         </article>
 
         <div class="mt-8 flex justify-between">
-          <button
-            onClick={() => navigate('/blog')}
-            class="px-6 py-3 rounded-xl site-panel site-panel--hover transition-all text-theme"
-            aria-label="Back to blog list"
-          >
-            ← Back to Blog
-          </button>
+          <a href="#/blog" aria-label="Back to blog index">
+            <glaphic-button variant="outline" size="lg">← BACK TO INDEX</glaphic-button>
+          </a>
         </div>
       </div>
     </div>

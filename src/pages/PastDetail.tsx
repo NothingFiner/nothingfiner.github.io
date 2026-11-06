@@ -800,10 +800,11 @@ export function PastDetail() {
         </aside>
 
         {/* TOP-RIGHT pinned — back to the bands (the glaphic-button
-            OUTLINE recipe: the ink keyline, transparent fill) */}
+            OUTLINE recipe: the ink keyline, transparent fill; the
+            arrow alone per Eliot — the words left with the round) */}
         <nav class="past-detail__back-row">
           <a href="#/past" aria-label="Back to past work">
-            <glaphic-button variant="outline" size="lg">← INDEX</glaphic-button>
+            <glaphic-button variant="outline" size="lg">←</glaphic-button>
           </a>
         </nav>
       </div>

@@ -1,9 +1,9 @@
 // New-design landing section three — "Tools I've used." (the
 // technologies block below the about section). Same layout grammar as
 // LandingAbout (a 1440x900-artboard section): the shared grow headline
-// (GrowHead + src/landing.css) over the paper ground, the glaphic-marquee
-// ticker band under it (the same band — strings, speed, rule bars — the
-// about runs), and the site's padded flow grid.
+// (GrowHead + src/landing.css) over the paper ground, the site's padded
+// flow grid, and the chip cloud framed by two solid crimson bars (the
+// strip grammar's full-bleed rail slots).
 //
 // The grid's content row is the CHIP CLOUD: the technologies from the
 // legacy (live) site's own list, each as a glaphic-chip — every chip the
@@ -15,18 +15,23 @@
 // with a left-to-right stagger while each chip lands through a translate
 // overshoot keyframe (arrive past home, snap back) — no fade at all.
 //
-// The glaphic elements (marquee, chip) are defined by the eager
+// The glaphic element (glaphic-chip) is defined by the eager
 // '@glaphic/ui' import in GlaphicGallery, which app.tsx imports
-// statically — same source of registration as the about's marquee.
+// statically.
 import { Fragment } from 'preact';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { GrowHead } from './GrowHead';
 import { Icon } from './Icon';
 import { landingTechnologies as technologies } from '../data/technologies';
-import { TICKER } from './landing-shared';
 
 const INK = '#0D0221';
-const RED = '#A6022A';
+const INK_DARK = '#242821'; // the strip slabs' ink-dark — the now strips' --ln-border value
+
+/* the roll's base beat: each chip's pop and gap ride this base after their
+   noisy --lt-d, so the wave's first chip lands a fraction of a second after
+   the cloud's own entry — the reveal fires on the cloud's first pixels, and
+   the reader sees the box settle in view before the roll begins */
+const ROLL_BEAT = '0.15s';
 
 // the roll's variable lag: --lt-d is each chip's beat — the flat 40ms
 // march wobbled ±32ms by a deterministic hash (mean drift zero, so the
@@ -40,39 +45,36 @@ const beat = (i: number) => {
 
 
 export function LandingTechnologies() {
-  const [inView, setInView] = useState(false);
-  const marqueeRef = useRef<HTMLElement | null>(null);
+  const [headInView, setHeadInView] = useState(false);
+  const [cloudInView, setCloudInView] = useState(false);
   const hostRef = useRef<HTMLElement | null>(null);
 
-  // the marquee takes array properties, which JSX attributes can't carry
-  // reliably to Lit — set them imperatively once (same as the about)
+  // the entry gates: the head and the chip cloud each fire on their OWN
+  // first pixels crossing the viewport's bottom edge (the section gate
+  // fired 25vh above the fold — the roll played while the cloud was
+  // still below the reader). Each latches once; one observer watches
+  // both, hanging up when both have fired, and the roll's base beat
+  // (ROLL_BEAT) holds the start a fraction after the cloud's entry
   useEffect(() => {
-    const el = marqueeRef.current as unknown as { strings: string[]; speed: number } | null;
-    if (!el) return;
-    el.strings = TICKER;
-    el.speed = 26;
-  }, []);
-
-  // reveal the grow + fades when the section scrolls into view — and LATCH
-  // it once seen (a two-way flag faded the chips and the band straight back
-  // to their pre-reveal poses behind the reader on any scroll past)
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setInView(true);
-          io.disconnect();
+    const targets = [
+      [hostRef.current?.querySelector<HTMLElement>('.landing-technologies__head') ?? null, setHeadInView],
+      [hostRef.current?.querySelector<HTMLElement>('.landing-technologies__cloud') ?? null, setCloudInView],
+    ] as const;
+    const latched = new Set<Element>();
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting || latched.has(entry.target)) continue;
+        latched.add(entry.target);
+        for (const [el, set] of targets) {
+          if (el === entry.target) set(true);
         }
-      },
-      /* the same gate the about runs: fire when the section's TOP reaches
-         the viewport's upper area (top 36%), so the headline's grow and
-         the band's drop play with the content in the upper part of the
-         screen. The plain 25%-of-section threshold fired ~550px deep —
-         by then the build had played off-screen */
-      { rootMargin: '0px 0px -64% 0px' },
-    );
-    const host = hostRef.current;
-    if (host) io.observe(host);
+        // both seen → the observer's job is done
+        if (latched.size === targets.length) io.disconnect();
+      }
+    });
+    for (const [el] of targets) {
+      if (el) io.observe(el);
+    }
     return () => io.disconnect();
   }, []);
 
@@ -80,7 +82,7 @@ export function LandingTechnologies() {
     <section
       id="technologies"
       ref={hostRef}
-      class={`landing-technologies ${inView ? 'landing-technologies--in' : ''}`}
+      class={`landing-technologies ${cloudInView ? 'landing-technologies--in' : ''}`}
       style={{ color: INK }}
     >
       <style>{`
@@ -100,14 +102,17 @@ export function LandingTechnologies() {
            span mechanic, re-paced and interleaved — not staged): the
            gaps hold the 44px spread while the chips POP in one after
            the other with VARIABLE LAG (--lt-d is each chip's beat,
-           see the hash above the component); a chip's own gap span
+           see the hash above the component); the wave carries the
+           base beat (ROLL_BEAT) past the cloud's own entry gate, so
+           the compaction starts a fraction of a second after the
+           cloud scrolls into view; a chip's own gap span
            starts closing 0.24s in — as THAT chip lands — while the
            chips still to its right keep popping, so the cloud
            compacts continuously from the left under the ongoing
            series and the wrap re-flows as the wave passes */
         .landing-technologies__cloud glaphic-chip { opacity: 0; }
         .landing-technologies--in .landing-technologies__cloud glaphic-chip {
-          animation: landing-technologies-pop 0.32s cubic-bezier(0.25, 1.4, 0.45, 1) var(--lt-d, 0ms) both;
+          animation: landing-technologies-pop 0.32s cubic-bezier(0.25, 1.4, 0.45, 1) calc(${ROLL_BEAT} + var(--lt-d, 0ms)) both;
         }
         @keyframes landing-technologies-pop {
           0% { opacity: 0; transform: scale(0.7); }
@@ -124,7 +129,7 @@ export function LandingTechnologies() {
           width: 14px;
           /* each gap joins the roll behind its own chip — chained to
              the same noisy beat, so the lag carries into the slide */
-          transition: width 90ms ease calc(var(--lt-d, 0ms) + 0.24s);
+          transition: width 90ms ease calc(${ROLL_BEAT} + var(--lt-d, 0ms) + 0.24s);
         }
         @media (prefers-reduced-motion: reduce) {
           .landing-technologies--in .landing-technologies__cloud glaphic-chip { animation: none; opacity: 1; }
@@ -132,49 +137,34 @@ export function LandingTechnologies() {
           .landing-technologies--in .landing-technologies__gap { transition: none; }
         }
 
-        /* marquee — the same band the about runs; the rules are the COMPONENT'S
-           (its own seated rails) and the band drops whole */
-        .landing-technologies__marquee { transform: translateY(-22vh); }
-        .landing-technologies__marquee {
-          position: absolute;
-          left: 0;
-          /* full bleed like the about's band (Eliot 10-30): the panel rides over the right run — an edge stop against the sidebar's slide reads odd */
-          right: 0;
-          /* the band IS the 48px zone; its own rails sit at the edges */
-          top: 16vh;
-          height: 48px;
-          z-index: 2;
-          mix-blend-mode: multiply;
-          --glaphic-marquee-rule-size: 4px; /* the rules are the component's — no overlays */
-          --glaphic-marquee-text-size: 15px;
-          --glaphic-marquee-pad-block: 8px;
-          --glaphic-marquee-rule-ink: ${RED};
-          --glaphic-marquee-ink: ${RED};
+        /* ── the ink-dark bars ─────────────────────────────────────
+           the two solid slabs enclosing the chip cloud, on the strip
+           grammar's full-bleed rail slots (flush left at the page's
+           edge, flush AT the parked panel). Ink-dark #242821, the
+           now strips' slab ink — the bars read as that family's rails
+           against the crimson panel past them */
+        .landing-technologies__bar {
+          grid-column: 1 / -1;
+          margin-inline: -3.9vw 20.1vw;
+          height: 1rem;
+          background: ${INK_DARK};
         }
-        /* the print-in: the band drops whole (its rules ride with it) */
-        .landing-technologies--in .landing-technologies__marquee {
-          animation: landing-marquee-drop 0.7s cubic-bezier(0.25, 1, 0.4, 1) both;
-        }
-        /* reduced motion: the band seats instantly (the base transform must
-           clear too — animation:none alone leaves it parked at its -22vh
-           hold, clipped off the section's top). These sit AFTER the drop
-           rule so they win the cascade */
-        @media (prefers-reduced-motion: reduce) {
-          .landing-technologies .landing-technologies__marquee { transform: none; }
-          .landing-technologies--in .landing-technologies__marquee { animation: none; }
-        }
-
+        .landing-technologies__bar--lead { margin-top: 4vh; }
+        .landing-technologies__bar--tail { margin-top: 2vh; }
         /* ── the chip cloud ────────────────────────────────────────
            wraps like a scatter on the same grid span the about's story
-           uses (1-9); the cascade staggers each chip a beat apart */
+           uses (1-9); the cascade staggers each chip a beat apart.
+           The 2vh top owns the seam the rail band used to hold */
         .landing-technologies__cloud {
           grid-column: 1 / span 9;
           display: flex;
           flex-wrap: wrap;
           align-content: flex-start;
           gap: 18px 0; /* columns come from the .landing-technologies__gap spans */
-          margin-top: 13.8vh;
+          /* the cloud rides 2vh inside the bars' frame */
+          margin-top: 2vh;
           max-width: 52vw;
+          margin-block: 1rem;
         }
         /* a nudge up from the spec's 25px chip for the showcase scale */
         .landing-technologies__cloud glaphic-chip {
@@ -192,17 +182,20 @@ export function LandingTechnologies() {
         /* ── mobile: the flow stacks (as the about) ── */
         @media (max-width: 899px) {
           .landing-technologies { height: auto; /* the Phase-4 map's tech slot (the last mobile stop) */ order: 4; }
-          .landing-technologies__marquee { position: static; }
-          /* the component's own rails; the top one rests on mobile */
-          .landing-technologies__marquee::part(rail-top) { display: none; }
-          .landing-technologies__marquee { right: 0; margin-inline: -6vw; }
-          .landing-technologies__cloud { margin-bottom: 40px; max-width: none; gap: 14px 0; }
+          /* the bars ride the mobile flow full-bleed (the flow's 6vw
+             gutters pulled back); the frame replaces the tail margin
+             the cloud used to carry itself */
+          .landing-technologies__bar { margin-inline: -6vw; }
+          .landing-technologies__cloud { max-width: none; gap: 14px 0; }
         }
       `}</style>
 
-      {/* flow grid: the grow headline + the chip cloud */}
+      {/* flow grid: the grow headline, the crimson bars enclosing the
+          chip cloud */}
       <div class="landing-flow">
-        <GrowHead text="Tools I've used." inView={inView} class="landing-technologies__head" />
+        <GrowHead text="Tools I've used." inView={headInView} class="landing-technologies__head" />
+
+        <div class="landing-technologies__bar landing-technologies__bar--lead" aria-hidden="true" />
 
         <div class="landing-technologies__cloud">
           {technologies.map((tech, i) => (
@@ -222,14 +215,9 @@ export function LandingTechnologies() {
             </Fragment>
           ))}
         </div>
-      </div>
 
-      {/* decorative full-bleed: the band extends to the page's edge so the read stays good as the crimson sidebar slides over it — the marquee runs the full viewport, the panel riding on top of its right end */}
-      <glaphic-marquee
-        ref={marqueeRef}
-        class="landing-technologies__marquee"
-        aria-hidden="true"
-      />
+        <div class="landing-technologies__bar landing-technologies__bar--tail" aria-hidden="true" />
+      </div>
     </section>
   );
 }

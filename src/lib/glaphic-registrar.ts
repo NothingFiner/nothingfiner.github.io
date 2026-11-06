@@ -31,6 +31,7 @@ import { GlaphicCardCarousel } from '@glaphic/ui/components/glaphic-card-carouse
 import { GlaphicCardSlide } from '@glaphic/ui/components/glaphic-card-carousel/glaphic-card-slide.js';
 import { GlaphicCast } from '@glaphic/ui/components/glaphic-cast/glaphic-cast.js';
 import { GlaphicChip } from '@glaphic/ui/components/glaphic-chip/glaphic-chip.js';
+import { GlaphicCorners } from '@glaphic/ui/components/glaphic-corners/glaphic-corners.js';
 import { GlaphicCursorType } from '@glaphic/ui/components/glaphic-cursor-type/glaphic-cursor-type.js';
 import { GlaphicDivider } from '@glaphic/ui/components/glaphic-divider/glaphic-divider.js';
 import { GlaphicFan } from '@glaphic/ui/components/glaphic-fan/glaphic-fan.js';
@@ -57,6 +58,7 @@ void GlaphicCardCarousel; // <glaphic-card-carousel>
 void GlaphicCardSlide; // <glaphic-card-slide>
 void GlaphicCast; // <glaphic-cast>
 void GlaphicChip; // <glaphic-chip>
+void GlaphicCorners; // <glaphic-corners>
 void GlaphicCursorType; // <glaphic-cursor-type>
 void GlaphicDivider; // <glaphic-divider>
 void GlaphicFan; // <glaphic-fan>

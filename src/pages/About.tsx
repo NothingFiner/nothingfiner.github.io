@@ -2,7 +2,7 @@ export function About() {
   return (
     <div class="min-h-screen p-8">
       <div class="max-w-4xl mx-auto">
-        <div class="rounded-2xl site-panel p-8">
+        <div class="site-panel p-8">
           <div class="max-w-none text-theme font-body">
             <p class="mb-4">
               I'm Elie. I've been coding since I was a kid. The first thing I ever coded was an attempt at an asteroid clone on a casio graphing calculator.

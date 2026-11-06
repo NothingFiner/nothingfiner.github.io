@@ -132,6 +132,9 @@ body {
    on the same node. ── */
 @layer components {
   .site-panel {
+    /* the furniture radius — the library's base token (the glaphic
+       buttons' 2px); the panels join the same rule, at one place */
+    border-radius: var(--glaphic-radius-base, 2px);
     background: var(--panel-fill);
     border: 1px solid var(--panel-keyline);
     box-shadow: 2px 2px 0 rgba(13, 2, 33, 0.56), 4px 4px 0 rgba(13, 2, 33, 0.4), 6px 6px 0 rgba(13, 2, 33, 0.24);

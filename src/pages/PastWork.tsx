@@ -149,17 +149,27 @@ export function PastWork() {
           color: ${GREY};
         }
 
-        /* the lead image fills the plate below the kicker */
+        /* the lead image fills the plate below the kicker, cropped to
+           the index's row height: the portrait leads (~1200px tall at
+           the band's full width) rendered ONE band per desktop fold —
+           the rows read at ~three bands to a desktop fold, so the shot
+           crops (cover, biased toward the shot's upper third) instead
+           of riding its natural aspect */
         .past-work__band-shot {
           display: block;
           width: 100%;
-          height: auto;
+          height: clamp(100px, 14vh, 170px);
+          object-fit: cover;
+          object-position: center top;
         }
 
         /* mobile: the flow stacks (as the landing sections) */
         @media (max-width: 899px) {
           .past-work__flow { display: flex; flex-direction: column; padding: 44px 6vw 6vh; }
           .past-work__bands { margin-top: 5vh; }
+          /* phones keep the shot's natural read — the crop is the
+             desktop row-index's need, not the stacked column's */
+          .past-work__band-shot { height: auto; }
         }
       `}</style>
 

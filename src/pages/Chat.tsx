@@ -10,10 +10,11 @@
 //                tab hangs under it once the user has entered the chat
 //                (clicked in / focused it) — nothing model-status shows
 //                before that — and the note under the tab is the yellow
-//                download warning until the first send, the violet
-//                disclaimer after ("its 'resume' jumps to the site's
-//                resume page"). The card (ChatInterface) is the only
-//                thing that arrives on send.
+//                download warning until the model is ready, the violet
+//                disclaimer after (persisted included — the download
+//                promise no longer holds; "its 'resume'" jumps to the
+//                site's resume page). The card (ChatInterface) is the
+//                only thing that arrives on send.
 //   chrome       the shared footer band (SiteFooter) — the pool
 //                menu over the contact icons bottom-right, the `////`
 //                copyright bottom-left, all in from load (menuDelay 0 —
@@ -24,6 +25,7 @@
 //                Eliot: one menu element everywhere; the band's classed
 //                treatment carries the corner instead).
 import ChatInterface from '../components/ChatInterface';
+import { GrowHead } from '../components/GrowHead';
 
 // the page's inks: the site's named inks, plus the chat's state plates
 // and the library's neutral-ramp levels the recipes use (trailing
@@ -32,7 +34,7 @@ const INK = '#0D0221';
 const RED = '#A6022A';
 const PAPER = '#F2F5EB';             // var(--glaphic-neutral-paper)
 const PAPER_DEEP = '#E9EDE0';        // var(--glaphic-neutral-paper-deep)
-const CARD_RIM = '#D5D2DE';          // var(--glaphic-neutral-grey-cool-200)
+const PAPER_DEEP_GHOST = 'rgba(233, 237, 224, 0.5)'; // the card's ghost panel — PAPER_DEEP at half, the lamp printing through; the plates hold the solid ink
 const RIM = '#9D99AB';               // var(--glaphic-neutral-grey-cool-400)
 const COOL_100 = '#E9E7EF';          // var(--glaphic-neutral-grey-cool-100)
 const COOL_300 = '#BAB6C7';          // var(--glaphic-neutral-grey-cool-300)
@@ -88,25 +90,26 @@ export function Chat() {
           position: relative;
           /* the ground is the site's lava lamp (recolored to the new
              inks on its paper base, behind this page's plates) — the
-             page itself stays CLEAR so the lamp's paper shows through */
+             page itself stays CLEAR so the lamp's paper shows through.
+             The clip opens on desktop: the card pose's seat drops low
+             and its under-hang (the tab, then the note) prints over
+             the band's empty top-center — the foot's own pieces sit
+             clear at the band's flanks, so nothing shares that strip */
           min-height: 100%;
-          overflow: hidden;
+          overflow: visible;
           font-family: var(--f-body, 'Plus Jakarta Sans', sans-serif);
         }
         .chat * { margin: 0; box-sizing: border-box; }
 
-        /* ── the headline — the entered mock's top-left pose from load ── */
+        /* ── the headline — the site's grow print in the entered mock's
+           top-left pose from load: the ladder + warm-white fill ride
+           the shared grow-head class (src/landing.css, global), the
+           same header treatment every landing section's head carries ── */
         .chat__head {
           position: absolute;
           left: 3.1vw;
           top: 6vh;
           z-index: 2;
-          font-family: var(--f-disp, 'Space Grotesk', sans-serif);
-          font-weight: 700;
-          font-size: clamp(34px, 4.9vw, 70px);
-          line-height: 1.05;
-          letter-spacing: -0.02em;
-          color: ${RED};
         }
 
         /* ── mobile: the composition stacks in the flow ─────────── */
@@ -125,27 +128,36 @@ export function Chat() {
            the compose block never moves on selection (the pose's
            differences hang off the input, not where it stands); only
            the card's arrival re-anchors the stem (it carries a card +
-           its air, which claims the drop the submitted mock shows) */
+           its air, which claims the drop the submitted mock shows).
+           The seat rides low: the compose + its under-hang (the tab,
+           the note) clear the stage's floor with a breath — the note's
+           ~100px overhang defines the floor, not the input's own 55px */
         .chat__stem {
           position: absolute;
           left: 0;
           right: 0;
-          bottom: 27vh;
+          bottom: 16vh;
           display: flex;
           flex-direction: column;
           align-items: center;
           z-index: 1;
           transition: bottom 0.5s cubic-bezier(0.25, 1, 0.4, 1);
         }
-        .chat__stem--card { bottom: 20.8vh; }
+        /* the card pose's floor: the seat drops past the stage's floor —
+           the note (the deepest hang) prints over the band's empty
+           top-center strip, the foot's own pieces clear at the flanks */
+        .chat__stem--card { bottom: 9vh; }
 
         /* ── the chat card (the submitted mock's big light panel) ── */
         .chat__card {
           width: 546px;
           max-width: 88vw;
           height: 364px;
-          background: ${PAPER_DEEP};
-          border: 1px solid ${CARD_RIM};
+          /* the ghost read: half-paper over the lava lamp — the lamp
+             prints through the panel while the conversation's plates
+             hold their solid ink; no rim — the box's edge is the
+             ghost's own seam on the page (PAPER_DEEP_GHOST half-tone) */
+          background: ${PAPER_DEEP_GHOST};
           /* the mock's card-to-tab air (the tab rides under the input
              at its own absolute height) */
           overflow-y: auto;
@@ -227,7 +239,10 @@ export function Chat() {
         }
 
         /* ── the status tab: the small mono readout hanging under the
-           input's left edge (the mock's plate, moved below the box) ─ */
+           input's left edge (the mock's plate, moved below the box) —
+           the plate carries the line recipe's 1px ink rim on its three
+           free sides: the top edge hangs flush against the input row's
+           own rim, so no doubled seam reads there ── */
         .chat__tab {
           position: absolute;
           top: 100%;
@@ -235,6 +250,8 @@ export function Chat() {
           height: 28px;
           min-width: 140px;
           background: ${YELLOW};
+          border: 1px solid ${INK};
+          border-top: 0;
           overflow: hidden;
           white-space: nowrap;
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
@@ -247,10 +264,11 @@ export function Chat() {
           transition: background 0.3s ease-out;
         }
 
-        /* ── the note under the tab — state-driven: the yellow warning
-           plate before the first send (the status tab's warning inks,
-           same plate geometry as the violet note), the violet disclaimer
-           once the chat has begun ── */
+        /* ── the note under the tab — state-driven: the yellow download
+           warning while the model still has to load (a send would start
+           one), the violet disclaimer once the model reports ready —
+           freshly or via the persisted engine store, no download is
+           pending — and once the chat has begun ── */
         .chat__note {
           position: absolute;
           top: calc(100% + 50px);
@@ -296,8 +314,10 @@ export function Chat() {
         }
       `}</style>
 
-      {/* the headline: solid crimson, top-left, from load */}
-      <h2 class="chat__head">Resume RAG</h2>
+      {/* the headline: the site's grow print top-left — the flag is on
+          from load, so the ladder builds once on arrival, the same
+          header read the landing sections' heads carry */}
+      <GrowHead text="Resume RAG" inView class="chat__head" />
 
       <ChatInterface />
     </div>

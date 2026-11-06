@@ -4,7 +4,7 @@
 // asks for the engine, not on site load. Types come in type-only (they
 // are erased at build, no runtime import).
 import type { ChatCompletionMessageParam, MLCEngineInterface } from "@mlc-ai/web-llm";
-import {useState, useCallback, useRef} from 'preact/hooks'
+import {useState, useCallback, useEffect} from 'preact/hooks'
 import { RAGResult, RAGStatus, StreamOptions } from "../types";
 import { RESUME_CONTEXT } from "../data/resume";
 
@@ -46,68 +46,111 @@ RESUME DATA:
 ${RESUME_CONTEXT}
 `;
 
+// The engine is the app's one instance and lives at module scope.
+// Routes are mounts; hook-held state dies at every unmount.
+// A round-trip to another page re-read Idle and claims "Model Not
+// Loaded." over weights the browser already holds (no refetch —
+// the network tab stays clean). The store holds the live truth and
+// mounted hooks subscribe to it. An in-flight load keeps ticking with
+// no subscribers; re-entering the chat shows its true state, error
+// included, until a send retries.
+const engineStore: {
+  engine: MLCEngineInterface | null,
+  status: RAGStatus,
+  progress: number,
+  listeners: Set<() => void>,
+} = {
+  engine: null,
+  status: RAGStatus.Idle,
+  progress: 0,
+  listeners: new Set()
+};
+
+function notifyEngineListeners() {
+  for (const listener of engineStore.listeners) listener();
+}
+
+function subscribeToEngine(listener: () => void) {
+  engineStore.listeners.add(listener);
+  return () => {
+    engineStore.listeners.delete(listener);
+  };
+}
+
+const ensureEngine = async (): Promise<MLCEngineInterface | null> => {
+  // Ready and in-flight loads return the one engine; Idle and a failed
+  // load start (or retry) it, so a send in the chat retries after an error
+  if (engineStore.engine || engineStore.status === RAGStatus.Loading) {
+    return engineStore.engine;
+  }
+  engineStore.status = RAGStatus.Loading;
+  engineStore.progress = 0;
+  notifyEngineListeners();
+  try {
+    // the dynamic import — the first point of contact with the
+    // (large) engine module, off the critical bundle
+    const webllm = await import('@mlc-ai/web-llm');
+    engineStore.engine = await webllm.CreateMLCEngine(MODEL_ID, {
+      initProgressCallback: (p) => {
+        engineStore.progress = Math.round((p.progress || 0) * 100);
+        notifyEngineListeners();
+      },
+    });
+    engineStore.status = RAGStatus.Ready;
+    notifyEngineListeners();
+  } catch (e) {
+    engineStore.status = RAGStatus.Error;
+    // the engine load failed — the operation + the model stay in
+    // the log so the failure is diagnosable; the rethrow reaches
+    // the caller (universal.md: no silent failure)
+    console.error('useRAG: web-llm engine load failed', { model: MODEL_ID }, e);
+    notifyEngineListeners();
+    throw e;
+  }
+  return engineStore.engine;
+};
 
 const useRAG = (): RAGResult => {
-    const engine = useRef<MLCEngineInterface | null>(null);
-    const loading = useRef(false);
+  // The first-paint rule (preact.md): the snapshot initializes from the
+  // store's live state, so a remount never paints a false Idle frame
+  // over a model that is Ready, loading, or failed
+  const [loadState, setLoadState] = useState(() => ({ status: engineStore.status, progress: engineStore.progress }));
 
-    const [status, setStatus] = useState<RAGStatus>(RAGStatus.Idle);
-    const [progress, setProgress] = useState(0);
-    const [text] = useState('');
+  // The subscription rides this hook's mount while the store outlives
+  // it; the cleanup's remover keeps updates off unmounted state
+  useEffect(() => subscribeToEngine(() => {
+    setLoadState({ status: engineStore.status, progress: engineStore.progress });
+  }), []);
 
-    const ensureReady = useCallback(async () => {
-        if (engine.current || loading.current) return;
+  const [text] = useState('');
 
-        loading.current = true;
-        setStatus(RAGStatus.Loading);
+  const stream = useCallback(async function* (
+      messages: ChatCompletionMessageParam[],
+      opts: StreamOptions = {},
+    ): AsyncGenerator<string> {
+    await ensureEngine();
+    const engine = engineStore.engine;
+    if (!engine) return;
 
-        try {
-            // the dynamic import — the first point of contact with the
-            // (large) engine module, off the critical bundle
-            const webllm = await import('@mlc-ai/web-llm');
-            engine.current = await webllm.CreateMLCEngine(MODEL_ID, {
-              initProgressCallback: (p) => {
-                setProgress(Math.round((p.progress || 0) * 100));
-              },
-            });
-            setStatus(RAGStatus.Ready);
-          } catch (e) {
-            setStatus(RAGStatus.Error);
-            loading.current = false;
-            // the engine load failed — the operation + the model stay in
-            // the log so the failure is diagnosable; the rethrow reaches
-            // the caller (universal.md: no silent failure)
-            console.error('useRAG: web-llm engine load failed', { model: MODEL_ID }, e);
-            throw e;
-          }
-    }, []);
+    // Inject system prompt with resume context
+    const messagesWithContext: ChatCompletionMessageParam[] = [
+      { role: "system", content: SYSTEM_PROMPT },
+      ...messages
+    ];
 
-    const stream = useCallback(async function* (
-        messages: ChatCompletionMessageParam[],
-        opts: StreamOptions = {},
-      ): AsyncGenerator<string> {
-        await ensureReady();
-        if (!engine.current) return;
+    const response = await engine.chat.completions.create({
+      messages: messagesWithContext,
+      stream: true,
+      max_tokens: 500,
+      temperature: 0.3,
+      ...opts,
+    });
+    for await (const chunk of response) {
+      yield chunk.choices[0]?.delta?.content || '';
+    }
+  }, []);
 
-        // Inject system prompt with resume context
-        const messagesWithContext: ChatCompletionMessageParam[] = [
-          { role: "system", content: SYSTEM_PROMPT },
-          ...messages
-        ];
-
-        const response = await engine.current.chat.completions.create({
-          messages: messagesWithContext,
-          stream: true,
-          max_tokens: 500,
-          temperature: 0.3,
-          ...opts,
-        });
-        for await (const chunk of response) {
-          yield chunk.choices[0]?.delta?.content || '';
-        }
-      }, [ensureReady]);
-
-      return {stream, text, progress, status}
+  return { stream, text, progress: loadState.progress, status: loadState.status };
 }
 
 export default useRAG;

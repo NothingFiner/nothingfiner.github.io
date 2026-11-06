@@ -120,6 +120,12 @@ function captionFor(path: string): string | null {
   return null;
 }
 
+/* the blog family's own navs (the list's entry click, the post's back
+   pair) ride the QUICK PASS: one fast film with no typed caption —
+   "Blog" would type between two pages already inside the blog */
+const sameBlogFamily = (fromPath: string, toPath: string): boolean =>
+  /^\/blog(\/|$)/.test(fromPath) && /^\/blog(\/|$)/.test(toPath);
+
 /** mirroring wouter's own hash parsing: leading '#' ignored, the
     leading '/' optional (…and a plain in-page anchor `#about` reads
     as the path '/about', which is why in-page scroll anchors are
@@ -202,9 +208,21 @@ export function PageWipe(): null {
       pending = preSwapped ? null : toPath;
       wipe.direction = directionFor(fromPath, toPath);
       const caption = captionFor(toPath);
-      wipe.caption = caption ?? '';
-      /* caption mode is self-driving; the fallback holds by dwell */
-      wipe.dwell = caption ? 0 : 900;
+      if (sameBlogFamily(fromPath, toPath)) {
+        /* Eliot's quick pass: the entry click swaps under one fast
+           film — no caption to type (the nav stays inside the blog)
+           and a brief dwell; the sweep itself rides a brisker motion
+           than the site's 0.6s default, or the fixed plate speed
+           would eat the "much quicker" ask */
+        wipe.caption = '';
+        wipe.dwell = 220;
+        wipe.style.setProperty('--glaphic-wipe-motion', '0.35s');
+      } else {
+        wipe.caption = caption ?? '';
+        /* caption mode is self-driving; the fallback holds by dwell */
+        wipe.dwell = caption ? 0 : 900;
+        wipe.style.setProperty('--glaphic-wipe-motion', '0.6s');
+      }
       void wipe.run();
     };
 
