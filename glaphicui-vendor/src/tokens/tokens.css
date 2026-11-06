@@ -1,0 +1,249 @@
+/* glaphicUI — Tier-1 vocabulary tokens.
+   Load this file once per page BEFORE any component CSS matters.
+   Components declare their own Tier-2 parameters on :host with
+   fallbacks; they never re-state these values.
+
+   The file now carries two layers:
+
+   1. Glaphic primitives — exported from Figma variables, collection
+      "primitives", mode "global" (single mode, no dark variants yet),
+      file Oka789Cc9whjmjBUTexfiT. Names trimmed under one rule: the
+      leading `color-` marker is dropped (ink/hero/neutral names read
+      by themselves elsewhere they're used); font tokens keep `font-`
+      because --size-3 alone doesn't read as type against spacing.
+      Everything else is verbatim from the export, var() chains
+      preserved. These are the foundation the new look is built on.
+   2. LEGACY look vocabulary — the --bg/--hot/--plate instrument
+      system below. Every current component still consumes it; it
+      retires family-by-family as components are rebuilt on the
+      primitives. Do not extend it.
+
+   CSS gotcha that shaped this system: var() inside a custom property
+   value is substituted at the element where the property is DECLARED,
+   not where it's used. That's why --plate is a formula over
+   --platec/--platea at :root: both knobs live here, so both resolve
+   correctly for every card. A component that needs LOCAL depth must
+   declare its own full formula (see glaphic-card's --glaphic-card-film). */
+
+/* ---------------------------------------------------------------
+   Glaphic primitives — Figma variables, collection "primitives",
+   mode "global". Same at every theme state until dark is designed.
+   --------------------------------------------------------------- */
+:root {
+  /* --- ink (the CMYK-ish language colors) --- */
+  --glaphic-ink-magenta: #f81dff;
+  --glaphic-ink-yellow: #ffff41;
+  --glaphic-ink-cyan: #89f3ff;
+  --glaphic-ink-violet: #8447ff;
+  --glaphic-ink-black: #0d0221;
+  --glaphic-ink-brand-dark: #a6022a;
+  --glaphic-ink-brand-fluro: #14f1c8;
+
+  /* --- multiply blends (overlaps of the inks) --- */
+  --glaphic-multiply-magenta-yellow: #f81d41;
+  --glaphic-multiply-yellow-cyan: #89f341;
+  --glaphic-multiply-cyan-magenta: #851cff;
+
+  /* --- hero --- */
+  --glaphic-hero-red: #f81d41;
+  --glaphic-hero-green: #89f336;
+  --glaphic-hero-violet: #8447ff;
+
+  /* --- semantic --- */
+  --glaphic-semantic-danger-base: var(--glaphic-hero-red);
+  --glaphic-semantic-danger-surface: #ffe7eb;
+  --glaphic-semantic-danger-text: #a30825;
+  --glaphic-semantic-warning-base: #ffd500;
+  --glaphic-semantic-warning-surface: #ffe873;
+  --glaphic-semantic-warning-text: var(--glaphic-ink-black);
+  --glaphic-semantic-success-base: var(--glaphic-hero-green);
+  --glaphic-semantic-success-surface: #e6ffd3;
+  --glaphic-semantic-success-text: #3d8b0e;
+  --glaphic-semantic-info-base: var(--glaphic-hero-violet);
+  --glaphic-semantic-info-surface: #efe8ff;
+  --glaphic-semantic-info-text: #5a1fcc;
+
+  /* --- neutral --- */
+  --glaphic-neutral-paper: #f2f5eb;
+  --glaphic-neutral-paper-elevated: #f9faf4;
+  --glaphic-neutral-paper-deep: #e9ede0;
+  --glaphic-neutral-ink: #0d0221;
+
+  /* --- neutral / grey cool --- */
+  --glaphic-neutral-grey-cool-50: #f4f3f7;
+  --glaphic-neutral-grey-cool-100: #e9e7ef;
+  --glaphic-neutral-grey-cool-200: #d5d2de;
+  --glaphic-neutral-grey-cool-300: #bab6c7;
+  --glaphic-neutral-grey-cool-400: #9d99ab;
+  --glaphic-neutral-grey-cool-500: #817d8f;
+  --glaphic-neutral-grey-cool-600: #686474;
+  --glaphic-neutral-grey-cool-700: #504c5a;
+  --glaphic-neutral-grey-cool-800: #37343f;
+  --glaphic-neutral-grey-cool-900: #201e28;
+
+  /* --- neutral / grey warm --- */
+  --glaphic-neutral-grey-warm-50: #f6f7f2;
+  --glaphic-neutral-grey-warm-100: #ecefe6;
+  --glaphic-neutral-grey-warm-200: #dee2d3;
+  --glaphic-neutral-grey-warm-300: #c8cdbd;
+  --glaphic-neutral-grey-warm-400: #aab19f;
+  --glaphic-neutral-grey-warm-500: #8c9482;
+  --glaphic-neutral-grey-warm-600: #707867;
+  --glaphic-neutral-grey-warm-700: #565c4f;
+  --glaphic-neutral-grey-warm-800: #3b4137;
+  --glaphic-neutral-grey-warm-900: #242821;
+
+  /* --- ui --- */
+  --glaphic-ui-background: var(--glaphic-neutral-paper);
+  --glaphic-ui-surface: var(--glaphic-neutral-paper-elevated);
+  --glaphic-ui-surface-sunk: var(--glaphic-neutral-paper-deep);
+  --glaphic-ui-text: var(--glaphic-neutral-ink);
+  --glaphic-ui-text-muted: var(--glaphic-neutral-grey-cool-600);
+  --glaphic-ui-text-subtle: var(--glaphic-neutral-grey-cool-500);
+  --glaphic-ui-border: var(--glaphic-neutral-grey-cool-200);
+  --glaphic-ui-border-strong: var(--glaphic-neutral-grey-cool-400);
+  --glaphic-ui-focus: var(--glaphic-hero-violet);
+
+  /* --- type --- */
+  --glaphic-font-family-mono: "IBM Plex Mono", sans-serif;
+  --glaphic-font-family-display: "Space Grotesk", sans-serif;
+  --glaphic-font-family-sans: "Plus Jakarta Sans", sans-serif;
+  --glaphic-font-weight-thin: 100;
+  --glaphic-font-weight-light: 300;
+  --glaphic-font-weight-regular: 400;
+  --glaphic-font-weight-semibold: 600;
+  --glaphic-font-weight-bold: 700;
+  /* font sizes follow Figma's numbering verbatim — it is NOT
+     monotonic (0=10px, 4=48px, 7=20px); the numbers are names. */
+  --glaphic-font-size-0: 10px;
+  --glaphic-font-size-1: 11px;
+  --glaphic-font-size-2: 12px;
+  --glaphic-font-size-3: 16px;
+  --glaphic-font-size-4: 48px;
+  --glaphic-font-size-5: 24px;
+  --glaphic-font-size-6: 60px;
+  --glaphic-font-size-7: 20px;
+  --glaphic-font-line-height-0: 0px;
+
+  /* --- radius --- */
+  --glaphic-radius-base: 2px;
+
+  /* --- spacing --- */
+  --glaphic-spacing-1: 0.375em;
+  --glaphic-spacing-2: 0.5em;
+  --glaphic-spacing-3: 0.625em;
+  --glaphic-spacing-4: 0.75em;
+  --glaphic-spacing-5: 0.875em;
+  --glaphic-spacing-6: 1em;
+  --glaphic-spacing-7: 1.25em;
+  --glaphic-spacing-8: 1.5em;
+  --glaphic-spacing-9: 1.75em;
+  --glaphic-spacing-10: 2.25em;
+  --glaphic-spacing-11: 3em;
+  --glaphic-spacing-12: 3.75em;
+
+  /* --- component sizing --- */
+  --glaphic-button-lg-padding-x: var(--glaphic-spacing-10);
+  --glaphic-button-lg-padding-y: var(--glaphic-spacing-6);
+  --glaphic-button-md-padding-x: var(--glaphic-spacing-8);
+  --glaphic-button-md-padding-y: var(--glaphic-spacing-4);
+  --glaphic-button-sm-padding-x: var(--glaphic-spacing-4);
+  --glaphic-button-sm-padding-y: var(--glaphic-spacing-1);
+  --glaphic-button-group-md-padding-x: var(--glapich-spacing-7);
+  --glaphic-button-group-md-padding-y: var(--glaphic-spacing-5);
+  --glaphic-switch-toggle-size: var(--glaphic-spacing-7);
+  --glaphic-switch-track-y: var(--glaphic-spacing-9);
+  --glaphic-switch-track-x: 3.5em;
+  --glaphic-border-width-xs: 0.5px;
+  --glaphic-border-width-sm: 1px;
+  --glaphic-border-width-md: 3px;
+  --glaphic-border-width-lg: 5px;
+  --glaphic-border-width-xl: 8px;
+}
+
+/* ---------------------------------------------------------------
+   LEGACY look vocabulary (--bg/--hot/--plate instrument dials).
+   Still consumed by every current component; retires as families
+   rebuild on the primitives above.
+   --------------------------------------------------------------- */
+:root {
+  /* ground & ink */
+  --bg: #F1ECE2;
+  --grid: rgba(23, 20, 14, .07);
+  --ink: #292E1E;
+  --muted: rgba(23, 20, 14, .62);
+  /* language colors */
+  --hot: #E03A0B;
+  --onhot: #FBF7EC;
+  --cold: #0780B8;
+  --acid: #E3D71B;
+  /* surface plate: tint over a declared source, at a declared depth */
+  --platec: var(--ink);
+  --platea: 5;
+  --plate: color-mix(in srgb, var(--platec) calc(var(--platea) * 1%), transparent);
+  /* edges & furniture */
+  --rim: rgb(from var(--ink) r g b / .30);
+  --rimsoft: rgba(23, 20, 14, .14);
+  --blend: multiply;
+  --diff: #B4B4B4;
+  /* instrument physics (the old audition dials, settled) */
+  --r: 1.9px;
+  --ch: 10.6px;
+  --blur: 1.7px;
+  --cut: .93;
+  --furn: .92;
+  /* hazard hatch pitch */
+  --hz: 18px;
+  --hzw: 1px;
+  /* type */
+  --f-disp: 'Space Grotesk', 'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif;
+  --f-body: 'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* type scale — voices (canonical specimen: Foundations/Typography in
+     Storybook). Font shorthands only; tracking, case and color stay
+     consumer-side. */
+  --t-display: 800 clamp(40px, 5.6vw, 60px)/0.95 var(--f-disp);
+  --t-heading: 700 20px/1.3 var(--f-body);
+  --t-body: 400 13.5px/1.45 var(--f-body);
+  --t-label: 500 10.5px/1 var(--f-mono);
+  --t-caption: 500 9.5px/1.5 var(--f-mono);
+  --t-readout: 600 11px/1 var(--f-mono);
+  color-scheme: light;
+  --hot-over-bg: calc()
+}
+
+/* dark A: OS preference, unless the page pins light explicitly */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C0C12;
+    --grid: rgba(233, 230, 222, .055);
+    --ink: #E9E6DE;
+    --muted: rgba(233, 230, 222, .58);
+    --hot: #FF4B1F;
+    --onhot: #14050A;
+    --cold: #3BD3FF;
+    --acid: #EDE33B;
+    --platea: 7;
+    --rim: rgba(233, 230, 222, .30);
+    --rimsoft: rgba(233, 230, 222, .14);
+    --blend: screen;
+    color-scheme: dark;
+  }
+}
+
+/* dark B: explicit toggle (wins over the OS in both directions) */
+:root[data-theme="dark"] {
+  --bg: #0C0C12;
+  --grid: rgba(233, 230, 222, .055);
+  --ink: #E9E6DE;
+  --muted: rgba(233, 230, 222, .58);
+  --hot: #FF4B1F;
+  --onhot: #14050A;
+  --cold: #3BD3FF;
+  --acid: #EDE33B;
+  --platea: 7;
+  --rim: rgba(233, 230, 222, .30);
+  --rimsoft: rgba(233, 230, 222, .14);
+  --blend: screen;
+  color-scheme: dark;
+}

@@ -1,13 +1,19 @@
 import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
 import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 // glaphicUI lives as a sibling repo. Alias it straight to its SOURCE, not
 // its package exports: its exports point at dist/, which lags while the
 // library is under active development. Vite (esbuild/rollup) transpiles
-// the Lit source directly — no lib build required.
-const GLAPHIC_SRC = resolve(process.cwd(), '../glaphicUI/src');
+// the Lit source directly — no lib build required. The CI runner checks
+// out only this repo (the sibling is absent): its build falls back to
+// the committed glaphicui-vendor snapshot — that README carries the pin
+// and the refresh step.
+const GLAPHIC_SRC = existsSync(resolve(process.cwd(), '../glaphicUI/src'))
+  ? resolve(process.cwd(), '../glaphicUI/src')
+  : resolve(process.cwd(), './glaphicui-vendor/src');
 
 export default defineConfig({
   plugins: [preact()],
