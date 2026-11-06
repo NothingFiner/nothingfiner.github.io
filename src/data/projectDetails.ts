@@ -17,9 +17,7 @@
 // navigate by and duplicate the stream lists of). The agency routes
 // live at /past/:id, not /projects/:id.
 //
-// Copy: the agency seam entries carry Eliot's dictated copy (the
-// real thing, flagged live); the plate's DRAFT tag only reads while
-// an entry still awaits him.
+// Copy: the agency seam entries carry Eliot's dictated copy.
 
 export interface ProjectDetailContent {
   /** the fluro title block's paragraph (the index's `description`
@@ -39,10 +37,6 @@ export interface ProjectDetailContent {
   /** LINK BUTTONS on the fluro title block (optional) — only real,
       resolvable targets go here; external = a new-tab hop */
   links?: { label: string; href: string; external?: boolean }[];
-  /** copy provenance: 'live' (sourced from the repo) or 'draft'
-      (written for this page, awaiting Eliot) — the plate prints a
-      DRAFT tag on 'draft' */
-  copy: 'live' | 'draft';
 }
 
 interface ProjectDetailEntry extends ProjectDetailContent {
@@ -61,7 +55,6 @@ const details: ProjectDetailEntry[] = [
       './assets/rite/rite-3.png',
     ],
     links: [{ label: 'GitHub', href: 'https://github.com/NothingFiner/rite', external: true }],
-    copy: 'live',
   },
   {
     title: 'glaphicUI',
@@ -70,7 +63,6 @@ const details: ProjectDetailEntry[] = [
     technologies: ['Lit', 'TypeScript', 'Web Components', 'Storybook'],
     images: ['./assets/glaphicUI.png', './assets/glaphic_!.png', './assets/glaphic_2.png'],
     links: [{ label: 'Browse the components', href: '#/components' }],
-    copy: 'live',
   },
   {
     title: 'Resume Chatbot',
@@ -82,7 +74,6 @@ const details: ProjectDetailEntry[] = [
     rows: [
       { label: 'PROCESS', value: 'Running a Local LLM in the Browser with WebGL', href: '#/blog/1' },
     ],
-    copy: 'live',
   },
   {
     title: 'Gospodin',
@@ -90,7 +81,6 @@ const details: ProjectDetailEntry[] = [
       "Gospodin is a single player roguelike game, built with the löve2d framework. Original art and music by Me. Inspired the works of the Strugatsky brothers and Warhammer 40,000. You play as an agent of an advanced starfaring society infiltrating a primitive planet. When you discover that many of its residents are suffering from a mysterious illness, you must navigate the planet's dangerous terrain and uncover the truth about the illness have been infected by Alien parasites, you must fight your way to the creature's lair and defeat it.",
     technologies: ['Lua', 'LÖVE2D framework', 'Original art & music'],
     images: ['./assets/gospodin.png'],
-    copy: 'live',
   },
   {
     title: 'Dark Forest',
@@ -99,7 +89,6 @@ const details: ProjectDetailEntry[] = [
     technologies: ['JavaScript', 'paper.js', 'CSS'],
     images: ['./assets/darkforest.png'],
     links: [{ label: 'Play the game', href: '#/games/dark-forest' }],
-    copy: 'live',
   },
   // the four agency seam entries (the /past family). The streams
   // duplicate pastWork.ts's lists (the bands' data home); no
@@ -117,7 +106,6 @@ const details: ProjectDetailEntry[] = [
       'Product grid: color swatches, ratings badges, quick-add',
       'Promotional tiles riding the grid',
     ],
-    copy: 'live',
   },
   {
     title: 'Forever 21',
@@ -131,7 +119,6 @@ const details: ProjectDetailEntry[] = [
       'Commerce modules: add-to-cart, Shop Pay and Klarna installments',
       'Promo banner and breadcrumb trail on the PDP',
     ],
-    copy: 'live',
   },
   {
     title: 'Batesville',
@@ -145,7 +132,6 @@ const details: ProjectDetailEntry[] = [
       'Code standards and organization ownership',
       'Controller actions on the customer facing portion of app for customization',
     ],
-    copy: 'live',
   },
   {
     title: 'Reformation',
@@ -159,7 +145,6 @@ const details: ProjectDetailEntry[] = [
       'The whole PDP: colorways, size guide, add-to-bag',
       'The oversized brand print section and the newsletter signup',
     ],
-    copy: 'live',
   },
   {
     title: 'Fiorucci',
@@ -178,7 +163,6 @@ const details: ProjectDetailEntry[] = [
       'The integration with their control platform',
       'Shop the Look',
     ],
-    copy: 'live',
   },
 ];
 

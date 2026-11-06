@@ -332,7 +332,6 @@ export function ProjectDetail() {
     description: project.description,
     technologies: project.tags ?? [],
     images: project.gallery ?? [project.image],
-    copy: 'live',
   };
 
   const currentIndex = projects.indexOf(project);
@@ -473,16 +472,6 @@ export function ProjectDetail() {
           font-weight: 400;
           line-height: 1.7;
           margin: 0 !important;
-        }
-        .project-detail__draft {
-          display: inline-block;
-          margin-top: 14px !important;
-          border: 2px solid ${INK};
-          font-family: var(--f-mono, 'IBM Plex Mono', monospace);
-          font-size: 9px;
-          font-weight: 600;
-          letter-spacing: 0.14em;
-          padding: 3px 8px;
         }
         /* the title plate's link buttons (the data's links[] — only
            real targets ride; the library's outline reads on the fluro:
@@ -854,8 +843,7 @@ export function ProjectDetail() {
 
       {/* the top pin: title plate (cols 1-4) + back button (col 12) */}
       <div class="project-detail__pin project-detail__pin--top">
-        {/* TOP-LEFT pinned plate — title + description (with one DRAFT
-            tag so an entry's awaiting copy can't pass as sourced) */}
+        {/* TOP-LEFT pinned plate — title + description */}
         <aside class="project-detail__title">
           <div class="project-detail__kicker">{`PRJ.${String(currentIndex + 1).padStart(3, '0')} /// ${project.title.toUpperCase()}`}</div>
           <h2 class="project-detail__heading">{project.title}</h2>
@@ -874,7 +862,6 @@ export function ProjectDetail() {
               ))}
             </div>
           ) : null}
-          {detail.copy === 'draft' && <span class="project-detail__draft">DRAFT COPY — AWAITING ELIOT</span>}
         </aside>
 
         {/* TOP-RIGHT pinned — back to the index (the glaphic-button

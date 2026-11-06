@@ -26,10 +26,8 @@
 //   pinned   the text does NOT ride the scroll — the corner pieces
 //            hold their corners while the images stream under them:
 //     top-left     the fluro (#14F1C8) plate: the agency's name + the
-//                  description + the DRAFT tag (the past plates' copy
-//                  is drafted awaiting Eliot — never dressed as
-//                  sourced), BARE (rimless), BOTTOM-RIGHT chamfered on
-//                  desktop; mobile flips it (the green plate cuts
+//                  description, BARE (rimless), BOTTOM-RIGHT chamfered
+//                  on desktop; mobile flips it (the green plate cuts
 //                  TOP-LEFT)
 //     top-right    the back button — the glaphic-button OUTLINE
 //                  recipe at the pool-menu button's offsets, pointing
@@ -468,19 +466,6 @@ export function PastDetail() {
           line-height: 1.7;
           margin: 0 !important;
         }
-        /* the DRAFT tag: draft copy can't pass as sourced (the copy
-           provenance rule) — the past plates all print one today */
-        .past-detail__draft {
-          display: inline-block;
-          margin-top: 14px !important;
-          border: 2px solid ${INK};
-          font-family: var(--f-mono, 'IBM Plex Mono', monospace);
-          font-size: 9px;
-          font-weight: 600;
-          letter-spacing: 0.14em;
-          padding: 3px 8px;
-        }
-
         /* BOTTOM-LEFT — the BARE crimson details plate (no keyline,
            no rim), TOP-RIGHT chamfered on DESKTOP (the rest cut);
            MOBILE carries the flipped scheme (the red plate cuts
@@ -789,14 +774,11 @@ export function PastDetail() {
 
       {/* the top pin: title plate (cols 1-5) + back button */}
       <div class="past-detail__pin past-detail__pin--top">
-        {/* TOP-LEFT pinned plate — the agency's name + the drafted
-            description + the DRAFT tag (nothing here is sourced copy
-            until Eliot writes the real lines) */}
+        {/* TOP-LEFT pinned plate — the agency's name + the description */}
         <aside class="past-detail__title">
           <div class="past-detail__kicker">{`PAST.${String(index + 1).padStart(3, '0')} /// ${work.name.toUpperCase()}`}</div>
           <h2 class="past-detail__heading">{work.name}</h2>
           <p class="past-detail__desc">{plate.description}</p>
-          {plate.copy === 'draft' && <span class="past-detail__draft">DRAFT COPY — AWAITING ELIOT</span>}
         </aside>
 
         {/* TOP-RIGHT pinned — back to the bands (the glaphic-button

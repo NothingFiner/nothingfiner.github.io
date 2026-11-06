@@ -38,10 +38,9 @@ yarn build
 
 ## Content and copy
 
-Project copy carries a provenance flag (`'live' | 'draft'`, see
-`src/data/projects.ts` and `src/data/projectDetails.ts`): draft copy
-prints a visible `DRAFT COPY — AWAITING ELIOT` tag so it never passes
-as sourced. Flip a project's flag to `'live'` when its copy is real.
+Project copy lives in `src/data/projects.ts` (index cards) and
+`src/data/projectDetails.ts` (detail plates); the past-work bands'
+responsibilities live in `src/data/pastWork.ts`.
 
 ## Deployment
 

@@ -67,11 +67,8 @@
 // The title's sweep is scroll-linked (the run's driver below) — no
 // reveal flag on the section; the riders settle on the rideInUp clock.
 //
-// COPY (provenance): Rite's band copy is the live slide description
-// verbatim; glaphicUI's and novel's are the landing's draft lines. The
-// entries' copy flags in src/data/projects.ts stay the provenance
-// record — nothing pins a DRAFT tag today (the emergence owns the
-// copy read).
+// COPY (provenance): Rite's band copy is the slide description
+// verbatim; glaphicUI's and novel's are the landing's own lines.
 import { Fragment } from 'preact';
 import { useEffect, useRef } from 'preact/hooks';
 import { useLocation } from 'wouter-preact';
@@ -101,12 +98,10 @@ const GO_TO = {
   '--glaphic-button-hover-text': INK,
 };
 
-// the three bands in the brief's order; the image, the id and the
-// provenance flag resolve through projectByTitle (a missing title is a
-// data error — the lookup throws). The copy is the section's own:
-// Rite's line is the live slide description verbatim; the other two
-// are the landing's draft lines. cta is the brief's read: novel
-// carries no button and no route
+// the three bands in the brief's order; the image and the id resolve
+// through projectByTitle (a missing title is a data error — the
+// lookup throws). cta is the brief's read: novel carries no button
+// and no route
 const BANDS = [
   {
     title: 'Rite',

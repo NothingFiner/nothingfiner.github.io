@@ -7,10 +7,9 @@
 // there key the SAME tags) — so one string keys both halves: the bands
 // here and the detail plates in projectDetails.ts.
 //
-// Copy provenance: the responsibilities are Eliot's dictated copy —
-// every entry carries `copy: 'live'`. There is no description on a
-// band: the bands carry names + images only; the plate copy lives at
-// the seam.
+// The responsibilities are Eliot's dictated copy. There is no
+// description on a band: the bands carry names + images only; the
+// plate copy lives at the seam.
 //
 // The stream lists are duplicated in projectDetails.ts's agency
 // entries (images: the same list) — the bands' and the plates' data
@@ -34,12 +33,9 @@ export interface PastWork {
   image: string;
   /** the detail page's stream images (src paths, in ride order) */
   stream: string[];
-  /** drafted responsibilities — the crimson plate's agency-seam
+  /** the agency's responsibilities — the crimson plate's agency-seam
       section (mirrors the seam entry in projectDetails.ts) */
   responsibilities: string[];
-  /** copy provenance: 'draft' until Eliot writes the real lines —
-      the plates print a DRAFT tag so it can't pass as real */
-  copy: 'live' | 'draft';
 }
 
 // the lowercase underscore tag — the same filing the index cards
@@ -58,7 +54,6 @@ const bands: Omit<PastWork, 'tag'>[] = [
       'Product grid: color swatches, ratings badges, quick-add',
       'Promotional tiles riding the grid',
     ],
-    copy: 'live',
   },
   {
     name: 'Forever 21',
@@ -70,7 +65,6 @@ const bands: Omit<PastWork, 'tag'>[] = [
       'Commerce modules: add-to-cart, Shop Pay and Klarna installments',
       'Promo banner and breadcrumb trail on the PDP',
     ],
-    copy: 'live',
   },
   {
     name: 'Batesville',
@@ -82,7 +76,6 @@ const bands: Omit<PastWork, 'tag'>[] = [
       'Code standards and organization ownership',
       'Controller actions on the customer facing portion of app for customization',
     ],
-    copy: 'live',
   },
   {
     name: 'Reformation',
@@ -94,7 +87,6 @@ const bands: Omit<PastWork, 'tag'>[] = [
       'The whole PDP: colorways, size guide, add-to-bag',
       'The oversized brand print section and the newsletter signup',
     ],
-    copy: 'live',
   },
   {
     name: 'Fiorucci',
@@ -105,7 +97,6 @@ const bands: Omit<PastWork, 'tag'>[] = [
       'The integration with their control platform',
       'Shop the Look',
     ],
-    copy: 'live',
   },
 ];
 

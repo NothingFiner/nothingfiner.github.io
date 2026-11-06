@@ -38,11 +38,10 @@
 //             the plate lands on the tray's own screen side — the left
 //             tray's plate enters at the viewport's left edge, the
 //             right tray's emerges from under the parked panel. The
-//             copy is the category's drafted responsibilities (the D7
-//             members, DRAFT-tagged per D13 — nothing drafted passes as
-//             sourced) — the round-6 read: a LITTLE copy, two drafted
-//             lines a member (the /past route carries the full
-//             drafts), the plate enclosed in the library's
+//             copy is the category's responsibilities (the D7 members)
+//             — the round-6 read: a LITTLE copy, two lines a member
+//             (the /past route carries the full
+//             plates), the plate enclosed in the library's
 //             glaphic-corners braces (all the cell's corners are
 //             square, so the braces run all four; paint-only, the copy
 //             still hit-tests). The way back runs at HALF the entry's pace
@@ -125,13 +124,13 @@ const WORD_SIZE = 'min(9.0cqw, 22vh)';
 // rails carry the list: the pair brackets the tray track
 const PAST_TICKER = ['Agency', 'E\u2011Commerce', 'React', 'Custom Applications', 'Web Stores', 'Plugin Integration'];
 
-/* the tray's plate: the drafted members verbatim under the DRAFT tag —
-   one component because the two trays' DOM order differs (the left
-   tray leads its plate — the piece that emerges from the screen's own
-   side; the right's photo leads). The plate paints only on the mobile
-   card; the desktop read is the paper fill itself. The round-6 read: a
-   LITTLE copy — two drafted lines a member (the /past route carries
-   the full drafts) — so the plate never crowds its cell, and the
+/* the tray's plate: the members' copy verbatim — one component because
+   the two trays' DOM order differs (the left tray leads its plate —
+   the piece that emerges from the screen's own side; the right's photo
+   leads). The plate paints only on the mobile card; the desktop read
+   is the paper fill itself. The round-6 read: a LITTLE copy — two
+   lines a member (the /past route carries the full plates) — so the
+   plate never crowds its cell, and the
    library's glaphic-corners braces enclose it (all the cell's corners
    are square, so the braces run all four) */
 function TrayCopy(props: { works: readonly PastWork[] }) {
@@ -139,7 +138,6 @@ function TrayCopy(props: { works: readonly PastWork[] }) {
     <div class="landing-past__copy">
       <glaphic-corners class="landing-past__copy-brackets" corners="tl,tr,bl,br" aria-hidden="true" />
       <div class="landing-past__copy-body">
-        <span class="landing-past__draft">DRAFT COPY — AWAITING ELIOT</span>
         {props.works.map((work) => (
           <Fragment key={work.tag}>
             <b class="landing-past__band-member">{work.name}</b>
@@ -449,8 +447,7 @@ export function LandingPast() {
         .landing-past__side-band--right { left: 66.666cqw; }
 
         /* the tray's plate: the paper read that lands with its photo —
-           the drafted members verbatim, the DRAFT tag leading
-           (provenance honesty). On the mobile card the plate paints
+           the members verbatim. On the mobile card the plate paints
            over the paper (the fluro read returns there) */
         .landing-past__copy {
           position: relative;
@@ -462,7 +459,7 @@ export function LandingPast() {
           gap: 1vh;
           /* the plate's air: a step under the section's default gaps —
              the E-Commerce plate carries the pair's densest content (12
-             drafted bullets) and the drawer's half-cell is its whole
+             bullets) and the drawer's half-cell is its whole
              seat at every desktop width: the type ladder below is
              tuned to the tight plate, the driver's scrollHeight check
              holds it. The round-6 band-clearance pads live in the pose
@@ -483,18 +480,6 @@ export function LandingPast() {
           pointer-events: none;
         }
         .landing-past__copy-body { display: flex; flex-direction: column; gap: 1vh; }
-        /* the now bands' honest-provenance treatment, carried (the now
-           section owns its original) */
-        .landing-past__draft {
-          position: relative;
-          align-self: flex-start;
-          border: 2px solid ${INK};
-          font-family: var(--f-mono, 'IBM Plex Mono', monospace);
-          font-size: 9px;
-          font-weight: 600;
-          letter-spacing: 0.14em;
-          padding: 3px 8px;
-        }
         /* the member label: the entry's name leads its bullets in the
            mono label voice — crimson on the desktop paper, ink on the
            mobile fluro plate (the mobile block restores the read) */
@@ -507,9 +492,9 @@ export function LandingPast() {
           text-transform: uppercase;
           margin-bottom: 2px;
         }
-        /* the drafted responsibilities, verbatim: the list voice rides
-           the plate's tight ladder (the half-cell's seat — see the
-           copy panel's note) */
+        /* the responsibilities, verbatim: the list voice rides the
+           plate's tight ladder (the half-cell's seat — see the copy
+           panel's note) */
         .landing-past__band-bullets {
           padding-left: 14px;
           font-size: clamp(9px, 0.8vw, 12px);
