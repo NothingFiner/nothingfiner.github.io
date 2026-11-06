@@ -112,7 +112,7 @@ function captionFor(path: string): string | null {
     [/^\/blog\/?$/, 'Blog'],
     [/^\/blog\/[^/?#]+$/, 'Blog'],
     [/^\/resume\/?$/, 'Resume'],
-    [/^\/about\/?$/, 'About'],
+    [/^\/about\/?$/, 'About Me'],
     [/^\/games\/dark-forest\/?$/, 'Dark Forest'],
     [/^\/components\/?$/, 'Components'],
   ];

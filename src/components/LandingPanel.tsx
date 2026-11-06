@@ -45,7 +45,7 @@ const WHITE = '#F2F5EB';
 // paper, hover fluro)
 const NAV: { label: string; target: string | null }[] = [
   { label: 'Home.', target: null }, // scroll to page top
-  { label: 'About.', target: 'about' }, // the story section
+  { label: 'About Me.', target: 'about' }, // the story section
   { label: "What I'm up to.", target: 'now' },
   { label: 'Past Work.', target: 'past' },
   { label: 'Technologies.', target: 'technologies' },
