@@ -392,7 +392,21 @@
     margin-top: 0;
     --lf-x: 0;
   }
-  .site-footer__band--journey { padding-bottom: 24px; }
+  /* the phone's journey read: the band's box dissolves so its two
+     flow pieces take their own slots in the page's flex column —
+     the invite (order 0) lands right under the hero's story line;
+     the foot (order 5) becomes the page's own bottom block, past
+     tech's 4 slot — legal and glyphs at the floor, none mid-page.
+     Static (the journey pose's absolute pin dies with the box),
+     always visible (the ≤899 pose rule), clickable links restored */
+  .site-footer__band--journey { display: contents; }
+  .site-footer__band--journey .site-footer__learn-wrap { order: 0; }
+  .site-footer__band--journey .site-footer__foot {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    order: 5;
+  }
   /* the landing flow's mobile order: DOM puts the band last (after the
      panel); the orders restore the mock's read — the hero's band slot
      between the hero and the story section */
@@ -444,6 +458,9 @@
     display: block;
     width: 100%;
     height: .85em;
+    /* crimson, not the library's default hot orange — the tape ink
+       rides the site's brand token (the detail pages' same var) */
+    --glaphic-tape-hot: #A6022A;
   }
   .site-footer__legal-divider {
     display: none;
