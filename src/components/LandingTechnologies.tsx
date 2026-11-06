@@ -48,6 +48,24 @@ export function LandingTechnologies() {
   const [headInView, setHeadInView] = useState(false);
   const [cloudInView, setCloudInView] = useState(false);
   const hostRef = useRef<HTMLElement | null>(null);
+  const cloudRef = useRef<HTMLDivElement | null>(null);
+
+  // the cloud's box freezes at its SPREAD height: the roll's gap
+  // collapse (44px → 14px) re-wraps the chips and the wrap sheds rows —
+  // measured 48px at ≥1200, 96px narrower — so an unreserved box
+  // shrinks under the roll and lurches the tail bar (with the page's
+  // end) up into view — the pop. Read once at mount, while the gaps
+  // still hold the spread pose (the mount layout IS the spread state),
+  // the floor outlives the roll: the compacted chips sit top-anchored
+  // in the frozen box and the bar's seat holds. Mount-frozen by design
+  // — the post-reveal layout reads the compacted wrap, so a re-measure
+  // would shrink the floor; a mid-session resize keeps this bound as
+  // the stale-but-safe seat and the next load re-freezes true
+  useEffect(() => {
+    const cloud = cloudRef.current;
+    if (!cloud) return;
+    cloud.style.minHeight = `${cloud.getBoundingClientRect().height}px`;
+  }, []);
 
   // the entry gates: the head and the chip cloud each fire on their OWN
   // first pixels crossing the viewport's bottom edge (the section gate
@@ -88,8 +106,10 @@ export function LandingTechnologies() {
       <style>{`
         .landing-technologies {
           position: relative;
-          /* natural height — no forced single screens (as the about); the
-             tail keeps the sticky band's resting slot clear of the cloud */
+          /* the section's own floor: the tail bar anchors at the content
+             edge (below) and the band's rest read holds even when the
+             cloud's rows sit few — height stays content-driven above it */
+          min-height: 100vh;
           height: auto;
           padding-bottom: calc(37.5vh + 8vh);
           overflow: hidden;
@@ -150,6 +170,10 @@ export function LandingTechnologies() {
           background: ${INK_DARK};
         }
         .landing-technologies__bar--lead { margin-top: 4vh; }
+        /* the tail bar rides the cloud's box, which the mount effect
+           freezes at the roll's spread height (see the ref hook) — the
+           gap collapse re-wraps rows inside that box, so the bar's seat
+           holds through the roll instead of lurching up into view */
         .landing-technologies__bar--tail { margin-top: 2vh; }
         /* ── the chip cloud ────────────────────────────────────────
            wraps like a scatter on the same grid span the about's story
@@ -197,7 +221,7 @@ export function LandingTechnologies() {
 
         <div class="landing-technologies__bar landing-technologies__bar--lead" aria-hidden="true" />
 
-        <div class="landing-technologies__cloud">
+        <div class="landing-technologies__cloud" ref={cloudRef}>
           {technologies.map((tech, i) => (
             <Fragment key={tech.name}>
               <glaphic-chip

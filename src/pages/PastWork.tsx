@@ -5,13 +5,15 @@
 //   head    the shared grow headline "Past Work" (the landing
 //           sections'/projects' GrowHead, revealed by the page's IO
 //           flag)
-//   bands   one full-width row per agency: the 2px keyline is the
-//           band's own paint around the plate (the project cards'
-//           recipe: the house 20px top-left chamfer with the parallel
-//           inset clip riding the cut face), a mono kicker row
-//           (PAST.00N /// BRAND-UPPERCASE), then the lead image at its
-//           natural aspect. One <a> per band to #/past/{tag}; no copy
-//           on bands (the names + the shots carry them).
+//   bands   two half-screen-width panels per desktop row (the bands
+//           grid splits the flow row in two; the column stacks at 390):
+//           the 2px keyline is the panel's own paint around the plate
+//           (the project cards' recipe: the house 20px top-left chamfer
+//           with the parallel inset clip riding the cut face), a mono
+//           kicker row (PAST.00N /// BRAND-UPPERCASE), then the lead
+//           image cropped to the row height. One <a> per panel to
+//           #/past/{tag}; no copy on panels (the names + the shots
+//           carry them).
 //   chrome  the shared footer band (SiteFooter) — mounted once per
 //           route by app.tsx, never composed here. The route is bare
 //           stage (app.tsx's isPast gate) and the lamp blobs read
@@ -80,19 +82,23 @@ export function PastWork() {
         }
         .past-work__head { grid-column: 1 / -1; }
 
-        /* the bands column: one full-width row per agency (a column
-           of bands on the 12-col flow idiom — never the auto-fill
-           card tiles). The gaps breathe vertically (vh-scaled like
-           the flow grid's own rhythm); the column stacks at 390. */
+        /* the bands: TWO-UP on desktop — half-screen-width panels (the
+           bands grid splits the flow row in two; Eliot 11-06: the bands
+           read at ~half the screen rather than the stubby full-width
+           strip), stacked full-width at 390. The gaps breathe
+           vertically (vh-scaled like the flow grid's own rhythm);
+           inline runs the grid's own gutter */
         .past-work__bands {
           grid-column: 1 / -1;
           margin-top: 12.6vh;
-          display: flex;
-          flex-direction: column;
-          gap: clamp(28px, 4vh, 56px);
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          column-gap: 1.1vw;
+          row-gap: clamp(28px, 4vh, 56px);
         }
 
-        /* the band: the project card's paint recipe at full width —
+        /* the band: the project card's paint recipe at the panel's
+           half-screen span —
            the 2px keyline is the band's own paint (this background
            showing around the plate), the plate sits inside with the
            parallel inset clip (18.83px on the cut's diagonal, the
@@ -151,14 +157,14 @@ export function PastWork() {
 
         /* the lead image fills the plate below the kicker, cropped to
            the index's row height: the portrait leads (~1200px tall at
-           the band's full width) rendered ONE band per desktop fold —
-           the rows read at ~three bands to a desktop fold, so the shot
-           crops (cover, biased toward the shot's upper third) instead
-           of riding its natural aspect */
+           the panel's half width) rendered at the panels' showcase read
+           — ~2.5× the full-width strip's old 14vh row, so the shot
+           crops (cover, biased toward the shot's upper third) from its
+           natural read */
         .past-work__band-shot {
           display: block;
           width: 100%;
-          height: clamp(100px, 14vh, 170px);
+          height: clamp(250px, 35vh, 425px);
           object-fit: cover;
           object-position: center top;
         }
@@ -166,7 +172,9 @@ export function PastWork() {
         /* mobile: the flow stacks (as the landing sections) */
         @media (max-width: 899px) {
           .past-work__flow { display: flex; flex-direction: column; padding: 44px 6vw 6vh; }
-          .past-work__bands { margin-top: 5vh; }
+          /* the bands stack full width (the 2-up grid is the desktop
+             index's read) */
+          .past-work__bands { margin-top: 5vh; display: flex; flex-direction: column; }
           /* phones keep the shot's natural read — the crop is the
              desktop row-index's need, not the stacked column's */
           .past-work__band-shot { height: auto; }
