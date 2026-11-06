@@ -38,14 +38,14 @@ export const projects: Project[] = [
     id: '2',
     title: 'glaphicUI',
     image: './assets/glaphicUI.png',
-    description: 'glaphicUI is a Lit 3 web-component library with zero runtime dependencies — the design system behind this site. Flat graphic realism cut against HUD-instrument styling: cutout corners, overprinting transparencies that print a third color, near-sharp edges and hard, no-blur inks, all driven from one tokens.css sheet.',
-    copy: 'draft', // the landing card's line stands in draft until Eliot writes the real one
+    description: "glaphicUI is a Lit 3 web-component library with zero runtime dependencies, inspired by acetate film, HUDs, and graphic realism. It's driven by a single token.css sheet and I used it to build this site.",
+    copy: 'live',
   },
   {
     id: '3',
     title: 'Resume Chatbot',
     image: './assets/chatbot.png',
-    description: "Using WebLLM library, I load a model directly into the brower and use a machine's VRAM to run a chatbot locally that can answer questions about my resume. I have gone through a few approaches and you can read more about my process here.",
+    description: "Using WebLLM library, I load a model directly into the brower and use a machine's VRAM to run a chatbot locally that can answer questions about my resume. I have gone through a few approaches and you can read more about my process here. Please don't take what it says at face value though!",
     copy: 'live',
   },
   {
@@ -66,8 +66,9 @@ export const projects: Project[] = [
     id: '6',
     title: 'Novel',
     image: './assets/novel.png',
-    description: 'The novel itself — the writing Rite is being built for.',
-    copy: 'draft', // the novel's landing band line stands in draft until Eliot writes the real one; nothing links to the entry's route yet (the brief: the novel carries no button)
+    description: "I'm writing a novel. It's why I'm buiding Rite. I'll post a sample on this website soon.",
+    // the card carries no route link (the brief: the novel has no button)
+    copy: 'live',
   },
 ];
 

@@ -7,13 +7,10 @@
 // there key the SAME tags) — so one string keys both halves: the bands
 // here and the detail plates in projectDetails.ts.
 //
-// Copy provenance: the responsibilities are DRAFTED placeholders,
-// written from what the slides/renders show (the visible surfaces) —
-// they are not Eliot's copy. Every entry carries `copy: 'draft'` so
-// the detail plates print the DRAFT tag and nothing here can pass as
-// sourced (projectDetails.ts's provenance prose, in the same terms).
-// There is no description on a band: the bands carry names + images
-// only; the plate copy lives at the seam.
+// Copy provenance: the responsibilities are Eliot's dictated copy —
+// every entry carries `copy: 'live'`. There is no description on a
+// band: the bands carry names + images only; the plate copy lives at
+// the seam.
 //
 // The stream lists are duplicated in projectDetails.ts's agency
 // entries (images: the same list) — the bands' and the plates' data
@@ -61,31 +58,31 @@ const bands: Omit<PastWork, 'tag'>[] = [
       'Product grid: color swatches, ratings badges, quick-add',
       'Promotional tiles riding the grid',
     ],
-    copy: 'draft',
+    copy: 'live',
   },
   {
     name: 'Forever 21',
     image: './assets/forever21.jpg',
     stream: ['./assets/forever21.jpg', './assets/forever21-detail.png'],
     responsibilities: [
-      'The Late Night Edit campaign home and its nav over the hero',
+      'Modules for the front page',
       'Product-detail template: gallery, color and size selectors, quantity stepper',
       'Commerce modules: add-to-cart, Shop Pay and Klarna installments',
       'Promo banner and breadcrumb trail on the PDP',
     ],
-    copy: 'draft',
+    copy: 'live',
   },
   {
     name: 'Batesville',
     image: './assets/batesville.png',
     stream: ['./assets/batesville.png'],
     responsibilities: [
-      'The six-step Family Choices guided flow (the slide panel set)',
-      'The Tell Their Story conversational capture feeding curated selections',
-      'Real-time personalization surfaces: urn engraving previewed on screen',
-      'Living Memorial tree-seedling submission and the Batesville Connect cart hand-off',
+      'Lead frontend on the control panel, two junior developers led',
+      'Mass pricing tools built and maintained',
+      'Code standards and organization ownership',
+      'Controller actions on the customer facing portion of app for customization',
     ],
-    copy: 'draft',
+    copy: 'live',
   },
   {
     name: 'Reformation',
@@ -94,10 +91,21 @@ const bands: Omit<PastWork, 'tag'>[] = [
     responsibilities: [
       'Responsive e-commerce storefront build (PLP and PDP surfaces)',
       'Collection grid with the quick-add size row and show-more paging',
-      'Product template: colorways, size guide, Apple Pay add-to-bag',
+      'The whole PDP: colorways, size guide, add-to-bag',
       'The oversized brand print section and the newsletter signup',
     ],
-    copy: 'draft',
+    copy: 'live',
+  },
+  {
+    name: 'Fiorucci',
+    image: './assets/fiorucci1.png',
+    stream: ['./assets/fiorucci1.png', './assets/fiorucci2.png', './assets/fiorucci3.png'],
+    responsibilities: [
+      'CMS modules',
+      'The integration with their control platform',
+      'Shop the Look',
+    ],
+    copy: 'live',
   },
 ];
 

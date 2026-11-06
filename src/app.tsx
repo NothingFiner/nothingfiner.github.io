@@ -12,7 +12,6 @@ import { Projects } from './pages/Projects';
 import { ProjectDetail } from './pages/ProjectDetail';
 import { PastWork } from './pages/PastWork';
 import { PastDetail } from './pages/PastDetail';
-import { About } from './pages/About';
 import { Resume } from './pages/Resume';
 import { DarkForest } from './pages/DarkForest';
 import { GlaphicGallery } from './pages/GlaphicGallery';
@@ -127,7 +126,6 @@ function AppContent() {
                 <Route path="/blog" component={Blog} />
                 <Route path="/blog/:id" component={BlogPost} />
                 <Route path="/games/dark-forest" component={DarkForest} />
-                <Route path="/about" component={About} />
                 <Route path="/resume" component={Resume} />
                 <Route path="/components" component={GlaphicGallery} />
               </Suspense>

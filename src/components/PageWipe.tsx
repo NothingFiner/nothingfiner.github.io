@@ -60,10 +60,10 @@ interface WipeElement extends HTMLElement {
 type WipeDirection = 'left' | 'right' | 'up' | 'down';
 
 /**
- * The nav order: home → projects → chat → blog → resume → about.
- * The travel derives from the pair's distance across it — moving
- * DOWN the list the sweep travels left (forward), back UP it travels
- * right. Detail routes ride their parent's slot.
+ * The nav order: home → projects → chat → blog → resume → dark forest
+ * → components. The travel derives from the pair's distance across it —
+ * moving DOWN the list the sweep travels left (forward), back UP it
+ * travels right. Detail routes ride their parent's slot.
  */
 const NAV_ORDER: [RegExp, number][] = [
   [/^\/$/, 0],
@@ -75,9 +75,8 @@ const NAV_ORDER: [RegExp, number][] = [
   [/^\/chat$/, 3],
   [/^\/blog(\/|$)/, 4],
   [/^\/resume$/, 5],
-  [/^\/about$/, 6],
-  [/^\/games\/dark-forest$/, 7],
-  [/^\/components$/, 8],
+  [/^\/games\/dark-forest$/, 6],
+  [/^\/components$/, 7],
 ];
 
 const orderIndex = (path: string): number | null => {
@@ -112,7 +111,6 @@ function captionFor(path: string): string | null {
     [/^\/blog\/?$/, 'Blog'],
     [/^\/blog\/[^/?#]+$/, 'Blog'],
     [/^\/resume\/?$/, 'Resume'],
-    [/^\/about\/?$/, 'About Me'],
     [/^\/games\/dark-forest\/?$/, 'Dark Forest'],
     [/^\/components\/?$/, 'Components'],
   ];

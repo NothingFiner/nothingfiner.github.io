@@ -17,10 +17,9 @@
 // navigate by and duplicate the stream lists of). The agency routes
 // live at /past/:id, not /projects/:id.
 //
-// Copy: the live entries' descriptions are the index array's own text
-// (real copy); the agency seam's lines are DRAFTED placeholders
-// awaiting Eliot — agency entries carry `copy: 'draft'` and the plate
-// prints a small DRAFT tag so it can't pass as real.
+// Copy: the agency seam entries carry Eliot's dictated copy (the
+// real thing, flagged live); the plate's DRAFT tag only reads while
+// an entry still awaits him.
 
 export interface ProjectDetailContent {
   /** the fluro title block's paragraph (the index's `description`
@@ -67,7 +66,7 @@ const details: ProjectDetailEntry[] = [
   {
     title: 'glaphicUI',
     description:
-      'glaphicUI is a Lit 3 web-component library with zero runtime dependencies — the design system behind this site. Flat graphic realism cut against HUD-instrument styling: cutout corners, overprinting transparencies that print a third color, near-sharp edges and hard, no-blur inks, all driven from one tokens.css sheet.',
+      "glaphicUI is a Lit 3 web-component library with zero runtime dependencies, inspired by acetate film, HUDs, and graphic realism. It's driven by a single token.css sheet and I used it to build this site.",
     technologies: ['Lit', 'TypeScript', 'Web Components', 'Storybook'],
     images: ['./assets/glaphicUI.png', './assets/glaphic_!.png', './assets/glaphic_2.png'],
     links: [{ label: 'Browse the components', href: '#/components' }],
@@ -76,7 +75,7 @@ const details: ProjectDetailEntry[] = [
   {
     title: 'Resume Chatbot',
     description:
-      "Using WebLLM library, I load a model directly into the brower and use a machine's VRAM to run a chatbot locally that can answer questions about my resume. I have gone through a few approaches and you can read more about my process here.",
+      "Using WebLLM library, I load a model directly into the brower and use a machine's VRAM to run a chatbot locally that can answer questions about my resume. I have gone through a few approaches and you can read more about my process here. Please don't take what it says at face value though!",
     technologies: ['WebLLM', 'WebGPU', 'Preact'],
     images: ['./assets/chatbot.png'],
     links: [{ label: 'Chat with the bot', href: '#/chat' }],
@@ -110,7 +109,7 @@ const details: ProjectDetailEntry[] = [
     title: 'Brooks Brothers',
     description:
       "A merchandised storefront build for the Brooks Brothers web shop — the listing layer: category chips, filter and sort controls, a product grid with color swatches, ratings and quick-add, and promotional tiles slotted into the grid.",
-    technologies: ['Responsive storefront', 'PLP merchandising', 'Quick-add commerce'],
+    technologies: ['Salesforce Commerce Cloud', 'Figma', 'PLP merchandising', 'Quick-add commerce'],
     images: ['./assets/brooksbrothers.png'],
     responsibilities: [
       'Category navigation and the shirts listing hierarchy',
@@ -118,49 +117,68 @@ const details: ProjectDetailEntry[] = [
       'Product grid: color swatches, ratings badges, quick-add',
       'Promotional tiles riding the grid',
     ],
-    copy: 'draft',
+    copy: 'live',
   },
   {
     title: 'Forever 21',
     description:
-      'Responsive storefront build for Forever 21 — the Late Night Edit campaign home and the product-detail template: gallery, color and size selectors, add-to-cart with express-payment and installment modules.',
-    technologies: ['Responsive storefront', 'Express checkout (Shop Pay, Klarna)', 'PDP commerce modules'],
+      'Responsive storefront build for Forever 21 — modules for the front page and the product-detail template: gallery, color and size selectors, add-to-cart with express-payment and installment modules.',
+    technologies: ['Salesforce Commerce Cloud', 'Figma', 'Express checkout (Shop Pay, Klarna)', 'PDP commerce modules'],
     images: ['./assets/forever21.jpg', './assets/forever21-detail.png'],
     responsibilities: [
-      'The Late Night Edit campaign home and its nav over the hero',
+      'Modules for the front page',
       'Product-detail template: gallery, color and size selectors, quantity stepper',
       'Commerce modules: add-to-cart, Shop Pay and Klarna installments',
       'Promo banner and breadcrumb trail on the PDP',
     ],
-    copy: 'draft',
+    copy: 'live',
   },
   {
     title: 'Batesville',
     description:
-      "A guided purchase flow for Batesville's funeral-home storefront ecosystem — the six-panel Family Choices journey: story capture, curated selections, real-time personalization, remembrance items, the Living Memorial tree donation and the Batesville Connect order hand-off.",
-    technologies: ['Guided purchase flow', 'Funeral-home storefront', 'Connected cart (Batesville Connect)'],
+      "I was lead frontend on the control panel: I had two junior developers I led. I built mass pricing tools and was in charge of code standards and organization. I also built the controller actions on the customer facing portion of app for customization.",
+    technologies: ['GraphQL', 'TanStack', 'React'],
     images: ['./assets/batesville.png'],
     responsibilities: [
-      'The six-step Family Choices guided flow (the slide panel set)',
-      'The Tell Their Story conversational capture feeding curated selections',
-      'Real-time personalization surfaces: urn engraving previewed on screen',
-      'Living Memorial tree-seedling submission and the Batesville Connect cart hand-off',
+      'Lead frontend on the control panel, two junior developers led',
+      'Mass pricing tools built and maintained',
+      'Code standards and organization ownership',
+      'Controller actions on the customer facing portion of app for customization',
     ],
-    copy: 'draft',
+    copy: 'live',
   },
   {
     title: 'Reformation',
     description:
-      'Responsive e-commerce build for Reformation — the collection page with its oversized brand print and quick-add grid, and the product template with colorways, size guide and Apple Pay add-to-bag.',
-    technologies: ['Responsive storefront', 'Quick-add PLP', 'Apple Pay PDP'],
+      'Responsive e-commerce build for Reformation — the collection page with its oversized brand print and quick-add grid, and the whole product template: colorways, size guide and add-to-bag.',
+    technologies: ['Salesforce Commerce Cloud', 'Figma', 'Quick-add PLP', 'Whole PDP template'],
     images: ['./assets/reformation.jpg', './assets/reformation-detail.jpg'],
     responsibilities: [
       'Responsive e-commerce storefront build (PLP and PDP surfaces)',
       'Collection grid with the quick-add size row and show-more paging',
-      'Product template: colorways, size guide, Apple Pay add-to-bag',
+      'The whole PDP: colorways, size guide, add-to-bag',
       'The oversized brand print section and the newsletter signup',
     ],
-    copy: 'draft',
+    copy: 'live',
+  },
+  {
+    title: 'Fiorucci',
+    description:
+      'Another Salesforce Commerce Cloud project: I built the CMS modules and did the integration with their control platform, and shop the look.',
+    technologies: [
+      'Salesforce Commerce Cloud',
+      'Figma',
+      'CMS modules',
+      'Control platform integration',
+      'Shop the Look',
+    ],
+    images: ['./assets/fiorucci1.png', './assets/fiorucci2.png', './assets/fiorucci3.png'],
+    responsibilities: [
+      'CMS modules',
+      'The integration with their control platform',
+      'Shop the Look',
+    ],
+    copy: 'live',
   },
 ];
 
