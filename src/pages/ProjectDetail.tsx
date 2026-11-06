@@ -56,22 +56,23 @@
 //                        (the stepped shadow un-prints); at the exit's
 //                        end the hash applies and the detail page mounts
 //                        with the entrance choreography below (the
-//                        images/tapes block slides DOWN into place from
-//                        ABOVE the viewport, un-faded; the green + red
-//                        boxes slide in from fully OFF the left edge,
-//                        un-faded — solid all the way; the tape
-//                        separators fade in once the block sets)
+//                        images column slides in fully OFF the right
+//                        edge — the carousel read, un-faded; the green
+//                        + red boxes slide in from fully OFF the left
+//                        edge, un-faded — solid all the way; the tape
+//                        separators fade in once the column sets)
 //   B  detail → index    the boxes slide FULLY OUT past the viewport's
-//                        LEFT edge (un-faded), the image block drifts
-//                        DOWN/AWAY (un-faded); the hash applies at the
+//                        LEFT edge (un-faded), the image column sweeps
+//                        out past the LEFT edge with them (un-faded);
+//                        the hash applies at the
 //                        exit's end and the index mounts with its cards
 //                        fading IN (the grow-head re-prints forward
 //                        under the index page's own reveal)
 //   C  detail → detail   the SAME exit plays FULLY, the hash applies
 //                        at its end, and the arriving detail replays
 //                        the same entrance — the old plate leaves
-//                        through the left edge and the new one enters
-//                        from the same fully-off pose, so the two
+//                        through the left edge and the new one arrives
+//                        from fully off the right, so the two
 //                        half-moves chain into ONE leftward conveyance
 //                        (the swap seam sits outside the viewport — the
 //                        plates are solid the whole way through)
@@ -282,8 +283,8 @@ function startDriver(): void {
       }
 
       /* B / C: a detail page is on screen — ITS exit plays (the boxes
-         slide out left, the block drifts down/away) and the hash
-         applies from the exit's end callback */
+         slide out left, the image column sweeps out with them) and the
+         hash applies from the exit's end callback */
       if (isDetailPath(fromPath) && pageExit) {
         holding = true;
         const start = fromPath;
@@ -351,7 +352,8 @@ export function ProjectDetail() {
   }, [projectId]);
 
   // the EXIT choreography the driver's B/C legs hold the swap with:
-  // the boxes slide out LEFT, the image block drifts DOWN/AWAY; the
+  // the boxes slide out LEFT, the image column sweeps out past the left
+  // edge with them (the carousel read's leave); the
   // driver applies the hash from the callback — the exit's end (the
   // entrance itself is pure CSS: the mounted root carries
   // project-detail--enter, so every fresh mount plays it)
@@ -382,6 +384,12 @@ export function ProjectDetail() {
           --pd-pad: 3.9vw;   /* the landing flow grid's inline padding */
           --pd-gut: 1.1vw;   /* ...its column gutter */
           position: relative;
+          /* the choreography parks the column fully off the edges:
+             clip the overflows (no scroll container — the page's own
+             scroll is untouched) so the parked column never widens the
+             page; the fixed pins' containing block is the viewport,
+             outside this clip */
+          overflow: clip;
           /* the stage is CLEAR over the site's lava lamp (mounted by
              app.tsx for this route) — the pinned plates carry their own
              solid paints, the stream rides the scroll under them */
@@ -651,6 +659,13 @@ export function ProjectDetail() {
         .project-detail__next-wrap {
           grid-column: 5 / 12;      /* Eliot's grid position — stays */
           display: block;
+          /* the hover print eased both ways: the wrapper's own filter
+             holds the zero pose at rest, and the transition glides the
+             tiers in on the enter and back on the leave (filter lists
+             interpolate pairwise — the grey tier arrives from the
+             neutral, so no step, no snap) */
+          filter: drop-shadow(0 0 0 ${INK});
+          transition: filter 0.4s cubic-bezier(0.33, 1, 0.68, 1);
         }
         .project-detail__next {
           display: block;
@@ -676,15 +691,14 @@ export function ProjectDetail() {
           transition: none;
         }
         .project-detail__next:focus-visible { outline: none; }
-        /* the hover print: the grow headline's stepped shadow stack,
-           SMALLER — two tiers (1/3px), the stack ending at the grey
-           step so the hover print stays light — stepped in one pass,
-           on the WRAPPER (drop-shadow layers compound onto the
-           clipped silhouette — the fluro rim paints ink, so the stack
-           reads) */
+        /* the hover print: the two-tier shadow stack (1/3px, the stack
+           ending at the grey step so the print stays light) — the
+           wrapper's eased filter transition carries it (drop-shadow
+           layers compound onto the clipped silhouette; the rim paints
+           ink, so the stack reads) */
         .project-detail__next-wrap:has(.project-detail__next:hover),
         .project-detail__next-wrap:has(.project-detail__next:focus-visible) {
-          animation: project-detail-grow-s 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) both;
+          filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY});
         }
         .project-detail__next-label {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
@@ -700,31 +714,22 @@ export function ProjectDetail() {
           letter-spacing: -0.02em;
           color: ${INK};
         }
-        @keyframes project-detail-grow-s {
-          0% {
-            filter: drop-shadow(0 0 0 ${INK});
-          }
-          50% {
-            filter: drop-shadow(1px 1px 0 ${INK});
-          }
-          100% {
-            filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY});
-          }
-        }
-
         /* ── the page-change choreography (the detail routes' own
            driver — the wipe exempts these routes; see the module docs)
            ─────────────────────────────────────────────────────────
+           The pass reads as a lateral handoff — advancing a detail
+           page sweeps the content column LEFT and the next column
+           arrives from the right (the carousel read).
            ENTRANCE (any arrival — the mounted root carries
-           project-detail--enter): the images/tapes block slides DOWN into place
-           from ABOVE the viewport (un-faded); the green + red boxes
-           slide in from FULLY OFF the left edge (~0.15s after the
-           block starts — un-faded, solid all the way: the leave's
-           fully-off-pose seam reads as one motion); the tape
-           separators FADE IN once the block settles (the tapes' own
-           beat) */
+           project-detail--enter): the images column slides in from
+           FULLY OFF the right edge (un-faded, the longer ease so the
+           sweep reads smooth); the green + red boxes slide in from
+           FULLY OFF the left edge (~0.15s after the column starts —
+           un-faded, solid all the way: the leave's fully-off-pose
+           seam reads as one motion); the tape separators FADE IN once
+           the column settles (the tapes' own beat) */
         @keyframes project-detail-stream-in {
-          from { transform: translateY(-13vh); }
+          from { transform: translateX(115%); }
         }
         @keyframes project-detail-box-in {
           from { transform: translateX(-115%); }
@@ -733,7 +738,7 @@ export function ProjectDetail() {
           from { opacity: 0; }
         }
         .project-detail--enter .project-detail__stream {
-          animation: project-detail-stream-in 0.4s ease-out both;
+          animation: project-detail-stream-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
         .project-detail--enter .project-detail__title,
         .project-detail--enter .project-detail__details {
@@ -745,12 +750,14 @@ export function ProjectDetail() {
         /* EXIT (the held swap's shapes — the driver plays it and
            applies the hash at its end): the boxes slide FULLY OUT past
            the viewport's LEFT edge (they rest there, un-faded, at the
-           swap - the seam is off-screen), the image block drifts
-           DOWN/AWAY (un-faded). Declared AFTER the entrance rules:
-           while both classes ride the root, the pair wins the cascade
-           and re-seats every animation as its exit form. */
+           swap - the seam is off-screen), the image column sweeps
+           FULLY OUT past the LEFT edge with them — the pass's handoff
+           to the arriving column's right-edge entry. Declared AFTER
+           the entrance rules: while both classes ride the root, the
+           pair wins the cascade and re-seats every animation as its
+           exit form. */
         @keyframes project-detail-stream-out {
-          to { transform: translateY(11vh); }
+          to { transform: translateX(-115%); }
         }
         @keyframes project-detail-box-out {
           to { transform: translateX(-115%); }
@@ -773,6 +780,8 @@ export function ProjectDetail() {
           .project-detail--exit .project-detail__details {
             animation: none;
           }
+          /* the hover print's easing is motion too — the print snaps on */
+          .project-detail__next-wrap { transition: none; }
         }
 
         /* ── mobile: the pinned plates join the flow ─────────────── */

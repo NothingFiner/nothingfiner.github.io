@@ -59,20 +59,23 @@
 //                         the "Past Work" grow-head IN REVERSE (the
 //                         stepped shadow un-prints); at the exit's end
 //                         the hash applies and the detail mounts with
-//                         the entrance below (the images/tapes block
-//                         slides DOWN from ABOVE the viewport, the
+//                         the entrance below (the images column slides
+//                         in fully OFF the right edge — the carousel
+//                         read, the
 //                         green + red boxes in from fully OFF the
 //                         left edge, the tape separators fade in once
-//                         the block sets)
+//                         the column sets)
 //   B  detail → bands     the boxes slide FULLY OUT past the left
-//                         edge, the image block drifts DOWN/AWAY; the
+//                         edge, the image column sweeps out past the
+//                         LEFT edge with them; the
 //                         hash applies at the exit's end and the bands
 //                         page mounts with its bands fading IN
 //   C  detail → detail    the same exit plays fully, the hash applies
 //                         at its end, and the arriving detail replays
 //                         the entrance — one leftward conveyance, the
-//                         swap seam off-screen (the plates solid all
-//                         the way)
+//                         column leaves through the left edge and
+//                         arrives from fully off the right (the swap
+//                         seam off-screen)
 //
 // NO FADES in any plate or box move — a physical swap (Eliot); the
 // swap seam sits outside the viewport. NAVS WITH NO HELD SWAP — the
@@ -261,8 +264,8 @@ function startDriver(): void {
       }
 
       /* B / C: a past detail page is on screen — ITS exit plays (the
-         boxes slide out left, the block drifts down/away) and the
-         hash applies from the exit's end callback */
+         boxes slide out left, the image column sweeps out with them)
+         and the hash applies from the exit's end callback */
       if (isPastDetailPath(fromPath) && pageExit) {
         holding = true;
         const start = fromPath;
@@ -335,7 +338,8 @@ export function PastDetail() {
   }, [routeTag]);
 
   // the EXIT choreography the driver's B/C legs hold the swap with:
-  // the boxes slide out LEFT, the image block drifts DOWN/AWAY; the
+  // the boxes slide out LEFT, the image column sweeps out past the
+  // left edge with them (the carousel read's leave); the
   // driver applies the hash from the callback — the exit's end (the
   // entrance itself is pure CSS: the mounted root carries
   // past-detail--enter, so every fresh mount plays it)
@@ -379,6 +383,12 @@ export function PastDetail() {
           --ptd-pad: 3.9vw;   /* the landing flow grid's inline padding */
           --ptd-gut: 1.1vw;   /* ...its column gutter */
           position: relative;
+          /* the choreography parks the column fully off the edges:
+             clip the overflows (no scroll container — the page's own
+             scroll is untouched) so the parked column never widens the
+             page; the fixed pins' containing block is the viewport,
+             outside this clip */
+          overflow: clip;
           /* the stage is CLEAR over the site's lava lamp (mounted by
              app.tsx for this route) — the pinned plates carry their
              own solid paints, the stream rides the scroll under them */
@@ -597,6 +607,13 @@ export function PastDetail() {
         .past-detail__next-wrap {
           grid-column: 5 / 12;
           display: block;
+          /* the hover print eased both ways: the wrapper's own filter
+             holds the zero pose at rest, and the transition glides the
+             tiers in on the enter and back on the leave (filter lists
+             interpolate pairwise — the grey tier arrives from the
+             neutral, so no step, no snap) */
+          filter: drop-shadow(0 0 0 ${INK});
+          transition: filter 0.4s cubic-bezier(0.33, 1, 0.68, 1);
         }
         .past-detail__next {
           display: block;
@@ -622,14 +639,14 @@ export function PastDetail() {
           transition: none;
         }
         .past-detail__next:focus-visible { outline: none; }
-        /* the hover print: the grow headline's stepped shadow stack,
-           smaller — two tiers (1/3px; the stack ends at the grey step)
-           stepped in one pass, on
-           the WRAPPER (drop-shadow layers compound onto the clipped
-           silhouette; the rim paints ink, so the stack reads) */
+        /* the hover print: the two-tier shadow stack (1/3px, the stack
+           ending at the grey step so the print stays light) — the
+           wrapper's eased filter transition carries it (drop-shadow
+           layers compound onto the clipped silhouette; the rim paints
+           ink, so the stack reads) */
         .past-detail__next-wrap:has(.past-detail__next:hover),
         .past-detail__next-wrap:has(.past-detail__next:focus-visible) {
-          animation: past-detail-grow-s 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) both;
+          filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY});
         }
         .past-detail__next-label {
           font-family: var(--f-mono, 'IBM Plex Mono', monospace);
@@ -645,29 +662,18 @@ export function PastDetail() {
           letter-spacing: -0.02em;
           color: ${INK};
         }
-        @keyframes past-detail-grow-s {
-          0% {
-            filter: drop-shadow(0 0 0 ${INK});
-          }
-          50% {
-            filter: drop-shadow(1px 1px 0 ${INK});
-          }
-          100% {
-            filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY});
-          }
-        }
-
         /* ── the page-change choreography (the past routes' own
            driver — the wipe exempts these routes; see the header)
            ─────────────────────────────────────────────────────────
            ENTRANCE (any arrival — the mounted root carries
-           past-detail--enter): the images/tapes block slides DOWN into
-           place from ABOVE the viewport (un-faded); the green + red
+           past-detail--enter): the images column slides in from FULLY
+           OFF the right edge (un-faded, the longer ease so the sweep
+           reads smooth); the green + red
            boxes slide in from FULLY OFF the left edge (~0.15s after
            the block starts — un-faded, solid all the way); the tape
            separators FADE IN once the block settles */
         @keyframes past-detail-stream-in {
-          from { transform: translateY(-13vh); }
+          from { transform: translateX(115%); }
         }
         @keyframes past-detail-box-in {
           from { transform: translateX(-115%); }
@@ -676,7 +682,7 @@ export function PastDetail() {
           from { opacity: 0; }
         }
         .past-detail--enter .past-detail__stream {
-          animation: past-detail-stream-in 0.4s ease-out both;
+          animation: past-detail-stream-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
         .past-detail--enter .past-detail__title,
         .past-detail--enter .past-detail__details {
@@ -687,12 +693,14 @@ export function PastDetail() {
         }
         /* EXIT (the held swap's shapes): the boxes slide FULLY OUT
            past the viewport's LEFT edge (they rest there, un-faded,
-           at the swap — the seam is off-screen), the image block
-           drifts DOWN/AWAY (un-faded). Declared AFTER the entrance
-           rules: while both classes ride the root, the pair wins the
-           cascade and re-seats every animation as its exit form. */
+           at the swap — the seam is off-screen), the image column
+           sweeps FULLY OUT past the LEFT edge with them — the pass's
+           handoff to the arriving column's right-edge entry.
+           Declared AFTER the entrance rules: while both classes ride
+           the root, the pair wins the cascade and re-seats every
+           animation as its exit form. */
         @keyframes past-detail-stream-out {
-          to { transform: translateY(11vh); }
+          to { transform: translateX(-115%); }
         }
         @keyframes past-detail-box-out {
           to { transform: translateX(-115%); }
@@ -715,6 +723,8 @@ export function PastDetail() {
           .past-detail--exit .past-detail__details {
             animation: none;
           }
+          /* the hover print's easing is motion too — the print snaps on */
+          .past-detail__next-wrap { transition: none; }
         }
 
         /* ── mobile: the pinned plates join the flow ─────────────── */
