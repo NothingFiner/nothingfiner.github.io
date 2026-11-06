@@ -12,8 +12,7 @@
 // print in like the text-collapse treatment (glaphic-collapse's word
 // slam): they hold a spread pose (44px gap spans between the chips) and
 // when the section first enters every gap collapses to the resting 14px
-// with a left-to-right stagger while each chip lands through a translate
-// overshoot keyframe (arrive past home, snap back) — no fade at all.
+// with a left-to-right stagger while each chip fades in on its own beat.
 //
 // The glaphic element (glaphic-chip) is defined by the eager
 // '@glaphic/ui' import in GlaphicGallery, which app.tsx imports
@@ -27,7 +26,7 @@ import { landingTechnologies as technologies } from '../data/technologies';
 const INK = '#0D0221';
 const INK_DARK = '#242821'; // the strip slabs' ink-dark — the now strips' --ln-border value
 
-/* the roll's base beat: each chip's pop and gap ride this base after their
+/* the roll's base beat: each chip's fade and gap ride this base after their
    noisy --lt-d, so the wave's first chip lands a fraction of a second after
    the cloud's own entry — the reveal fires on the cloud's first pixels, and
    the reader sees the box settle in view before the roll begins */
@@ -120,24 +119,25 @@ export function LandingTechnologies() {
         /* ── reveal ───────────────────────────────────────────────
            the chips' print-in as a ROLL (glaphic-collapse's shrink-
            span mechanic, re-paced and interleaved — not staged): the
-           gaps hold the 44px spread while the chips POP in one after
+           gaps hold the 44px spread while the chips FADE in one after
            the other with VARIABLE LAG (--lt-d is each chip's beat,
            see the hash above the component); the wave carries the
            base beat (ROLL_BEAT) past the cloud's own entry gate, so
            the compaction starts a fraction of a second after the
            cloud scrolls into view; a chip's own gap span
            starts closing 0.24s in — as THAT chip lands — while the
-           chips still to its right keep popping, so the cloud
+           chips still to its right keep fading in, so the cloud
            compacts continuously from the left under the ongoing
            series and the wrap re-flows as the wave passes */
         .landing-technologies__cloud glaphic-chip { opacity: 0; }
+        /* the arrival is a plain opacity fade — the roll's beats and
+           the gap collapse carry the pattern, no scale on the chip */
         .landing-technologies--in .landing-technologies__cloud glaphic-chip {
-          animation: landing-technologies-pop 0.32s cubic-bezier(0.25, 1.4, 0.45, 1) calc(${ROLL_BEAT} + var(--lt-d, 0ms)) both;
+          animation: landing-technologies-fade 0.32s ease-out calc(${ROLL_BEAT} + var(--lt-d, 0ms)) both;
         }
-        @keyframes landing-technologies-pop {
-          0% { opacity: 0; transform: scale(0.7); }
-          45% { opacity: 1; transform: scale(1.05); }
-          100% { opacity: 1; transform: none; }
+        @keyframes landing-technologies-fade {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
         }
         .landing-technologies__gap {
           display: block;

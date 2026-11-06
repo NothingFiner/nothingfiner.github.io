@@ -623,7 +623,8 @@ export function PastDetail() {
         }
         .past-detail__next:focus-visible { outline: none; }
         /* the hover print: the grow headline's stepped shadow stack,
-           smaller — three tiers (1/3/6px) stepped in one pass, on
+           smaller — two tiers (1/3px; the stack ends at the grey step)
+           stepped in one pass, on
            the WRAPPER (drop-shadow layers compound onto the clipped
            silhouette; the rim paints ink, so the stack reads) */
         .past-detail__next-wrap:has(.past-detail__next:hover),
@@ -648,14 +649,11 @@ export function PastDetail() {
           0% {
             filter: drop-shadow(0 0 0 ${INK});
           }
-          33.3% {
+          50% {
             filter: drop-shadow(1px 1px 0 ${INK});
           }
-          66.6% {
-            filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY});
-          }
           100% {
-            filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY}) drop-shadow(6px 6px 0 ${KEYLINE});
+            filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY});
           }
         }
 

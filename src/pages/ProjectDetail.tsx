@@ -677,10 +677,11 @@ export function ProjectDetail() {
         }
         .project-detail__next:focus-visible { outline: none; }
         /* the hover print: the grow headline's stepped shadow stack,
-           SMALLER — a tighter four-tier run (1/2/4/6px, vs the
-           headline's five to 12px) — stepped in one pass, on the
-           WRAPPER (drop-shadow layers compound onto the clipped
-           silhouette — the fluro rim paints ink, so the stack reads) */
+           SMALLER — two tiers (1/3px), the stack ending at the grey
+           step so the hover print stays light — stepped in one pass,
+           on the WRAPPER (drop-shadow layers compound onto the
+           clipped silhouette — the fluro rim paints ink, so the stack
+           reads) */
         .project-detail__next-wrap:has(.project-detail__next:hover),
         .project-detail__next-wrap:has(.project-detail__next:focus-visible) {
           animation: project-detail-grow-s 0.45s cubic-bezier(0.3, 1.3, 0.45, 1) both;
@@ -699,26 +700,15 @@ export function ProjectDetail() {
           letter-spacing: -0.02em;
           color: ${INK};
         }
-        /* the hover print: the grow headline's stepped shadow stack,
-           RETUNED (Eliot's verdict: the four-tier run was too dramatic)
-           — THREE tiers, 1/3/6px, and the tiers' ink FADES like the
-           grow's text print does: each step's ink color-mixes toward
-           the paper (solid paints, no alpha), so the far tiers read
-           lighter — stepped in one pass, ON THE BUTTON (drop-shadow
-           layers compound onto its clipped silhouette; the rim paints
-           ink, so the stack reads) */
         @keyframes project-detail-grow-s {
           0% {
             filter: drop-shadow(0 0 0 ${INK});
           }
-          33.3% {
+          50% {
             filter: drop-shadow(1px 1px 0 ${INK});
           }
-          66.6% {
-            filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY});
-          }
           100% {
-            filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY}) drop-shadow(6px 6px 0 ${KEYLINE});
+            filter: drop-shadow(1px 1px 0 ${INK}) drop-shadow(3px 3px 0 ${GREY});
           }
         }
 
