@@ -71,8 +71,10 @@ export function FooterLegal({ class: cls = '', fade = false }: { class?: string;
       <span class="site-footer__legal-divider">
         &nbsp;////&nbsp;
       </span>
+      {/* the keeper form — Elie (matches the sr h1, the title, the
+          JSON-LD, the hero's typewriter and the chat's invite) */}
       <span>
-        Eliot Asenoth Gaspar-Finer
+        Elie Asenoth Gaspar-Finer
       </span>
     </div>
   );
