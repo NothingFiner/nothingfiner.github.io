@@ -539,7 +539,7 @@ export function PastDetail() {
         /* the plate's own separator tape (paper over the crimson) —
            prints before the responsibilities section */
         .past-detail__details glaphic-tape {
-          --glaphic-tape-hot: ${PAPER};
+          --glaphic-tape-color: ${PAPER};
           --glaphic-tape-height: 6px;
           display: block;
           margin: 14px 0 10px;
@@ -590,7 +590,7 @@ export function PastDetail() {
         /* the ride's separators: RAMP tapes — the plate's OWN seams,
            inside the tall plate, spanning its full inner width */
         .past-detail__image-block-container glaphic-tape {
-          --glaphic-tape-hot: ${CRIMSON};
+          --glaphic-tape-color: ${CRIMSON};
           --glaphic-tape-height: 12px;
           display: block;
         }

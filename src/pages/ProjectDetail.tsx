@@ -583,7 +583,7 @@ export function ProjectDetail() {
         .project-detail__row a:hover { color: ${FLURO}; }
         /* the in-plate separator tape: shorter voice than the page's */
         .project-detail__details glaphic-tape {
-          --glaphic-tape-hot: ${PAPER};
+          --glaphic-tape-color: ${PAPER};
           --glaphic-tape-height: 6px;
           display: block;
           margin: 14px 0 10px;
@@ -642,7 +642,7 @@ export function ProjectDetail() {
            inside the tall plate, spanning its full inner width (no
            right stop of their own: the plate's edge is the stop) */
         .project-detail__image-block-container glaphic-tape {
-          --glaphic-tape-hot: ${CRIMSON};
+          --glaphic-tape-color: ${CRIMSON};
           --glaphic-tape-height: 12px;
           display: block;
         }

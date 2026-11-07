@@ -69,7 +69,7 @@ const DECAY34 = buildPattern(
  * (--glaphic-tape-height still scales every pattern).
  *
  * Tier-2: --glaphic-tape-height · --glaphic-tape-radius · --glaphic-tape-pitch ·
- *         --glaphic-tape-hot
+ *         --glaphic-tape-color (the tape's own ink — it reads no global)
  */
 export class GlaphicTape extends LitElement {
   static properties = {
@@ -94,7 +94,7 @@ export class GlaphicTape extends LitElement {
       border-radius: var(--glaphic-tape-radius, var(--r, 1.9px));
       background: repeating-linear-gradient(
         45deg,
-        var(--glaphic-tape-hot, var(--hot, #E03A0B)) 0 calc(var(--glaphic-tape-pitch, var(--hz, 18px)) * 0.38),
+        var(--glaphic-tape-color, #E03A0B) 0 calc(var(--glaphic-tape-pitch, var(--hz, 18px)) * 0.38),
         transparent calc(var(--glaphic-tape-pitch, var(--hz, 18px)) * 0.38) var(--glaphic-tape-pitch, var(--hz, 18px))
       );
     }
@@ -113,7 +113,7 @@ export class GlaphicTape extends LitElement {
   private paintPattern(pattern: string) {
     const segs = { swell: SWELL, pulse: PULSE, ramp: RAMP, 'decay-55': DECAY55, 'decay-34': DECAY34 }[pattern];
     if (!segs) return false; // unknown name — the ladder stands
-    const ink = 'var(--glaphic-tape-hot, var(--hot, #E03A0B))';
+    const ink = 'var(--glaphic-tape-color, #E03A0B)';
     let pos = 0;
     const stops = segs.map((seg) => {
       const a = pos;

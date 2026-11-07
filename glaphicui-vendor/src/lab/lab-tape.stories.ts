@@ -141,7 +141,7 @@ class LabTapeGrow extends LitElement {
   };
 
   private paint() {
-    const ink = 'var(--glaphic-tape-hot, var(--hot, #E03A0B))';
+    const ink = 'var(--glaphic-tape-color, #E03A0B)';
     let pos = 0;
     let gapIndex = 0;
     const stops = this.segs.map((seg) => {

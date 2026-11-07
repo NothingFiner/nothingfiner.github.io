@@ -4,7 +4,7 @@ import './glaphic-tape.js';
 import { tier2Vars, TIER1_COLORS } from '../../base/story-helpers.js';
 
 const TAPE_TINT_MAP = {
-  '--glaphic-tape-hot': 'hot',
+  '--glaphic-tape-color': 'color',
   '--glaphic-tape-height': 'height',
   '--glaphic-tape-pitch': 'pitch',
 };
@@ -18,7 +18,7 @@ const meta: Meta = {
   argTypes: {
     size: { control: 'select', options: ['s', 'm', 'l'], table: { category: 'content' } },
     pattern: { control: 'select', options: PATTERNS, table: { category: 'content' } },
-    hot: { name: 'hot → --glaphic-tape-hot', control: { type: 'color', presetColors: TIER1_COLORS } },
+    color: { name: 'color → --glaphic-tape-color', control: { type: 'color', presetColors: TIER1_COLORS } },
     height: { name: 'height → --glaphic-tape-height', control: 'text' },
     pitch: { name: 'pitch → --glaphic-tape-pitch', control: 'text' },
   },
@@ -61,15 +61,15 @@ export const Colors: StoryObj = {
   tags: ['!dev', '!test'],
   render: () => html`
     <div style="max-width:420px">
-      ${row('HOT', 'default — var(--hot)', TAPE('m'))}
-      ${row('COLD', '→ --glaphic-tape-hot: cold', TAPE('m', tier2Vars({ hot: 'var(--cold)' }, TAPE_TINT_MAP)))}
-      ${row('INK', '→ --glaphic-tape-hot: ink', TAPE('m', tier2Vars({ hot: 'var(--ink)' }, TAPE_TINT_MAP)))}
+      ${row('HOT', "default — the tape's own hazard ink (#E03A0B)", TAPE('m'))}
+      ${row('COLD', '→ --glaphic-tape-color: cold', TAPE('m', tier2Vars({ color: 'var(--cold)' }, TAPE_TINT_MAP)))}
+      ${row('INK', '→ --glaphic-tape-color: ink', TAPE('m', tier2Vars({ color: 'var(--ink)' }, TAPE_TINT_MAP)))}
     </div>
   `,
   parameters: {
     docs: {
       description: {
-        story: 'One ink knob: --glaphic-tape-hot colors the stripes over a transparent ground, so the tape reads in overprint against whatever it sits on. Defaults to Tier-1 --hot.',
+        story: 'One ink knob: --glaphic-tape-color colors the stripes over a transparent ground, so the tape reads in overprint against whatever it sits on. The ink is the tape\'s own token — it reads no global; its default is the hazard #E03A0B.',
       },
     },
   },
