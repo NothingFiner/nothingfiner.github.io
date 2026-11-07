@@ -238,10 +238,7 @@
 }
 .site-footer__legal {
   font-family: var(--f-mono, monospace);
-  /* the muted legal ink — cool-600 #686474 read 3.5:1 on the split's
-     ink ground (#0D0221); the detail GREY #9d99ab clears 7:1 and keeps
-     the same muted mono read */
-  color: #9d99ab;
+  color: #686474;
   font-size: 11px;
   letter-spacing: 0.04em;
 }
