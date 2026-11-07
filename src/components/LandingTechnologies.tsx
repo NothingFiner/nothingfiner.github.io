@@ -129,6 +129,13 @@ export function LandingTechnologies() {
            chips still to its right keep fading in, so the cloud
            compacts continuously from the left under the ongoing
            series and the wrap re-flows as the wave passes */
+        /* the line-variant chip's ink is the library's cool-900 dark —
+           invisible on this section's ink plate (computed 1.2:1). The
+           cloud's chips print the site's on-ink paper instead */
+        .landing-technologies__cloud glaphic-chip {
+          --glaphic-chip-ink: #F2F5EB;
+          --glaphic-chip-rim: #F2F5EB;
+        }
         .landing-technologies__cloud glaphic-chip { opacity: 0; }
         /* the arrival is a plain opacity fade — the roll's beats and
            the gap collapse carry the pattern, no scale on the chip */

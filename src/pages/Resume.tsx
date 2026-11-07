@@ -50,6 +50,7 @@ export function Resume() {
       <div class="resume-page__flow mx-auto">
         <div class="site-panel p-8 overflow-hidden">
           <iframe
+            title="Résumé PDF preview"
             src="/assets/resume.pdf"
             class="w-full h-[80vh] rounded-[var(--glaphic-radius-base)] border border-[var(--panel-keyline)]"
           >

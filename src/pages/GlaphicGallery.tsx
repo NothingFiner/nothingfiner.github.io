@@ -78,7 +78,7 @@ export function GlaphicGallery() {
             </div>
             <glaphic-switch />
             <glaphic-slider />
-            <glaphic-textfield />
+            <glaphic-textfield label="Demo field" />
             <glaphic-select />
           </div>
         </section>
@@ -88,7 +88,7 @@ export function GlaphicGallery() {
           <glaphic-table />
           <glaphic-divider style="margin:24px 0" />
           <glaphic-accordion>
-            <glaphic-accordion-item>wiring check for the new-design branch</glaphic-accordion-item>
+            <glaphic-accordion-item label="Wiring check">wiring check for the new-design branch</glaphic-accordion-item>
           </glaphic-accordion>
         </section>
       </div>
