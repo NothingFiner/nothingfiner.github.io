@@ -115,7 +115,7 @@ function AppContent() {
               pageTitle={pageTitle}
             />
           )}
-          <main id="main-content" class="relative z-10 flex-1 ml-0">
+          <main id="main-content" tabIndex={-1} class="relative z-10 flex-1 ml-0">
             <div class={!isDarkForest && !isBareStage ? 'pt-24' : ''}>
               <Suspense fallback={<div class="min-h-screen flex items-center justify-center text-theme">Loading...</div>}>
                 <Route path="/projects" component={Projects} />

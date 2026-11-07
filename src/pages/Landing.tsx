@@ -17,7 +17,7 @@ import { SiteFooter } from '../components/SiteFooter';
 
 export function Landing() {
   return (
-    <div class="w-full relative z-40 flex flex-col">
+    <main id="main-content" tabIndex={-1} class="w-full relative z-40 flex flex-col">
       {/* the sticky footer band rides LAST so its sticky range spans the
           whole journey (the Phase-4 order keeps it the flow's final
           item — the tech section now the .site-footer__band's nearer neighbor on
@@ -58,6 +58,6 @@ export function Landing() {
           one copy — the band, the pool menu and the brand mark are
           never duplicated) */}
       <SiteFooter variant="journey" learnMore menuDelay={150} />
-    </div>
+    </main>
   );
 }

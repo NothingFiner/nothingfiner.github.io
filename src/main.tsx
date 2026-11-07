@@ -10,6 +10,20 @@ import './index.css';
 // keyframes) — shared by the landing sections' components
 import './landing.css';
 
+// The skip link is static markup (index.html) whose default behavior
+// feeds the hash router: '#main-content' parses as a wouter route
+// ('main-content'), no Route matches it and the page collapses to the
+// chrome + Suspense fallback. Intercept the click: prevent the hash
+// from ever landing and move focus to the main landmark directly
+// (main carries tabIndex -1 on every route, home included).
+const skipLink = document.querySelector<HTMLAnchorElement>('.skip-link');
+if (skipLink) {
+  skipLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('main-content')?.focus();
+  });
+}
+
 // The mount node is static markup in index.html; a missing node is a
 // deployment error, not a silent no-render.
 const host = document.getElementById('app');
