@@ -694,6 +694,11 @@ export function LandingAbout() {
             reversed ticker — the band's own flag gates its drop, the
             flash, and the portraits' cycle (F11) ─────────────────── */}
         <div class={`landing-about__band landing-about__band1 ${in1 ? 'landing-about__band--on' : ''}`} ref={band1Ref}>
+          {/* the ticker's words exposed ONCE for the AT tree — the
+              marquee halves are aria-hidden decor (the sweep's ink
+              complaints against them are visual-text rules), SR reads
+              the phrase a single time per section */}
+          <span class="sr-only">{TICKER.join(', ')}</span>
           <glaphic-marquee
             ref={marqueeLeadRef}
             class="landing-about__marquee"

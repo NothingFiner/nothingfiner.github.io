@@ -665,6 +665,9 @@ export function LandingPast() {
         {/* the rails: one ticker above the track, one below it (its
             track runs REVERSED — the component's reverse attribute);
             strings/speed imperative-set, the effect above owns the whys */}
+        {/* the rails' shared words, once for the AT tree (the marquee
+            halves are aria-hidden decor) */}
+        <span class="sr-only">{PAST_TICKER.join(', ')}</span>
         <glaphic-marquee
           class="landing-past__marquee"
           aria-hidden="true"

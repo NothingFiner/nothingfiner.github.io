@@ -866,6 +866,9 @@ export function LandingNow() {
             </article>
           </Fragment>
         ))}
+        {/* the ticker's words, once for the AT tree (the marquee is
+            aria-hidden decor) */}
+        <span class="sr-only">{NOW_TICKER.join(', ')}</span>
         <glaphic-marquee
           class="landing-now__marquee"
           aria-hidden="true"

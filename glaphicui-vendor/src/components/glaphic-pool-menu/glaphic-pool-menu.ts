@@ -674,7 +674,7 @@ export class GlaphicPoolMenu extends LitElement {
       <div class="stack" part="stack" style=${panelVars}>
         <span class="plate-back" part="back" aria-hidden="true"></span>
         <span class="plate-front" part="front"></span>
-        <span class="items" part="items"><slot></slot></span>
+        <span class="items" part="items" role="navigation" aria-label=${this.label}><slot></slot></span>
         <button
           class="trigger"
           type="button"

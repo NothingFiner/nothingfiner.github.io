@@ -790,7 +790,7 @@ export function PastDetail() {
       {/* the top pin: title plate (cols 1-5) + back button */}
       <div class="past-detail__pin past-detail__pin--top">
         {/* TOP-LEFT pinned plate — the agency's name + the description */}
-        <aside class="past-detail__title">
+        <aside class="past-detail__title" aria-label="Past work title">
           <div class="past-detail__kicker">{`PAST.${String(index + 1).padStart(3, '0')} /// ${work.name.toUpperCase()}`}</div>
           <h2 class="past-detail__heading">{work.name}</h2>
           <p class="past-detail__desc">{plate.description}</p>
@@ -849,7 +849,7 @@ export function PastDetail() {
           carries it (the agency seam — see src/data/projectDetails.ts;
           every past entry carries one today) */}
       <div class="past-detail__pin past-detail__pin--bottom">
-        <aside class="past-detail__details">
+        <aside class="past-detail__details" aria-label="Past work details">
           <div class="past-detail__details-label">TECHNOLOGIES</div>
           <ul class="past-detail__tech">
             {plate.technologies.map((tech) => (

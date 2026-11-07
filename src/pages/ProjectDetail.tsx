@@ -855,7 +855,7 @@ export function ProjectDetail() {
       {/* the top pin: title plate (cols 1-4) + back button (col 12) */}
       <div class="project-detail__pin project-detail__pin--top">
         {/* TOP-LEFT pinned plate — title + description */}
-        <aside class="project-detail__title">
+        <aside class="project-detail__title" aria-label="Project title">
           <div class="project-detail__kicker">{`PRJ.${String(currentIndex + 1).padStart(3, '0')} /// ${project.title.toUpperCase()}`}</div>
           <h2 class="project-detail__heading">{project.title}</h2>
           <p class="project-detail__desc">{detail.description}</p>
@@ -928,7 +928,7 @@ export function ProjectDetail() {
           it (the coming agency-works page's seam — see
           src/data/projectDetails.ts) */}
       <div class="project-detail__pin project-detail__pin--bottom">
-        <aside class="project-detail__details">
+        <aside class="project-detail__details" aria-label="Project details">
           <div class="project-detail__details-label">TECHNOLOGIES</div>
           <ul class="project-detail__tech">
             {detail.technologies.map((tech) => (

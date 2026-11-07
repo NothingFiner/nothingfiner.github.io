@@ -1,4 +1,4 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, css, html, nothing } from 'lit';
 
 /**
  * glaphic-switch — the new-look furniture switch, rebuilt from the
@@ -211,12 +211,16 @@ export class GlaphicSwitch extends LitElement {
     variant: { type: String, reflect: true },
     disabled: { type: Boolean, reflect: true },
     forceHover: { type: Boolean, reflect: true, attribute: 'force-hover' },
+    /** the control's accessible name — the On/Off word span is
+     *  aria-hidden, so the button needs a name from its author */
+    label: { type: String },
   };
   declare checked: boolean;
   /** 'neutral' | 'primary' | 'secondary' | 'danger' */
   declare variant: string;
   declare disabled: boolean;
   declare forceHover: boolean;
+  declare label: string | undefined;
 
   static styles = shadowStyles;
 
@@ -243,6 +247,7 @@ export class GlaphicSwitch extends LitElement {
           type="button"
           role="switch"
           part="toggle"
+          aria-label=${this.label || nothing}
           aria-checked=${this.checked ? 'true' : 'false'}
           ?disabled=${this.disabled}
           @click=${this.toggle}

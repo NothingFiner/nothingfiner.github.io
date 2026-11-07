@@ -76,7 +76,7 @@ export function GlaphicGallery() {
               <glaphic-chip variant="cyan">cyan</glaphic-chip>
               <glaphic-chip variant="brand">brand</glaphic-chip>
             </div>
-            <glaphic-switch />
+            <glaphic-switch label="Demo toggle" />
             <glaphic-slider />
             <glaphic-textfield label="Demo field" />
             <glaphic-select />
