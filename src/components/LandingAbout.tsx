@@ -50,9 +50,11 @@
 // section's own .landing-about--in
 // latch and the rideOutUp stay). Bands breathe 12vh apart (B6, up from
 // round A's 6vh).
-// The portraits are REAL art: thirty text frames dropped into
-// public/assets/ascii-portraits/ by Eliot — every frame exactly 49 lines
-// x 90 columns, numbering skipping 4 and 9. The frames fetch at runtime
+// The portraits are REAL art: thirty-five text frames dropped into
+// public/assets/ascii-portraits/ — every frame exactly 55 lines
+// x 100 columns, a full 1..35 run (the copies' names are download
+// suffixes; the PLAY order is PORTRAIT_NUMBERS' computed morph tour
+// below). The frames fetch at runtime
 // and set on the element's ref only when ALL resolve AND band 1 has
 // fired (the cycle is a band-gated animation); array properties can't
 // carry to Lit from JSX attributes (the marquee precedent).
@@ -64,12 +66,18 @@ const INK = '#0D0221';
 const RED = '#A6022A'; // dark brand crimson — the flash + the ticker inks
 const FLURO = '#14F1C8'; // the site's fluro green — band 1's lead phrase + the plate's field
 
-/* the portraits' frame numbers in NUMERIC order: the export's own gaps at
-   4 and 9 (no files) — a lexicographic sort would strand 10..32 after 5..8
-   differently than the film counts, so the order is written out as numbers */
+/* the portraits' PLAY ORDER — a computed morph tour, not the copies'
+   download numbering (the (N) suffixes are just browser copies with no
+   story): each pair's cost is the frames' ink-density delta per cell
+   (paper/medium/block buckets over the 55×100 grid), the full tour built
+   greedy nearest-neighbour and 2-opt'd into a CLOSED chain (the cycle's
+   wrap included — avg consecutive delta 0.33 vs the numeric order's 0.57,
+   two larger beats left in as the cycle's glitch rhythm); the read is
+   one figure warping through its poses. Written out as numbers (the
+   lexicographic trap lives in the name sort, not here) */
 const PORTRAIT_NUMBERS = [
-  1, 2, 3, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+  1, 2, 3, 4, 32, 31, 15, 14, 16, 30, 29, 28, 27, 13, 24, 25, 35, 34, 33,
+  26, 20, 12, 9, 11, 10, 8, 7, 21, 22, 23, 18, 17, 19, 5, 6,
 ];
 
 /* the burst's frame content (multi-line ASCII, real newlines): what the
@@ -488,13 +496,13 @@ export function LandingAbout() {
           mix-blend-mode: normal;
           box-shadow: none;
           animation: none;
-          /* F2: the seat's exact fill — the type is the seat ÷ 49 lines
-             (borders gone, no −4 accounting); width is the 90-column
-             run (every frame is 90 columns × 49 lines) */
+          /* F2: the seat's exact fill — the type is the seat ÷ 55 lines
+             (borders gone, no −4 accounting); width is the 100-column
+             run (every frame is 100 columns × 55 lines) */
           height: var(--ab-band1-mid);
-          font-size: calc(var(--ab-band1-mid) / 49);
+          font-size: calc(var(--ab-band1-mid) / 55);
           line-height: 1;
-          width: 90ch;
+          width: 100ch;
           /* centered in its track at the mobile stack (a no-op at the
              desktop auto track) */
           justify-self: center;
@@ -718,7 +726,7 @@ export function LandingAbout() {
             <glaphic-ascii
               ref={portraitsRef}
               class="landing-about__portraits"
-              label="A cycling ASCII portrait, thirty drawn frames"
+              label="A cycling ASCII portrait, thirty-five drawn frames"
             />
           </div>
           {/* the reversed runner: same band voice, the track's direction
