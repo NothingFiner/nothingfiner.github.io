@@ -1,0 +1,55 @@
+
+
+
+
+                                               ¦NNNN¦NNN¦N¦¦¦
+                                         ¦NNNNNÕÕÕÕÕÕÕÕÕNNNÕÕÕNNNN¦
+                                       ¦NNNÕNNNÕÕNÕNÕNNÕÕÕNÕNÕÕÕÕÕNNN¦
+                                     ¦¦NNNNNNÕÕÕÕNÕNÕNNÕÕNÕÕNÕNÕÕÕNNNNNN¦
+                                   ¦NNNNNNÕÕÕÕNNNNÕÕNÕÕNÕNNNÕNÕNÕÕÕÕÕNNNNN
+                                  ¦¦NNNNNNNNÕÕÕÕÕÕÕNÕÕÕÕNÕNNNÕÕNÕÕÕÕÕÕÕÕNNN¦
+                               N¦N¦NNNNNÕÕNÕÕÕÕNÕÕNNNNÕÕÕÕÕNÕÕÕNÕNNÕÕÕNÕÕNNNN
+                             ¦NNNNNNNÕÕÕNÕNÕÕÕNÕNÕNÕÕNÕÕÕÕÕNNNNNNÕNÕÕÕNÕNÕÕNN¦  ¦
+                            ¦NÕÕÕNÕNNNNNNÕNÕÕÕNÕNÕNNNÕNNNNNÕNNNNÕNÕNÕNÕÕNÕÕNNNN
+                           ¦NÕNNNÕÕNÕNÕNÕNÕÕÕNÕÕNÕNÕNNÕÕÕÕÕNNNN¦NÕÕNÕÕÕÕÕÕNNÕNN¦
+                          ¦NNNNÕÕÕNÕÕÕNÕNÕÕNÕNÕÕÕNÕNNNNNNNNNNNNNNÕNÕNÕÕNÕNÕÕNNÕ¦N¦
+                          N¦NNNÕÕNÕÕÕÕÕÕNÕNNNÕÕNNÕÕÕNNNNN¦NNNNNN¦NNNNNNNNNNNÕÕNNN¦
+                          ¦ ¦NNNNNNNÕNÕÕNNNNNÕNÕÕÕNNNNNNN ¦¦N N¦¦¦NNNNÕÕNÕNÕÕÕÕN¦¦¦
+                           ¦¦NNNNNÕNÕNNÕÕÕÕNNNNNNN¦N¦NNNN¦¦N N¦ ¦¦¦¦NNÕÕÕNÕNNÕÕÕN¦ ¦¦¦
+                        NNNNNÕÕÕNÕNNNNNNÕÕNNNNNNN¦N¦¦¦NN¦¦¦¦ ¦¦    ¦N¦NÕÕNÕNNNÕÕÕNN
+                   ¦   ¦NNÕNNÕÕNÕNNÕNÕÕÕÕÕNÕÕÕÕÕÕÕNNN¦¦¦¦    ¦¦NNNNN¦NNNNÕNNÕÕÕNÕNN¦
+                    ¦¦ NNNÕÕÕNÕNÕNÕNÕÕÕÕÕÕNNNNNÕÕÕÕÕÕNN¦   ¦NNNNNÕÕNNNNNNNNNNNNÕÕÕÕN¦
+                  ¦¦¦NNNNNÕÕNNNNNÕNNNNÕÕÕNNÕNNNÕÕÕÕÕÕÕ¦¦   ¦NÕÕNNNNN¦ ¦NÕNÕÕNÕNNÕÕÕ¦
+                ¦ ¦¦NNÕÕNNNÕÕÕNÕNÕNÕNÕÕNNNNÕÕNÕNNNNNNNÕNNNÕNNNÕÕN¦¦ÕN¦¦NÕNNNNÕÕÕÕÕN
+                    ¦NNNÕNÕÕNNNNNÕNNÕNNN¦NNNNNNNNNN¦¦NN   NN ¦¦N¦¦¦N¦¦¦NNÕNÕÕÕÕÕN¦
+                    ¦NN¦NNÕNÕNÕNÕÕÕÕÕNNNN¦¦¦ ¦¦N¦¦¦¦NÕ¦   ¦N           NNÕNÕNNÕ¦
+                   ¦¦¦¦¦¦ÕÕNNÕNÕNNNÕÕNN¦NNN ¦¦¦¦¦¦NNN¦     NN          ¦NNÕNNNN
+                   ¦NNN¦ÕNNÕNÕNNNNNÕÕNNN¦¦¦NN¦¦¦N¦NN¦        N¦       ¦NÕNNNNNN
+                    N NNN¦ÕÕÕNÕNNÕNÕÕÕNN¦N¦N¦N¦¦NNN¦¦¦¦           ¦¦¦  ¦ÕNNNÕNÕ¦
+                     NNNNNÕNNNNNÕNÕNÕNNN¦N¦NNNNNNNN¦¦NN¦               NÕÕNÕNÕ¦
+                     N¦N¦ÕNN¦NNNNNNÕÕNN¦N¦¦¦N¦N¦¦¦¦NNNNN¦¦N¦          ¦NNÕÕÕNN
+                     NN NÕNNÕÕNÕNNNÕNN¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦¦¦N¦¦¦¦          ÕNÕÕNNN
+                     ¦NNNNÕÕÕÕÕNÕÕNÕNÕ¦¦¦¦¦¦¦¦¦¦¦¦¦ ¦   ¦             NÕ¦NN¦
+                      NNN¦¦NNNNNNNNNNNN¦¦¦¦¦¦NNNNNNNNNNNN¦N¦¦¦       NNN¦NNN¦
+                       NNÕNN¦NÕÕNNÕNÕNÕNN¦¦¦¦¦¦¦¦NNN¦¦¦¦¦¦¦¦¦       NNÕÕN¦¦ ¦NN¦
+                         N¦NNNNÕNÕNÕNÕNÕNNN¦¦¦¦¦¦¦¦¦NN¦N¦           ¦NÕÕNNNN¦
+                        ¦N¦¦NÕÕNÕÕNNNNNNÕNNN¦¦¦ ¦ ¦                NNÕN¦  N  ¦
+                   ¦   ¦ ¦NÕNNNNNNNNÕNÕÕNÕNNNN¦¦¦¦ ¦             NN¦ÕN   ¦¦  ¦
+                   ¦ ¦¦¦¦NÕÕÕÕNÕÕNÕNÕNNNÕNNNNNNN¦¦¦¦            NÕNÕ¦   ¦
+                      NNNNÕNNNNÕÕÕNNNNNNNNNNNNNNNNN¦¦¦      ¦   NÕÕNN
+                    ¦N¦NNNNNNNNÕÕNNNNNNÕNNNNNNNNNNNNNNN¦¦¦      ¦¦N¦ ¦¦¦
+                   ¦NN ¦N¦N¦ÕNÕNÕNNNÕNÕÕNN¦NNNNNNNNN¦¦          ¦ÕN
+                   N¦¦ ¦NNNNÕÕÕÕÕNÕNÕNNÕÕNN¦¦¦¦NNNNN¦¦           N¦¦¦¦
+                  N¦¦ ¦NNNNNNÕNNNÕNÕNÕNNÕÕN¦¦ ¦¦NNN¦¦           ¦Õ¦¦N¦¦¦¦¦¦¦
+                  N¦NNNNNNNNNNÕÕNÕNNNNNÕÕÕNN¦¦¦  ¦¦¦¦          ¦NÕN¦N¦¦¦¦¦¦ ¦ ¦¦¦ ¦
+               ¦ ¦¦NNNNNNNÕÕNNÕÕÕNNNNNÕÕÕÕNN¦¦                NNÕN¦¦¦¦¦¦¦¦¦¦¦¦ ¦¦¦¦¦¦¦¦ ¦
+          ¦ ¦ ¦¦¦¦¦NNNNNNNNÕÕÕÕÕÕÕÕÕÕÕÕÕNNNNN¦¦¦¦¦¦NNN¦N¦N¦NNNN¦¦ ¦¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦ ¦ ¦¦ ¦ ¦
+     ¦ ¦¦¦¦ ¦ ¦ ¦ ¦¦¦¦¦¦NNÕÕNNÕÕÕÕNNÕÕÕÕÕNN¦N¦¦¦¦¦¦¦NNNN¦N¦N¦¦¦¦¦¦¦¦¦¦¦¦¦ ¦¦¦ ¦ ¦¦¦¦¦¦ ¦ ¦ ¦
+  ¦ ¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦N¦NNNNNÕÕNÕNNNNNNNNNNNNNN¦¦¦¦¦¦¦¦¦N¦N¦¦¦¦¦¦¦¦¦¦¦ ¦ ¦  ¦ ¦¦¦ ¦ ¦ ¦¦¦¦ ¦ ¦ ¦
+¦ ¦ ¦ ¦ ¦ ¦¦¦¦¦¦¦¦¦¦¦NNNNNNÕÕÕÕÕNÕÕNÕNNNNNNNNN ¦ ¦ ¦¦ ¦¦¦¦¦¦¦¦¦ ¦  ¦ ¦ ¦ ¦ ¦ ¦¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦
+¦¦¦¦¦ ¦ ¦ ¦ ¦ ¦ ¦ ¦¦¦¦NNNNNÕÕÕÕÕÕÕNNNNNNNNNN¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦ ¦ ¦ ¦¦¦ ¦ ¦¦¦¦ ¦ ¦ ¦ ¦ ¦¦¦  ¦ ¦¦¦ ¦
+ ¦ ¦ ¦ ¦ ¦ ¦¦¦¦¦¦¦¦¦¦¦NNNNNNNNNÕNNNNNNNNN¦N¦¦¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦ ¦ ¦ ¦¦ ¦ ¦ ¦ ¦ ¦ ¦¦ ¦ ¦ ¦ ¦¦¦ ¦ ¦¦
+¦ ¦ ¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦NNNNÕÕÕNÕN¦¦ ¦¦¦NNNN¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦¦¦¦¦ ¦¦ ¦ ¦ ¦¦¦¦¦¦¦¦ ¦¦¦ ¦ ¦
+¦¦¦¦¦¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦ ¦¦¦NNNÕNNNNN¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦ ¦ ¦ ¦¦ ¦ ¦ ¦ ¦ ¦ ¦¦¦¦ ¦¦¦¦¦ ¦¦¦  ¦ ¦
+¦¦ ¦¦¦¦¦¦ ¦ ¦¦¦¦¦¦ ¦ ¦¦¦¦NNNNNNNNN¦ ¦¦¦¦¦ ¦ ¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦¦¦¦¦¦¦¦ ¦ ¦ ¦ ¦ ¦ ¦¦ ¦ ¦ ¦ ¦ ¦ ¦
+ ¦ ¦ ¦ ¦¦¦¦¦¦ ¦ ¦ ¦ ¦ ¦ ¦¦NNNNNNNN¦¦¦¦¦¦¦ ¦ ¦ ¦¦¦¦¦¦ ¦ ¦ ¦ ¦ ¦ ¦ ¦¦ ¦ ¦ ¦ ¦ ¦¦¦  ¦ ¦ ¦ ¦¦¦¦¦ ¦¦ ¦ ¦

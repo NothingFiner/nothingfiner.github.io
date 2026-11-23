@@ -23,6 +23,12 @@ import { LitElement, css, html } from 'lit';
    (ascending module counter, never tag-derived), which also keeps
    two instances' generated percentages from ever meeting).
 
+   Weighted dwells: the optional `dwells` array gives frames their own
+   step counts (one positive number per frame) — a glitch frame
+   riding 0.4 flashes for under half a step while the stable figure
+   holds its full beats. Unset, every cycle keeps exactly the old
+   count-shape, so the ticker and the burst widget never move.
+
    Speed and type: --glaphic-ascii-step per frame (0.2s) and
    --glaphic-ascii-type font size (48px) — percent-based scaling is a
    later iteration; the knobs exist so it can bolt on without edits.
@@ -55,18 +61,28 @@ export class GlaphicAscii extends LitElement {
   static properties = {
     /** the ASCII frames (array of strings, multi-line via real newlines) */
     frames: { type: Array },
+    /** per-frame dwell weights in steps — same length as frames, all
+        positive; unweighted cycles leave it unset so the shared
+        flip keyframes still drive every span identically */
+    dwells: { type: Array },
     /** the image's description — reflects to the host's aria-label */
     label: { type: String, reflect: true, attribute: 'aria-label' },
   };
   declare frames: string[];
+  declare dwells: number[] | undefined;
   declare label: string;
   /** this mount's generated keyframe suffix; internal, not an API */
   declare mountUid: number;
+  /** the cycle's shape logs once per mount — the two timing engines
+      look identical in markup, so the console line is how a silent
+      fallback would show */
+  private loggedCycle = false;
 
   constructor() {
     super();
     this.mountUid = ++mountCounter;
     this.frames = [];
+    this.dwells = undefined;
     this.label = 'ASCII animation';
   }
 
@@ -88,6 +104,22 @@ export class GlaphicAscii extends LitElement {
     return this.frames.filter((f) => typeof f === 'string');
   }
 
+  /** dwell weights, guarded: one positive finite number per frame, or
+      the whole array is ignored (a partial weight list would desync the
+      keyframes against the visible frame order) */
+  private get dwellList(): number[] | null {
+    if (this.dwells == null) return null;
+    const ok =
+      Array.isArray(this.dwells) &&
+      this.dwells.length === this.frameList.length &&
+      this.dwells.every((d) => typeof d === 'number' && Number.isFinite(d) && d > 0);
+    if (!ok) {
+      console.warn('[glaphic-ascii] dwells must be one positive number per frame — ignoring', this.dwells);
+      return null;
+    }
+    return this.dwells;
+  }
+
   /**
    * The per-mount cycle CSS, generated (not static): the keyframe
    * percentages depend on the frame count, and counts differ between
@@ -100,33 +132,71 @@ export class GlaphicAscii extends LitElement {
   private get cycleCss(): string {
     const count = this.frameList.length;
     if (count === 0) return '';
-    const n = count + 2; // the final frame holds two extra steps
-    const hide = (100 / n).toFixed(3);
-    const holdHide = ((3 / n) * 100).toFixed(3);
-    const flip = 'ascii-flip-' + String(this.mountUid);
-    const hold = 'ascii-hold-' + String(this.mountUid);
-    return [
-      '@keyframes ' + flip + ' {',
-      '  0% { visibility: visible; }',
-      '  ' + hide + '% { visibility: hidden; }',
-      '}',
-      '@keyframes ' + hold + ' {',
-      '  0% { visibility: visible; }',
-      '  ' + holdHide + '% { visibility: hidden; }',
-      '}',
+    const dwells = this.dwellList;
+    const sum = dwells ? dwells.reduce((a, b) => a + b, 0) : count;
+    const n = sum + 2; // the final frame holds two extra steps
+    const uid = String(this.mountUid);
+    const base = [
       'span {',
-      '  animation-name: ' + flip + ';',
       '  animation-duration: calc(var(--glaphic-ascii-step) * ' + String(n) + ');',
-      '  animation-delay: calc(var(--i) * var(--glaphic-ascii-step));',
       '  animation-timing-function: step-end;',
       '  animation-iteration-count: infinite;',
       '}',
-      'span:last-child { animation-name: ' + hold + '; }',
+    ];
+    if (!dwells) {
+      // the unweighted cycle: one shared flip per frame count — today's
+      // shape, kept byte-compatible for consumers that set frames only
+      const flip = 'ascii-flip-' + uid;
+      const hold = 'ascii-hold-' + uid;
+      return [
+        '@keyframes ' + flip + ' {',
+        '  0% { visibility: visible; }',
+        '  ' + (100 / n).toFixed(3) + '% { visibility: hidden; }',
+        '}',
+        '@keyframes ' + hold + ' {',
+        '  0% { visibility: visible; }',
+        '  ' + ((3 / n) * 100).toFixed(3) + '% { visibility: hidden; }',
+        '}',
+      ].concat(base, [
+        'span {',
+        '  animation-name: ' + flip + ';',
+        '  animation-delay: calc(var(--i) * var(--glaphic-ascii-step));',
+        '}',
+        'span:last-child { animation-name: ' + hold + '; }',
+        '@media (prefers-reduced-motion: reduce) {',
+        '  span { animation: none !important; }',
+        '  span:last-child { visibility: visible; }',
+        '}',
+      ]).join('\n');
+    }
+    // the weighted cycle: each span carries its own flip keyframes, and
+    // its name + delay ride inline (inline beats any :last-child sheet
+    // rule, so the reduced-motion kill needs the !important above)
+    const out: string[] = [];
+    for (let i = 0; i < count; i++) {
+      const d = dwells[i] ?? 1;
+      out.push(
+        '@keyframes ascii-flip-' + uid + '-' + String(i) + ' {',
+        '  0% { visibility: visible; }',
+        '  ' + ((d / n) * 100).toFixed(3) + '% { visibility: hidden; }',
+        '}',
+      );
+    }
+    const lastDwell = dwells[count - 1] ?? 1;
+    out.push(
+      '@keyframes ascii-hold-' + uid + ' {',
+      '  0% { visibility: visible; }',
+      '  ' + (((lastDwell + 2) / n) * 100).toFixed(3) + '% { visibility: hidden; }',
+      '}',
+    );
+    out.push(...base);
+    out.push(
       '@media (prefers-reduced-motion: reduce) {',
-      '  span { animation: none; }',
+      '  span { animation: none !important; }',
       '  span:last-child { visibility: visible; }',
       '}',
-    ].join('\n');
+    );
+    return out.join('\n');
   }
 
   static styles = css`
@@ -232,11 +302,53 @@ export class GlaphicAscii extends LitElement {
     }
   `;
 
+  /** one line of mount facts per instance: frames, total steps, tempo —
+      the diagnostic for a weighted cycle that fell back to uniform */
+  private noteCycle(count: number, steps: number, weighted: boolean): void {
+    if (this.loggedCycle || count === 0) return;
+    this.loggedCycle = true;
+    const raw = getComputedStyle(this)
+      .getPropertyValue('--glaphic-ascii-step')
+      .trim();
+    const step = raw || '0.2s';
+    const seconds = Math.round(steps * (parseFloat(step) || 0.2) * 10) / 10;
+    console.info('[glaphic-ascii] cycle: ' + String(count) + ' frames over ' +
+      String(Math.round(steps * 10) / 10) + ' steps at ' + step + ' ≈ ' + String(seconds) +
+      's (' + (weighted ? 'weighted' : 'uniform') + ')');
+  }
+
   protected render() {
+    const dwells = this.dwellList;
+    const count = this.frameList.length;
+    if (dwells == null || count === 0) {
+      // the unweighted machine stays exactly as it rendered before:
+      // every span rides the shared flip at its index step
+      this.noteCycle(count, count + 2, false);
+      return html`
+        <style>${this.cycleCss}</style>
+        <div class="frame" part="box">
+          ${this.frameList.map((text, i) => html`<span part="frame" style="--i: ${i}">${text}</span>`)}
+        </div>
+      `;
+    }
+    const uid = String(this.mountUid);
+    const last = count - 1;
+    let at = 0; // each span's delay walks the dwell sum forward
+    this.noteCycle(count, dwells.reduce((a, b) => a + b, 0) + 2, true);
+    const spans = this.frameList.map((text, i) => {
+      const name = i === last
+        ? 'ascii-hold-' + uid
+        : 'ascii-flip-' + uid + '-' + String(i);
+      const style = '--i: ' + String(i) +
+        '; animation-name: ' + name +
+        '; animation-delay: calc(var(--glaphic-ascii-step) * ' + String(at) + ')';
+      at += dwells[i] ?? 1;
+      return html`<span part="frame" style="${style}">${text}</span>`;
+    });
     return html`
       <style>${this.cycleCss}</style>
       <div class="frame" part="box">
-        ${this.frameList.map((text, i) => html`<span part="frame" style="--i: ${i}">${text}</span>`)}
+        ${spans}
       </div>
     `;
   }

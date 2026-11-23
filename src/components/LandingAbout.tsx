@@ -50,12 +50,12 @@
 // section's own .landing-about--in
 // latch and the rideOutUp stay). Bands breathe 12vh apart (B6, up from
 // round A's 6vh).
-// The portraits are REAL art: thirty-five text frames dropped into
-// public/assets/ascii-portraits/ — every frame exactly 55 lines
-// x 100 columns, a full 1..35 run (the copies' names are download
-// suffixes; the PLAY order is PORTRAIT_NUMBERS' computed morph tour
-// below). The frames fetch at runtime
-// and set on the element's ref only when ALL resolve AND band 1 has
+// The portraits are REAL art: eight text frames, all real renders
+// from public/assets/ascii-portraits/ — every frame 55 lines, the
+// widest 100 columns (the copies' names are download suffixes; the
+// PLAY order is PORTRAIT_NUMBERS — the held-pose cycle, 13 slots
+// counting the pulse-backs and the closing return). The frames fetch at runtime
+// and set on the element's ref only when the fetches settle AND band 1 has
 // fired (the cycle is a band-gated animation); array properties can't
 // carry to Lit from JSX attributes (the marquee precedent).
 import { useEffect, useRef, useState } from 'preact/hooks';
@@ -66,18 +66,24 @@ const INK = '#0D0221';
 const RED = '#A6022A'; // dark brand crimson — the flash + the ticker inks
 const FLURO = '#14F1C8'; // the site's fluro green — band 1's lead phrase + the plate's field
 
-/* the portraits' PLAY ORDER — a computed morph tour, not the copies'
-   download numbering (the (N) suffixes are just browser copies with no
-   story): each pair's cost is the frames' ink-density delta per cell
-   (paper/medium/block buckets over the 55×100 grid), the full tour built
-   greedy nearest-neighbour and 2-opt'd into a CLOSED chain (the cycle's
-   wrap included — avg consecutive delta 0.33 vs the numeric order's 0.57,
-   two larger beats left in as the cycle's glitch rhythm); the read is
-   one figure warping through its poses. Written out as numbers (the
-   lexicographic trap lives in the name sort, not here) */
+/* the portraits' PLAY ORDER — four holds, two blinks, two pulse-backs.
+   A pulse-back rides right after the 17 and 38 holds. The previous
+   anchor flashes for two steps, the settled pose returns for two
+   more. Then the blink commits the next group. 2 holds, breathes
+   through 1 into 17. The (25) blink lands 32→37→38. The (6) blink
+   returns to 2, where the loop closes. All real art. Only (25) and
+   (6) flash. The synthesized 90s family sits unused on disk. Re-bake
+   after re-exports with scripts/bake-portrait-tour.py. */
 const PORTRAIT_NUMBERS = [
-  1, 2, 3, 4, 32, 31, 15, 14, 16, 30, 29, 28, 27, 13, 24, 25, 35, 34, 33,
-  26, 20, 12, 9, 11, 10, 8, 7, 21, 22, 23, 18, 17, 19, 5, 6,
+  2, 1, 17, 2, 17, 25, 32, 37, 38, 32, 38, 6, 2,
+];
+
+/* time weights in steps: the anchors hold 9, the pulses flash 1,
+   the breaths rest 2, the blinks 0.3, the close 3. One weight per
+   route slot, in PORTRAIT_NUMBERS' order. --ab-ascii-step carries
+   the seconds. */
+const PORTRAIT_DWELLS = [
+  9, 2, 9, 1, 1, 0.3, 9, 2, 9, 1, 1, 0.3, 3,
 ];
 
 /* the burst's frame content (multi-line ASCII, real newlines): what the
@@ -140,11 +146,13 @@ export function LandingAbout() {
     }
   }, []);
 
-  // the portraits' load: 30 runtime fetches from public/assets; the slot
-  // stays empty (no frames set) until every one of them resolves AND the
-  // band has fired — a half-set cycle would print torn frames, and a
-  // caught failure is logged with its URL rather than silently skipped.
-  // The array property set once both facts hold — never as JSX
+  // the portraits' load: runtime fetches over the route's 9 numbers from
+  // public/assets; an absent number is a normal gap — the mounted set is
+  // whatever surfaced (in the list's order, gaps
+  // summarized once in the console) AND the band has fired. A caught
+  // NETWORK failure logs its URL; a miss or an HTML fallback answer is a
+  // gap, not an error. The
+  // array property sets once both facts hold — never as JSX
   // attributes. Async outliving the render must cancel: the alive flag +
   // an AbortController stop ghost writes after teardown.
   useEffect(() => {
@@ -159,7 +167,12 @@ export function LandingAbout() {
           const url = `./assets/ascii-portraits/${encodeURIComponent(`ascii-art (${n}).txt`)}`;
           try {
             const res = await fetch(url, { signal: controller.signal });
-            if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+            if (!res.ok) return null; // a candidate with no file yet — a gap, not an error
+            // Vite's SPA fallback answers 200 text/html for missing public
+            // files; the HTML body as a frame prints a glitch wall. Art is
+            // text/plain, so non-plain responses rejoin the gaps.
+            const contentType = res.headers.get('content-type') ?? '';
+            if (!contentType.startsWith('text/plain')) return null;
             return await res.text();
           } catch (err) {
             console.error(`[LandingAbout] the portraits' fetch failed for ${url} (frame order ${n}): ${err}`);
@@ -168,9 +181,15 @@ export function LandingAbout() {
         }),
       );
       if (!alive) return;
-      // a miss leaves the slot empty; the error logged above — the every-
-      // predicate narrows the nulls into real strings without a cast
-      if (frames.every((f): f is string => f !== null)) setPortraitFrames(frames);
+      // the survivors mount in the list's order; the gaps get one summary
+      // line (their numbers) — no error per absent file. The filter's
+      // type predicate narrows the nulls into real strings, no cast.
+      const survivors = frames.filter((f): f is string => f !== null);
+      if (survivors.length < PORTRAIT_NUMBERS.length) {
+        const gaps = PORTRAIT_NUMBERS.filter((n, i) => frames[i] === null);
+        console.info(`[LandingAbout] the portraits: ${survivors.length} of ${PORTRAIT_NUMBERS.length} candidates on disk (gaps: ${gaps.join(', ')})`);
+      }
+      if (survivors.length) setPortraitFrames(survivors);
     };
     void load();
     return () => {
@@ -185,8 +204,17 @@ export function LandingAbout() {
   // empty-length read makes the write idempotent (the property never
   // re-sets and the cycle never restarts mid-view).
   useEffect(() => {
-    const el = portraitsRef.current as unknown as { frames: string[] } | null;
-    if (in1 && portraitFrames && el && el.frames.length === 0) el.frames = portraitFrames;
+    const el = portraitsRef.current as unknown as
+      { frames: string[]; dwells: number[] | undefined } | null;
+    if (in1 && portraitFrames && el) {
+      // dwell weights land before the frames so the cycle starts with
+      // the weighted keyframes in place; the weights re-set on every
+      // run — an already-cycling element would otherwise keep stale
+      // weights, and an unchanged constant is identity-stable, so the
+      // re-set renders nothing
+      el.dwells = PORTRAIT_DWELLS;
+      if (el.frames.length === 0) el.frames = portraitFrames;
+    }
   }, [in1, portraitFrames]);
 
   // the burst widget takes its FRAMES array (content staying with the
@@ -346,9 +374,11 @@ export function LandingAbout() {
           /* C8, the plate's hug — 20px on every side (round D's bump:
              the brackets' 10px arms + a 4px breath clear the copy) */
           --ab-plate-pad: 20px;
-          /* F3, the portrait's slower cycle: the frame hold doubles —
-             31 steps (30 frames + 2 hold steps) at 0.4s ≈ 12.8s/loop */
-          --ab-ascii-step: 0.4s;
+          /* F3, the crawl's tempo: 49.6 weighted steps (with the 2
+             closing holds) at 0.1s ≈ 5s/loop. Four anchors hold
+             ~0.9s, the two breaths rest ~0.2s, the four pulses flash
+             ~0.1s, the two blinks ~0.03s */
+          --ab-ascii-step: 0.1s;
           /* B1, the plate's float air: ~8vw inside the strip's edges
              BOTH sides — the band holds it as its padding (the strip's
              own edges come off band 3's margins) */
@@ -726,7 +756,7 @@ export function LandingAbout() {
             <glaphic-ascii
               ref={portraitsRef}
               class="landing-about__portraits"
-              label="A cycling ASCII portrait, thirty-five drawn frames"
+              label="A cycling ASCII portrait, the keeper's drawn poses"
             />
           </div>
           {/* the reversed runner: same band voice, the track's direction
