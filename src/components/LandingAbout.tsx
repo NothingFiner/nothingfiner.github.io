@@ -111,6 +111,13 @@ export function LandingAbout() {
   // the three bands' latched reveals (F11): each flips once, in its own
   // observer entry, and never again
   const [in1, setIn1] = useState(false);
+  // the portraits' ART latch — SEPARATE from band 1's reveal gate: the
+  // -85% line fires only when the band's top reaches the screen's top
+  // strip, so at tall viewports the seat scrolls on visibly blank and
+  // the art's window shrinks to a blink (measured: art first paints at
+  // sy 1697 of a 1664-viewport — the seat had been on screen for 1400px).
+  // The art starts when the band first shows; the reveal keeps -85%.
+  const [in1Art, setIn1Art] = useState(false);
   const [in2, setIn2] = useState(false);
   const [in3, setIn3] = useState(false);
   // the portraits' resolved art (null until every fetch lands) — the set
@@ -284,14 +291,16 @@ export function LandingAbout() {
   }, []);
 
   // the portraits' cycle is band 1's animation (F11): the frames land on
-  // the element only once the band's own reveal fired AND the art
-  // resolved — the cycle starts with the band, not at page mount. The
+  // the element once the band FIRST SHOWS (any pixel — the shallow gate;
+  // the same pattern the burst rides) AND the art resolved — the cycle
+  // starts with the band's entry, not at page mount, and never waits for
+  // the band's own reveal line (that was the blank-seat climb). The
   // empty-length read makes the write idempotent (the property never
   // re-sets and the cycle never restarts mid-view).
   useEffect(() => {
     const el = portraitsRef.current as unknown as
       { frames: string[]; dwells: number[] | undefined } | null;
-    if (in1 && portraitFrames && el) {
+    if (in1Art && portraitFrames && el) {
       // dwell weights land before the frames so the cycle starts with
       // the weighted keyframes in place; the weights re-set on every
       // run — an already-cycling element would otherwise keep stale
@@ -300,7 +309,23 @@ export function LandingAbout() {
       el.dwells = PORTRAIT_DWELLS;
       if (el.frames.length === 0) el.frames = portraitFrames;
     }
-  }, [in1, portraitFrames]);
+  }, [in1Art, portraitFrames]);
+
+  // the portraits' shallow gate: band 1's wrapper, watched at any pixel.
+  // Fires on the band's first sliver entering the viewport — the tickers'
+  // edge — so the seat is art-bearing from the moment it peeks, at every
+  // viewport height; the -85% pair observer keeps owning the reveal.
+  useEffect(() => {
+    const band = band1Ref.current;
+    if (!band) return;
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      setIn1Art(true);
+      io.disconnect();
+    });
+    io.observe(band);
+    return () => io.disconnect();
+  }, []);
 
   // the burst's frames land when the layer FIRST SHOWS — any pixel of
   // the widget in view (a plain shallow gate). The decor's cycle runs
