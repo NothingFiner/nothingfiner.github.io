@@ -96,6 +96,11 @@ const GO_TO = {
   '--glaphic-button-text': PAPER_BRIGHT,
   '--glaphic-button-hover-surface': FLURO,
   '--glaphic-button-hover-text': INK,
+  /* the token sheet's spacing ladder rides 9/18 — the labels read
+     flush past the chamfer cut; the CTA pins the component's own
+     documented md read (12px tall, 24px deep) on every screen */
+  '--glaphic-button-md-padding-y': '12px',
+  '--glaphic-button-md-padding-x': '24px',
 };
 
 // the three bands in the brief's order; the image and the id resolve
@@ -128,6 +133,16 @@ const NOW_TICKER = [
   'Lit', 'Web Components', 'Rust', 'Open Weights', 'Word Processing',
   'Science Fiction', 'Design System',
 ];
+
+/* the bands' separator rails — one marquee after every card on mobile,
+   each printing its own project's vocabulary line; mid rail runs
+   reversed so the three read as a weave. The AT tree carries each
+   line once through the rail's own aria read */
+const NOW_SEPARATORS: readonly string[] = [
+  'rite: rust, tauri, vue, word processing, open weights, integrated writing environment',
+  'glaphicUI: design system, lit, storybook, graphic realism, acetate',
+  'novel: science fiction, literature, prose, inspiration',
+] as const;
 
 // the big name's fit — one advance-width model: a Space Grotesk 700
 // glyph runs ~ADVANCE_EM em on average, so a name's run is
@@ -174,6 +189,9 @@ export function LandingNow() {
   const flowRef = useRef<HTMLDivElement | null>(null);
   const hostRef = useRef<HTMLElement | null>(null);
   const marqueeRef = useRef<HTMLElement | null>(null);
+  const sep0Ref = useRef<HTMLElement | null>(null);
+  const sep1Ref = useRef<HTMLElement | null>(null);
+  const sep2Ref = useRef<HTMLElement | null>(null);
   const [, navigate] = useLocation();
 
   // the ride-out wiring: the content translates up as the section
@@ -205,6 +223,18 @@ export function LandingNow() {
     if (!m) return;
     m.strings = NOW_TICKER;
     m.speed = 50;
+  }, []);
+
+  // the separators: one project's vocabulary line per rail (the JSX
+  // can't carry the strings array), the mid rail reversed in markup
+  useEffect(() => {
+    const refs = [sep0Ref, sep1Ref, sep2Ref];
+    for (let i = 0; i < refs.length; i++) {
+      const m = refs[i].current as unknown as { strings: string[]; speed: number } | null;
+      if (!m) continue;
+      m.strings = [NOW_SEPARATORS[i]];
+      m.speed = 50;
+    }
   }, []);
 
   // the title's sweep: the whole phrase lands on the rail exactly as
@@ -513,6 +543,22 @@ export function LandingNow() {
           --glaphic-marquee-ink: #242821;
         }
 
+        /* the separators: the cards' rails, MOBILE-ONLY (the desktop
+           grid's columnar read has no room for horizontal rails between
+           the bands) — parked off the desktop, the shared rail look
+           rides below */
+        .landing-now__sep {
+          display: none;
+          grid-column: 1 / -1;
+          margin-inline: -3.9vw -3.9vw;
+          height: 48px;
+          mix-blend-mode: multiply;
+          --glaphic-marquee-rule-size: 0px;
+          --glaphic-marquee-pad-block: 12px;
+          --glaphic-marquee-text-size: 15px;
+          --glaphic-marquee-ink: #242821;
+        }
+
         /* ── the title rail ─────────────────────────────────────────
            A TRANSPARENT band under the cap — no fill, the hatch
            prints through it — carrying the section's title the way
@@ -577,6 +623,7 @@ export function LandingNow() {
           /* the mobile: the full-bleed rails; the title rides the same
              pull, its type holding the desktop clamp */
           .landing-now__marquee { margin-inline: -6vw; }
+          .landing-now__sep { display: block; margin-inline: -6vw; }
           .landing-now__title { margin-inline: -6vw; }
         }
 
@@ -864,6 +911,18 @@ export function LandingNow() {
                 )}
               </div>
             </article>
+            {/* the band's separator rail — its own project's vocabulary
+                line (the effect sets the strings); mobile-only, the mid
+                rail reversed for the weave */}
+            {i === 0 && (
+              <glaphic-marquee class="landing-now__sep" aria-hidden="true" ref={sep0Ref} />
+            )}
+            {i === 1 && (
+              <glaphic-marquee class="landing-now__sep" aria-hidden="true" reverse ref={sep1Ref} />
+            )}
+            {i === 2 && (
+              <glaphic-marquee class="landing-now__sep" aria-hidden="true" ref={sep2Ref} />
+            )}
           </Fragment>
         ))}
         {/* the ticker's words, once for the AT tree (the marquee is

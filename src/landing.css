@@ -454,13 +454,10 @@
     display: flex;
     align-items: center;
   }
+  /* the ramp ribbon retires on the phone (Eliot 11-24): the year and
+     the name print bare */
   .site-footer__legal-tape {
-    display: block;
-    width: 100%;
-    height: .85em;
-    /* crimson, not the tape's default hazard ink — the tape's own ink
-       token (--glaphic-tape-color) carries the site's brand red */
-    --glaphic-tape-color: #A6022A;
+    display: none;
   }
   .site-footer__legal-divider {
     display: none;

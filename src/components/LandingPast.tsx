@@ -93,6 +93,11 @@ const GO_TO = {
   '--glaphic-button-text': '#F9FAF4',
   '--glaphic-button-hover-surface': '#14F1C8',
   '--glaphic-button-hover-text': INK,
+  /* the token sheet's spacing ladder rides 9/18 — the labels read
+     flush past the chamfer cut; the CTA pins the component's own
+     documented md read (12px tall, 24px deep) on every screen */
+  '--glaphic-button-md-padding-y': '12px',
+  '--glaphic-button-md-padding-x': '24px',
 };
 
 // the category mapping (the D7 default, unchanged): each tray lists its
@@ -159,6 +164,7 @@ export function LandingPast() {
   const flowRef = useRef<HTMLDivElement | null>(null);
   const marqueeTopRef = useRef<HTMLElement | null>(null);
   const marqueeBottomRef = useRef<HTMLElement | null>(null);
+  const marqueeBetweenRef = useRef<HTMLElement | null>(null);
   const [, navigate] = useLocation();
 
   // the ride-out wiring: the content translates up as the section
@@ -171,7 +177,7 @@ export function LandingPast() {
   // the LOWER rail's direction rides the component's reverse attribute
   // in the markup, not this property set)
   useEffect(() => {
-    const marquees = [marqueeTopRef, marqueeBottomRef];
+    const marquees = [marqueeTopRef, marqueeBottomRef, marqueeBetweenRef];
     for (const ref of marquees) {
       const el = ref.current as unknown as { strings: string[]; speed: number } | null;
       if (!el) return;
@@ -255,6 +261,10 @@ export function LandingPast() {
         /* the lower rail closes on the track (the top rail's 3vh is the
            head slot's air, not rail spacing) */
         .landing-past__marquee--bottom { margin-top: 0; }
+        /* the tray separator: MOBILE-ONLY — parked off the desktop's
+           drawer track entirely (a grid child display:none takes no
+           track) */
+        .landing-past__marquee--between { display: none; }
 
         /* the track: the three columns' plate — flush left at the
            viewport's edge, flush right at the parked panel (the strip
@@ -578,12 +588,17 @@ export function LandingPast() {
           .landing-past__head { display: block; }
           .landing-past__marquee { margin-inline: -6vw; }
           .landing-past__marquee--bottom { display: none; }
+          /* the tray separator's one mobile showing: flush between the
+             two cards (its 3vh top air is the head's, not the rail's) */
+          .landing-past__marquee--between { display: block; margin-inline: -6vw; margin-top: 0; }
           .landing-past__center { display: none; }
           .landing-past__side-band { display: none; }
           .landing-past__track {
             height: auto;
             margin-inline: -6vw;
-            margin-top: 2.2vh;
+            /* no top air: the first card's photo butts the ticker's
+               bottom edge (Eliot 11-24) */
+            margin-top: 0;
             display: flex;
             flex-direction: column;
           }
@@ -613,8 +628,8 @@ export function LandingPast() {
           }
           .landing-past__shot img { object-position: center; }
           /* the blended name rides again (the card's name over the
-             shot) — its cap tops out at 16vw (Eliot 11-04): the run's
-             wrapped lines stay inside the 44vw card box */
+             shot) — its cap steps to Eliot's 11vw (2026-11-24): the
+             16vw read printed the run too tall over the 44vw card box */
           .landing-past__band-name {
             position: absolute;
             inset-block: 0;
@@ -626,7 +641,7 @@ export function LandingPast() {
             mix-blend-mode: difference;
             font-family: var(--f-disp, 'Space Grotesk', sans-serif);
             font-weight: 700;
-            font-size: 16vw;
+            font-size: 11vw;
             line-height: 1.05;
             text-wrap: balance;
             color: ${PAPER};
@@ -696,21 +711,36 @@ export function LandingPast() {
             <span class="landing-past__rule" aria-hidden="true" />
           </div>
 
-          {trays.map((tray) => (
-            <article
-              class={`landing-past__tray landing-past__tray--${tray.side}`}
-              key={tray.name}
-            >
-              {/* the left tray leads its plate — the piece that
-                  emerges from the screen's own side; the right tray's
-                  photo leads (the plate trails at the panel's edge) */}
-              {tray.side === 'left' && (<TrayCopy works={tray.works} />)}
-              <div class="landing-past__shot">
-                <img src={tray.image} alt={`The ${tray.works[0].name.toLowerCase()} build`} loading="lazy" />
-                <h3 class="landing-past__band-name">{tray.name}</h3>
-              </div>
-              {tray.side === 'right' && (<TrayCopy works={tray.works} />)}
-            </article>
+          {trays.map((tray, ti) => (
+            <Fragment key={tray.name}>
+              <article
+                class={`landing-past__tray landing-past__tray--${tray.side}`}
+                key={tray.name}
+              >
+                {/* the left tray leads its plate — the piece that
+                    emerges from the screen's own side; the right tray's
+                    photo leads (the plate trails at the panel's edge) */}
+                {tray.side === 'left' && (<TrayCopy works={tray.works} />)}
+                <div class="landing-past__shot">
+                  <img src={tray.image} alt={`The ${tray.works[0].name.toLowerCase()} build`} loading="lazy" />
+                  <h3 class="landing-past__band-name">{tray.name}</h3>
+                </div>
+                {tray.side === 'right' && (<TrayCopy works={tray.works} />)}
+              </article>
+              {/* the tray separator: MOBILE-ONLY — the card read's rail
+                  between the two category cards, running the track's own
+                  ticker words the opposite way; the desktop's drawer
+                  track has no room for a horizontal rail */}
+              {ti === 0 && (
+                <glaphic-marquee
+                  key="between-rail"
+                  class="landing-past__marquee landing-past__marquee--between"
+                  reverse
+                  aria-hidden="true"
+                  ref={marqueeBetweenRef}
+                />
+              )}
+            </Fragment>
           ))}
 
           {/* the seam bands: fixed at the middle's two edges, the

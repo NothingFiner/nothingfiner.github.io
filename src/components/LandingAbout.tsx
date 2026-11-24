@@ -198,6 +198,45 @@ export function LandingAbout() {
     };
   }, []);
 
+  // the burst's parallax (mobile): the flow's own exit ride handles the
+  // content; the asteroid layer swims at its own rate — the driver
+  // writes --ab-drift per scroll frame over the section's full transit
+  // (the reader's clock — no classes, no timers, reversible always).
+  // Desktop and prefers-reduced-motion: the var parks at 0 and the
+  // desktop machine renders untouched
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const host = hostRef.current;
+        if (!host) return;
+        const narrow = window.matchMedia('(max-width: 899px)').matches;
+        const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!narrow || still) {
+          host.style.setProperty('--ab-drift', '0');
+          return;
+        }
+        const vh = window.innerHeight;
+        // the read: 0 while the layer's zone is below the fold, 1 once
+        // the section's bottom clears the viewport's top — the whole
+        // transit the headline and the plate ride through
+        const rect = host.getBoundingClientRect();
+        const p = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
+        host.style.setProperty('--ab-drift', String(Math.round((0.5 - p) * vh * 0.6)));
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      hostRef.current?.style.setProperty('--ab-drift', '0');
+    };
+  }, []);
+
   // the portraits' cycle is band 1's animation (F11): the frames land on
   // the element only once the band's own reveal fired AND the art
   // resolved — the cycle starts with the band, not at page mount. The
@@ -674,8 +713,13 @@ export function LandingAbout() {
                advance (0.6em, so the fitting type is 54em wide ÷ the
                block), the seat that type spread over its 49 lines; the
                8px slack = 4px of air a side at the centered 90-column
-               box */
+               box — halved with the section-gap retune (11-24: the
+               mobile landing's between-section space steps down 50%) */
             --ab-band1-mid: calc((100vw - 8px) / 54 * 49);
+            --ab-band-gap: 6vh;
+            --ab-b3-gap-plate: 5vh;
+            --ab-bottom-gap: 7.5vh;
+            padding-top: calc(25vh - (var(--ab-band1-mid) + 2 * var(--ab-marquee-h)) / 4);
           }
           .landing-about__marquee { margin-inline: -6vw; }
           /* band 1's riders in the ONE full-bleed cell: the headline
@@ -708,7 +752,10 @@ export function LandingAbout() {
           }
           /* the phrase's 76px is the desktop's read — the card head
              falls back to the h2's clamp */
-          .landing-about__phrase { font-size: inherit; }
+          .landing-about__phrase {
+            font-size: inherit;
+            color: ${INK}
+          }
           /* the band's content runs the full mobile flow (no panel to
              stand off on mobile) */
           .landing-about__band2 { margin-inline: 0; }
@@ -719,6 +766,32 @@ export function LandingAbout() {
           /* the strip box + the float air are desktop strip reads — the
              stacked mobile plate rides the flow column again */
           .landing-about__band3 { margin-inline: 0; padding-inline: 0; }
+          /* the bands ride above the burst's parallax layer: the
+             anchored frame paints at the flow's own level behind them */
+          .landing-about__band2, .landing-about__band3 {
+            position: relative;
+            z-index: 1;
+          }
+          /* the burst's parallax: the widget's frame escapes the row's
+             flex flow and anchors to the flow's content box (spans the
+             headline's band and the plate's), sitting mid-lower behind
+             both. The seat's type steps down — 44px reads as a layer,
+             64px read as a figure. The drift rides --ab-drift (the
+             section's driver writes it per scroll frame; static read
+             without it) */
+          .landing-about__widget {
+            --glaphic-ascii-type: 44px;
+            pointer-events: none;
+          }
+          .landing-about__widget::part(box) {
+            position: absolute;
+            top: 47%;
+            left: 0;
+            right: 0;
+            margin-inline: auto;
+            z-index: 0;
+            transform: translateY(calc(var(--ab-drift, 0) * 1px));
+          }
         }
       `}</style>
 

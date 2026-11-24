@@ -143,7 +143,7 @@ export function LandingHero() {
           padding-bottom: 5vh;
         }
         @media (max-width: 767px) {
-          .landing-hero__strip { display: block; margin-top: 20px; padding-bottom: 28px; }
+          .landing-hero__strip { display: block; margin-top: 20px; padding-bottom: 14px; }
           /* round 9b — CASCADE-PLACED AFTER the ride's base rule above: the
              desktop rows are 8 minmax(0,1fr) over a definite 100vh; with
              the hero going content-height on mobile, those fr rows
@@ -253,7 +253,9 @@ export function LandingHero() {
           padding-left: 2.3vw;
         }
         @media (max-width: 767px) {
-          .landing-hero__legal { position: static; display: block; margin: 40px 6vw 0; padding-left: 0; opacity: 1; }
+          /* the hero's own legal retires on the phone (Eliot 11-24: the
+             name prints once at the foot — the fold doesn't need it) */
+          .landing-hero__legal { display: none; }
           .landing-hero__title {
             padding-left: 0;
           }

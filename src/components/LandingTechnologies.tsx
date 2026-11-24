@@ -210,7 +210,10 @@ export function LandingTechnologies() {
              gutters pulled back); the frame replaces the tail margin
              the cloud used to carry itself */
           .landing-technologies__bar { margin-inline: -6vw; }
+          /* the bars' section air halves with the mobile retune (11-24) */
+          .landing-technologies__bar--lead { margin-top: 2vh; }
           .landing-technologies__cloud { max-width: none; gap: 14px 0; }
+          .landing-technologies__bar--tail { margin-top: 1vh; }
         }
       `}</style>
 
