@@ -890,15 +890,20 @@ export function LandingAbout() {
             z-index: -1;
           }
           /* the statement "comes through" (Eliot 11-24): the mobile
-             grow print's fluro-always read defeats the beat — the
-             glyphs printed at full color from the fold in. This
-             statement holds the machinery's own pale pre-state (the
-             desktop's warm-white read) until the band's mid-line gate
-             fires, then the ladder pops the fluro glyphs through */
-          .landing-about .grow-text__in { color: #f2f5eb; }
+             grow print's fluro-always read defeats the beat and the
+             pale pre-state still ghosts (the user reads it as the
+             text visible before the marks) — this statement holds
+             FULLY INVISIBLE until the band's gate fires, then the
+             pop rides the ladder's own timing: the fluro glyphs and
+             the ink shadow ladder land together */
+          .landing-about .grow-text__in {
+            color: #f2f5eb;
+            opacity: 0;
+            transition: color 0.45s ease-out 0.15s, opacity 0.45s ease-out 0.15s;
+          }
           .landing-about .grow-text__in.grow-text--on {
             color: var(--glaphic-ink-brand-fluro, #14f1c8);
-            transition: color 0.45s ease-out 0.15s;
+            opacity: 1;
           }
         }
       `}</style>

@@ -637,8 +637,19 @@ export function LandingNow() {
           .landing-now__band-copy { font-size: 15px; }
           /* the mobile: the full-bleed rails; the title rides the same
              pull, its type holding the desktop clamp */
+          /* the cards' desktop 0.5rem margin-bottom retires here: the
+             rail's clearance is the RAIL'S OWN (Eliot 11-24: the
+             strange top margin came from the band's margin, the rail
+             kissing the next card's border while the band's margin
+             padded its top) — the rail owns an equal 0.5rem block of
+             air each side */
+          .landing-now__band { margin-inline: -6vw; margin-bottom: 0; }
           .landing-now__marquee { margin-inline: -6vw; }
-          .landing-now__sep { display: block; margin-inline: -6vw; }
+          .landing-now__sep {
+            display: block;
+            margin-block: 0.5rem;
+            margin-inline: -6vw;
+          }
           .landing-now__title { margin-inline: -6vw; }
         }
 
