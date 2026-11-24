@@ -220,10 +220,14 @@ export function LandingAbout() {
         const vh = window.innerHeight;
         // the read: 0 while the layer's zone is below the fold, 1 once
         // the section's bottom clears the viewport's top — the whole
-        // transit the headline and the plate ride through
+        // transit the headline and the plate ride through. The layer
+        // LAGS the content (a background's read: it starts high,
+        // sinks through the section as the ride passes) and the swing
+        // holds a step under the band-gap so the cycle stays in its
+        // window
         const rect = host.getBoundingClientRect();
         const p = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
-        host.style.setProperty('--ab-drift', String(Math.round((0.5 - p) * vh * 0.6)));
+        host.style.setProperty('--ab-drift', String(Math.round((p - 0.5) * vh * 0.3)));
       });
     };
     onScroll();
@@ -256,16 +260,32 @@ export function LandingAbout() {
     }
   }, [in1, portraitFrames]);
 
-  // the burst widget takes its FRAMES array (content staying with the
-  // page) — an array property, so it sets imperatively — and its cycle
-  // is band 2's animation (F11): nothing cycles until band 2's own
-  // reveal fires. The empty-length read makes the write idempotent (the
-  // property never re-sets and the cycle never restarts mid-view)
+  // the burst's frames land when the layer FIRST SHOWS — any pixel of
+  // the widget in view (a plain shallow gate). The decor's cycle runs
+  // through the band's whole approach and read; band 2's own -85%
+  // gate keeps owning the band's reveal. The empty-length read makes
+  // the write idempotent (the property never re-sets and the cycle
+  // never restarts mid-view)
+  // the burst's frames land when the layer's zone FIRST SHOWS — band
+  // 2's top edge, watched shallow. The widget's own host is a no-box
+  // escape (its frame paints from the band's anchor), so the gate
+  // reads the BAND. The cycle runs from the approach on; band 2's own
+  // -85% gate keeps owning the band's reveal. The empty-length read
+  // makes the write idempotent (the property never re-sets and the
+  // cycle never restarts mid-view)
   useEffect(() => {
-    if (!in2) return;
-    const burst = burstRef.current as unknown as { frames: string[] } | null;
-    if (burst && burst.frames.length === 0) burst.frames = FRAMES;
-  }, [in2]);
+    const zone = band2Ref.current;
+    const burstEl = burstRef.current;
+    if (!zone || !burstEl) return;
+    const burst = burstEl as unknown as { frames: string[] };
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      if (burst.frames.length === 0) burst.frames = FRAMES;
+      io.disconnect();
+    });
+    io.observe(zone);
+    return () => io.disconnect();
+  }, []);
 
   // the ride-out wiring
   useEffect(() => rideOutUp(hostRef, flowRef, 0.5), []);
@@ -716,9 +736,16 @@ export function LandingAbout() {
                box — halved with the section-gap retune (11-24: the
                mobile landing's between-section space steps down 50%) */
             --ab-band1-mid: calc((100vw - 8px) / 54 * 49);
-            --ab-band-gap: 6vh;
-            --ab-b3-gap-plate: 5vh;
-            --ab-bottom-gap: 7.5vh;
+            /* the bursts' layer type: the seat + the print ride one
+               token (the desktop's 64 read a figure, 44 reads a layer) */
+            --ab-burst-type: 44px;
+            /* the two gaps above and below the headline band ARE the
+               layer's viewing window (Eliot 11-24: the parallax cycle
+               needs exposed air to read) — the other section gaps stay
+               at the halved mobile retune */
+            --ab-band-gap: 8vh;
+            --ab-b3-gap-plate: 10vh;
+            --ab-bottom-gap: 5vh;
             padding-top: calc(25vh - (var(--ab-band1-mid) + 2 * var(--ab-marquee-h)) / 4);
           }
           .landing-about__marquee { margin-inline: -6vw; }
@@ -773,23 +800,25 @@ export function LandingAbout() {
             z-index: 1;
           }
           /* the burst's parallax: the widget's frame escapes the row's
-             flex flow and anchors to the flow's content box (spans the
-             headline's band and the plate's), sitting mid-lower behind
-             both. The seat's type steps down — 44px reads as a layer,
-             64px read as a figure. The drift rides --ab-drift (the
-             section's driver writes it per scroll frame; static read
-             without it) */
+             flex flow and anchors to the band's top edge (riding the
+             headline's band top and spilling into the plate-gap's
+             open air below). The seat + print step down via one token
+             (--ab-burst-type, the section's var list). The drift rides
+             --ab-drift (the section's driver writes it per scroll
+             frame; static read without it) */
           .landing-about__widget {
-            --glaphic-ascii-type: 44px;
             pointer-events: none;
           }
           .landing-about__widget::part(box) {
             position: absolute;
-            top: 47%;
+            top: 0;
             left: 0;
             right: 0;
             margin-inline: auto;
-            z-index: 0;
+            /* a z UNDER the band's own content, inside band 2's z-1
+               context — the marks swim BEHIND the headline's run, over
+               band 3 the plate covers them */
+            z-index: -1;
             transform: translateY(calc(var(--ab-drift, 0) * 1px));
           }
         }

@@ -135,14 +135,17 @@ const NOW_TICKER = [
 ];
 
 /* the bands' separator rails — one marquee after every card on mobile,
-   each printing its own project's vocabulary line; mid rail runs
-   reversed so the three read as a weave. The AT tree carries each
-   line once through the rail's own aria read */
-const NOW_SEPARATORS: readonly string[] = [
-  'rite: rust, tauri, vue, word processing, open weights, integrated writing environment',
-  'glaphicUI: design system, lit, storybook, graphic realism, acetate',
-  'novel: science fiction, literature, prose, inspiration',
-] as const;
+   each printing its own project's vocabulary list; every item is its
+   OWN ticker entry joining the rail's /// run (the component joins the
+   strings), the mid rail reversed so the three read as a weave */
+const NOW_SEPARATORS: readonly string[][] = [
+  [
+    'rite: rust', 'tauri', 'vue', 'word processing',
+    'open weights', 'integrated writing environment',
+  ],
+  ['glaphicUI: design system', 'lit', 'storybook', 'graphic realism', 'acetate'],
+  ['novel: science fiction', 'literature', 'prose', 'inspiration'],
+];
 
 // the big name's fit — one advance-width model: a Space Grotesk 700
 // glyph runs ~ADVANCE_EM em on average, so a name's run is
@@ -225,14 +228,15 @@ export function LandingNow() {
     m.speed = 50;
   }, []);
 
-  // the separators: one project's vocabulary line per rail (the JSX
-  // can't carry the strings array), the mid rail reversed in markup
+  // the separators: one project's vocabulary list per rail (the JSX
+  // can't carry the strings array; each item is one /// entry), the
+  // mid rail reversed in markup
   useEffect(() => {
     const refs = [sep0Ref, sep1Ref, sep2Ref];
     for (let i = 0; i < refs.length; i++) {
       const m = refs[i].current as unknown as { strings: string[]; speed: number } | null;
       if (!m) continue;
-      m.strings = [NOW_SEPARATORS[i]];
+      m.strings = [...NOW_SEPARATORS[i]];
       m.speed = 50;
     }
   }, []);
@@ -600,11 +604,11 @@ export function LandingNow() {
            order value = the Phase-4 map's now slot (the journey's 3rd
            section) */
         @media (max-width: 899px) {
-          .landing-now { height: auto; /* the Phase-4 map's now slot (the journey's 3rd section) */ order: 2; }
+          .landing-now { height: auto; /* the Phase-4 map's now slot (the journey's 3rd section) */ order: 2; padding-bottom: 5vh; }
           .landing-now__header-strip,
           .landing-now__footer-strip,
           .landing-now__band { margin-inline: -6vw; }
-          .landing-now__header-strip { margin-top: 8vh; }
+          .landing-now__header-strip { margin-top: 4vh; }
           .landing-now__band { height: auto; flex-direction: column; }
           /* the column's % flex-basis would fight the explicit heights
              (a basis resolves against the column's indefinite height and

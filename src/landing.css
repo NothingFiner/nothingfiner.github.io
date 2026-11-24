@@ -592,8 +592,9 @@
 
 @media (max-width: 899px) {
   .landing-flow { display: flex; flex-direction: column; padding-inline: 6vw; }
+  /* the past + tech heads' section air halves too (Eliot 11-24) */
   .landing-past .landing-past__head,
-  .landing-technologies .landing-technologies__head { margin-bottom: 24px; padding-top: 44px; }
+  .landing-technologies .landing-technologies__head { margin-bottom: 24px; padding-top: 20px; }
 }
 
 /* ── the grow print's mobile read ───────────────────────────────────

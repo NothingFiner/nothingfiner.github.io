@@ -173,17 +173,26 @@ export function LandingPast() {
 
   // both marquees take array properties, which JSX attributes can't
   // carry reliably to Lit — set them imperatively once (the
-  // sections'-marquee precedent; the pace is LandingNow's slower 50;
-  // the LOWER rail's direction rides the component's reverse attribute
-  // in the markup, not this property set)
+  // sections'-marquee precedent; the pace is LandingNow's slower 50).
+  // The lower rail's direction rides the breakpoint: the desktop's
+  // two-rail bracket runs it reversed, the mobile's three-rail weave
+  // runs it forward (fwd / rev / fwd around the two card trays)
   useEffect(() => {
     const marquees = [marqueeTopRef, marqueeBottomRef, marqueeBetweenRef];
     for (const ref of marquees) {
       const el = ref.current as unknown as { strings: string[]; speed: number } | null;
-      if (!el) return;
+      if (!el) continue;
       el.strings = PAST_TICKER;
       el.speed = 50;
     }
+    const narrow = window.matchMedia('(max-width: 899px)');
+    const setRide = () => {
+      const bottom = marqueeBottomRef.current as unknown as { reverse: boolean } | null;
+      if (bottom) bottom.reverse = !narrow.matches;
+    };
+    setRide();
+    narrow.addEventListener('change', setRide);
+    return () => narrow.removeEventListener('change', setRide);
   }, []);
 
   // the section's own arrival latch — the LATCHED idiom: this one means
@@ -583,11 +592,15 @@ export function LandingPast() {
            heading steps aside (the grow head carries the title) */
         @media (max-width: 899px) {
           /* the Phase-4 map's past slot (the journey's 4th section) */
-          .landing-past { order: 3; }
+          .landing-past { order: 3; padding-bottom: 5vh; }
           .landing-past__a11y-head { display: none; }
           .landing-past__head { display: block; }
           .landing-past__marquee { margin-inline: -6vw; }
-          .landing-past__marquee--bottom { display: none; }
+          /* the lower rail joins the mobile read (Eliot 11-24): the
+             card read runs a three-rail weave — top, reversed between
+             the trays, forward at the foot (its direction flips in the
+             strings effect) */
+          .landing-past__marquee--bottom { display: block; margin-inline: -6vw; }
           /* the tray separator's one mobile showing: flush between the
              two cards (its 3vh top air is the head's, not the rail's) */
           .landing-past__marquee--between { display: block; margin-inline: -6vw; margin-top: 0; }

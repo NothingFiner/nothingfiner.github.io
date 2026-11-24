@@ -205,7 +205,17 @@ export function LandingTechnologies() {
 
         /* ── mobile: the flow stacks (as the about) ── */
         @media (max-width: 899px) {
-          .landing-technologies { height: auto; /* the Phase-4 map's tech slot (the last mobile stop) */ order: 4; }
+          .landing-technologies {
+            height: auto; /* the Phase-4 map's tech slot (the last mobile stop) */
+            order: 4;
+            /* the tail's seat (Eliot 11-24): the desktop's 37.5vh ride
+               assumed the journey band's sticky air — on the phone the
+               pool patch and the icon cluster are VIEWPORT-pinned
+               rides and only the legal + social flow at the page's
+               end (they clear the pinned stack by its own bottom
+               inset), so the seat is one breath under the bar */
+            padding-bottom: 5vh;
+          }
           /* the bars ride the mobile flow full-bleed (the flow's 6vw
              gutters pulled back); the frame replaces the tail margin
              the cloud used to carry itself */
