@@ -202,9 +202,11 @@ export function LandingAbout() {
   // every width — the driver writes --ab-drift per scroll frame over
   // the section's full transit (no classes, no timers, reversible
   // always). The mobile layer lags at the deeper 0.3 swing through
-  // its viewing window; the desktop's burst beside the head rides a
-  // gentle 0.1 — a little parallax, not a machine; prefers-reduced-
-  // motion parks the var at 0 and both machines render static
+  // its viewing window and HOLDS to the screen through the leave;
+  // the desktop's burst beside the head rides a gentle 0.1 — a
+  // little parallax, not a machine. The exit dissolve writes
+  // --ab-fade per frame too; prefers-reduced-motion parks drift at 0
+  // and fade at 1 and both machines render static
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {
@@ -215,6 +217,7 @@ export function LandingAbout() {
         const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (still) {
           host.style.setProperty('--ab-drift', '0');
+          host.style.setProperty('--ab-fade', '1');
           return;
         }
         const narrow = window.matchMedia('(max-width: 899px)').matches;
@@ -223,13 +226,37 @@ export function LandingAbout() {
         // the section's bottom clears the viewport's top — the whole
         // transit the headline and the plate ride through. The layer
         // LAGS the content (a background's read: it starts high,
-        // sinks through the section as the ride passes) and the swing
+        // sinks through the section as the ride passes); the swing
         // holds a step under the band-gap so the cycle stays in its
-        // window
+        // window, and the desktop keeps the lag alone.
+        // The mobile HOLD (Eliot 11-24's leave): the flow's exit lift
+        // would carry the layer up and out long before the next
+        // section arrives — once band 2's top (the layer's anchor,
+        // measured against the band's own rect, which already carries
+        // whatever ride is live — parking against it self-corrects)
+        // rises past the hold line, the drift pins the box to the
+        // SCREEN instead: the marks stay in view behind the plate,
+        // sinking the lag's tail through the leave, and the fade var
+        // dissolves them only as the next section's sliver arrives
+        // (the fold crossing the section's end is p ≈ 0.6; the ramp
+        // reads 1 → 0 by p 0.83)
         const rect = host.getBoundingClientRect();
         const p = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
         const swing = narrow ? 0.3 : 0.1;
-        host.style.setProperty('--ab-drift', String(Math.round((p - 0.5) * vh * swing)));
+        let drift = (p - 0.5) * vh * swing;
+        if (narrow) {
+          const band2 = band2Ref.current;
+          if (band2) {
+            // band 2's rect carries whatever ride the flow has live —
+            // parking against the MEASURED rect self-corrects the
+            // leave's lift every frame (no ride wiring, no shared
+            // constants), and the lag's tail sinks the parked marks
+            drift += Math.max(0, vh * 0.42 - band2.getBoundingClientRect().top);
+          }
+        }
+        const fade = 1 - Math.min(1, Math.max(0, (p - 0.63) / 0.2));
+        host.style.setProperty('--ab-drift', String(Math.round(drift)));
+        host.style.setProperty('--ab-fade', String(Math.round(fade * 100) / 100));
       });
     };
     onScroll();
@@ -240,6 +267,7 @@ export function LandingAbout() {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
       hostRef.current?.style.setProperty('--ab-drift', '0');
+      hostRef.current?.style.setProperty('--ab-fade', '1');
     };
   }, []);
 
@@ -320,19 +348,16 @@ export function LandingAbout() {
     return () => io.disconnect();
   }, []);
 
-  // the bands' latched reveals (F11): all the animations keyed above
-  // wait for their OWN wrapper's entry. Bands 1 and 2 fire with the
-  // section's arrival — one observer watches their wrappers through the
-  // section-arrival -85% band (each fires as its TOP clears the
-  // viewport's upper 15%), latching each band's flag once and
-  // disconnecting once both have fired. Band 3's plate rides its OWN
-  // shallower gate below: the deep -85% read held the fluro box
-  // invisible through its whole approach, the fire landing only after
-  // the reader had been staring at an empty slot
+  // band 1's latched reveal (F11): the animations keyed above wait for
+  // the BAND's own entry — this observer fires as the band's TOP
+  // clears the viewport's upper 15% (the section-arrival read). Band 2
+  // rides its OWN mid-line gate below (Eliot 11-24: the asteroid PEEK
+  // must precede the grow text) and band 3's plate rides its own
+  // shallower gate after that (the deep -85% read held the fluro box
+  // invisible through its whole approach)
   useEffect(() => {
     const bands = [
       [band1Ref, setIn1],
-      [band2Ref, setIn2],
     ] as const;
     const latched = new Set<Element>();
     const io = new IntersectionObserver((entries) => {
@@ -351,6 +376,28 @@ export function LandingAbout() {
       const el = ref.current;
       if (el) io.observe(el);
     }
+    return () => io.disconnect();
+  }, []);
+
+  // band 2's own reveal gate (Eliot 11-24's choreography): the asteroid
+  // PEEK precedes the grow text — the shared -85% pair fired the
+  // text's build the moment the portrait's tail left (band 2's top
+  // rides only the 8vh gap below it, inside the top-15% zone right
+  // as band 1 cleared), so no peek window read at all. The text joins
+  // instead as its own top edge crosses the screen's MID line: the
+  // band's approach through the lower half is the marks' peek window,
+  // the build plays at mid-screen, and the plate's -20% gate lands
+  // the box right as the text passes the middle of the screen
+  useEffect(() => {
+    const band = band2Ref.current;
+    if (!band) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        setIn2(true);
+        io.disconnect();
+      }
+    }, { rootMargin: '0px 0px -55% 0px' });
+    io.observe(band);
     return () => io.disconnect();
   }, []);
 
@@ -650,6 +697,11 @@ export function LandingAbout() {
           /* both machines' parallax swim rides the section's
              --ab-drift var (the driver writes it per scroll frame) */
           transform: translateY(calc(var(--ab-drift, 0) * 1px));
+          /* the exit dissolve rides the same var grammar: the layer
+             holds its read through the leave's counter-ride and fades
+             only as the next section arrives (the driver writes
+             --ab-fade; it reads 1 anywhere the driver never ran) */
+          opacity: var(--ab-fade, 1);
           /* D1: the burst rides RAW — every surface retires on this
              instance: fluro surface, border pair, multiply, the
              drop/shadow ladder; the print is dark crimson straight on
@@ -824,6 +876,17 @@ export function LandingAbout() {
                context — the marks swim BEHIND the headline's run, over
                band 3 the plate covers them */
             z-index: -1;
+          }
+          /* the statement "comes through" (Eliot 11-24): the mobile
+             grow print's fluro-always read defeats the beat — the
+             glyphs printed at full color from the fold in. This
+             statement holds the machinery's own pale pre-state (the
+             desktop's warm-white read) until the band's mid-line gate
+             fires, then the ladder pops the fluro glyphs through */
+          .landing-about .grow-text__in { color: #f2f5eb; }
+          .landing-about .grow-text__in.grow-text--on {
+            color: var(--glaphic-ink-brand-fluro, #14f1c8);
+            transition: color 0.45s ease-out 0.15s;
           }
         }
       `}</style>

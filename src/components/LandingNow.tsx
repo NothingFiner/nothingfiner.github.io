@@ -547,29 +547,28 @@ export function LandingNow() {
           --glaphic-marquee-text-size: 15px;
           --glaphic-marquee-ink: #242821;
         }
-        /* the desktop foot rail retires (Eliot 11-24): the section's
-           vocabulary rides the mobile rails alone — the desktop cards
-           read clean of a ticker at the foot */
-        @media (min-width: 900px) {
-          .landing-now__marquee { display: none; }
-        }
+        /* the foot rail retires (Eliot 11-24): the section's vocabulary
+           rides the mobile rails alone — no ticker at the foot at any
+           width; the bands' own strips close the section */
+        .landing-now__marquee { display: none; }
 
-        /* the separators — the card read's rails. Their tokens mirror
-           the established ticker read (the about and past rails): the
-           component's 4px crimson rules at each edge, crimson 15px
-           type, the 4+8+24 interior — a plain full-bleed band. The
-           desktop grid's columnar read has no room for horizontal
-           rails between the bands; the mobile block shows them */
+        /* the separators — the card read's rails. The bare read: the
+           bands' own ink-dark borders own the frame above and below,
+           the type prints the furniture ink at the shared ticker size
+           (no rules, no crimson — the rails sit BETWEEN framed bands).
+           The desktop grid's columnar read has no room for horizontal
+           rails; the mobile block shows them */
         .landing-now__sep {
           display: none;
           grid-column: 1 / -1;
           margin-inline: -3.9vw -3.9vw;
           height: 48px;
-          --glaphic-marquee-rule-size: 4px;
-          --glaphic-marquee-pad-block: 8px;
+          /* the interior's whole math: 0px rule + 12px pad + the 24px
+             line, each side — the 48px strip */
+          --glaphic-marquee-rule-size: 0px;
+          --glaphic-marquee-pad-block: 12px;
           --glaphic-marquee-text-size: 15px;
-          --glaphic-marquee-ink: ${RED};
-          --glaphic-marquee-rule-ink: ${RED};
+          --glaphic-marquee-ink: #242821;
         }
 
         /* ── the title rail ─────────────────────────────────────────
