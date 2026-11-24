@@ -212,7 +212,7 @@ export function LandingNow() {
     const riders = root
       ? Array.from(
           root.querySelectorAll<HTMLElement>(
-            '.landing-now__header-strip, .landing-now__title, .landing-now__footer-strip, .landing-now__band, .landing-now__marquee',
+            '.landing-now__header-strip, .landing-now__title, .landing-now__footer-strip, .landing-now__band, .landing-now__marquee, .landing-now__sep',
           ),
         )
       : [];

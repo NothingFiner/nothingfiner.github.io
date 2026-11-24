@@ -384,10 +384,11 @@ export function LandingAbout() {
   // text's build the moment the portrait's tail left (band 2's top
   // rides only the 8vh gap below it, inside the top-15% zone right
   // as band 1 cleared), so no peek window read at all. The text joins
-  // instead as its own top edge crosses the screen's MID line: the
-  // band's approach through the lower half is the marks' peek window,
-  // the build plays at mid-screen, and the plate's -20% gate lands
-  // the box right as the text passes the middle of the screen
+  // as its own top edge crosses the 40% line (-60% rootMargin): the
+  // marks' box anchors BELOW the text and reaches ~full frame
+  // visibility at the same read, so the art has had its whole window
+  // before the glyphs pop, and the plate's -30% gate lands the box
+  // right as the text passes the middle of the screen
   useEffect(() => {
     const band = band2Ref.current;
     if (!band) return;
@@ -396,20 +397,24 @@ export function LandingAbout() {
         setIn2(true);
         io.disconnect();
       }
-    }, { rootMargin: '0px 0px -55% 0px' });
+    }, { rootMargin: '0px 0px -60% 0px' });
     io.observe(band);
     return () => io.disconnect();
   }, []);
 
-  // the plate's own gate — it fires as the plate's top edge crosses the
-  // viewport's 80% line (Eliot 11-24's re-pacing: the headline's read
-  // is then past the screen's middle, the box arriving right after its
-  // words), and the rise's transition carries the fixed
-  // beat, so the motion starts a fraction of a second after the box
-  // scrolls into view. Latched once per F11's contract
+  // the plate's own gate — it rides the TEXT BAND's position, not the
+  // plate element itself: the plate's unrisen slot sits ~113px below
+  // its rest read (the rise transform parks it there until the flag),
+  // so a plate-anchored gate fired late by exactly that offset. Band
+  // 2's 35% line (-65% rootMargin) is the moment the statement's own
+  // center crosses the screen's mid line — "once that has passed the
+  // middle of the screen the box should come in" (Eliot 11-24) — and
+  // the rise's transition carries the fixed beat, so the motion
+  // starts a fraction of a second after the box scrolls into view.
+  // Latched once per F11's contract
   useEffect(() => {
-    const plate = plateRef.current;
-    if (!plate) return;
+    const band = band2Ref.current;
+    if (!band) return;
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -417,9 +422,9 @@ export function LandingAbout() {
           io.disconnect();
         }
       },
-      { rootMargin: '0px 0px -20% 0px', threshold: 0 },
+      { rootMargin: '0px 0px -65% 0px', threshold: 0 },
     );
-    io.observe(plate);
+    io.observe(band);
     return () => io.disconnect();
   }, []);
 
@@ -868,7 +873,14 @@ export function LandingAbout() {
           }
           .landing-about__widget::part(box) {
             position: absolute;
-            top: 0;
+            /* the anchor lives BELOW the statement (Eliot 11-24's
+               round-3 note: the art must be readable BEFORE the text):
+               the box's top rides one line above the band's bottom
+               edge — the marks unfold through the band2→plate gap's
+               open air instead of hiding behind the text's own block,
+               and the frame reaches ~full visibility right as the
+               statement's mid-line gate fires */
+            top: calc(100% - 48px);
             left: 0;
             right: 0;
             margin-inline: auto;
