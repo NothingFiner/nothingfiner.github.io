@@ -209,6 +209,10 @@ export function LandingAbout() {
   // and fade at 1 and both machines render static
   useEffect(() => {
     let raf = 0;
+    // the layer's own last written drift — the feedback's reference
+    // frame (each scroll frame lands the box on the layer's read
+    // relative to this, so the ride's lag self-corrects per frame)
+    let layerDrift = 0;
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
@@ -224,35 +228,43 @@ export function LandingAbout() {
         const vh = window.innerHeight;
         // the read: 0 while the layer's zone is below the fold, 1 once
         // the section's bottom clears the viewport's top — the whole
-        // transit the headline and the plate ride through. The layer
-        // LAGS the content (a background's read: it starts high,
-        // sinks through the section as the ride passes); the swing
-        // holds a step under the band-gap so the cycle stays in its
-        // window, and the desktop keeps the lag alone.
-        // The mobile HOLD (Eliot 11-24's leave): the flow's exit lift
-        // would carry the layer up and out long before the next
-        // section arrives — once band 2's top (the layer's anchor,
-        // measured against the band's own rect, which already carries
-        // whatever ride is live — parking against it self-corrects)
-        // rises past the hold line, the drift pins the box to the
-        // SCREEN instead: the marks stay in view behind the plate,
-        // sinking the lag's tail through the leave, and the fade var
-        // dissolves them only as the next section's sliver arrives
-        // (the fold crossing the section's end is p ≈ 0.6; the ramp
-        // reads 1 → 0 by p 0.83)
+        // transit the headline and the plate ride through. The desktop
+        // keeps the gentle 0.1 lag (a swim beside the head). The mobile
+        // marks ride a SEPARATE LAYER instead.
+        // The SEPARATE LAYER (Eliot 11-24 round 3c: think of the
+        // animation as its own layer, not a band-anchored once-in): the
+        // marks' screen position is a pure function of the scroll —
+        // they peek at the fold as the portrait's tail leaves, then
+        // climb at a quarter of the content's speed, a slow layer's
+        // read that constantly sinks behind the text and the plate
+        // through the WHOLE transit, and is still on screen when the
+        // next section's sliver arrives (the fade var dissolves them
+        // only there — the fold crossing the section's end is p ≈ 0.6;
+        // the ramp reads 1 → 0 by p 0.83). The feedback lands the box
+        // on the layer's read every frame (the flow's live exit lift
+        // stripped and re-added, so the marks hold against the leave's
+        // ride), reverses on the way back always, and floors at 0 so
+        // the layer never lifts above its own content slot into the
+        // portrait's region
         const rect = host.getBoundingClientRect();
         const p = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
         const swing = narrow ? 0.3 : 0.1;
         let drift = (p - 0.5) * vh * swing;
         if (narrow) {
-          const band2 = band2Ref.current;
-          if (band2) {
-            // band 2's rect carries whatever ride the flow has live —
-            // parking against the MEASURED rect self-corrects the
-            // leave's lift every frame (no ride wiring, no shared
-            // constants), and the lag's tail sinks the parked marks
-            drift += Math.max(0, vh * 0.42 - band2.getBoundingClientRect().top);
+          const box = burstRef.current?.shadowRoot?.querySelector('[part="box"]');
+          const sy = window.scrollY;
+          if (box) {
+            const rideVal = Math.max(0, vh - rect.bottom) * 0.5;
+            const boxTop = box.getBoundingClientRect().top;
+            // the box's content-space top: the layer's own last drift
+            // stripped off the measure and the applied ride added back
+            // (the ride's one-frame lag self-corrects next scroll)
+            const o = boxTop - layerDrift + rideVal + sy;
+            const travel = Math.max(0, sy - (o - vh));
+            const target = vh - 0.25 * travel;
+            layerDrift = Math.max(0, layerDrift + (target - boxTop));
           }
+          drift = layerDrift;
         }
         const fade = 1 - Math.min(1, Math.max(0, (p - 0.63) / 0.2));
         host.style.setProperty('--ab-drift', String(Math.round(drift)));
