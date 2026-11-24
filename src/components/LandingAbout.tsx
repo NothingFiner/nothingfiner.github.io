@@ -198,12 +198,13 @@ export function LandingAbout() {
     };
   }, []);
 
-  // the burst's parallax (mobile): the flow's own exit ride handles the
-  // content; the asteroid layer swims at its own rate — the driver
-  // writes --ab-drift per scroll frame over the section's full transit
-  // (the reader's clock — no classes, no timers, reversible always).
-  // Desktop and prefers-reduced-motion: the var parks at 0 and the
-  // desktop machine renders untouched
+  // the burst's parallax: the layer swims on the reader's clock at
+  // every width — the driver writes --ab-drift per scroll frame over
+  // the section's full transit (no classes, no timers, reversible
+  // always). The mobile layer lags at the deeper 0.3 swing through
+  // its viewing window; the desktop's burst beside the head rides a
+  // gentle 0.1 — a little parallax, not a machine; prefers-reduced-
+  // motion parks the var at 0 and both machines render static
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {
@@ -211,12 +212,12 @@ export function LandingAbout() {
       raf = requestAnimationFrame(() => {
         const host = hostRef.current;
         if (!host) return;
-        const narrow = window.matchMedia('(max-width: 899px)').matches;
         const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!narrow || still) {
+        if (still) {
           host.style.setProperty('--ab-drift', '0');
           return;
         }
+        const narrow = window.matchMedia('(max-width: 899px)').matches;
         const vh = window.innerHeight;
         // the read: 0 while the layer's zone is below the fold, 1 once
         // the section's bottom clears the viewport's top — the whole
@@ -227,7 +228,8 @@ export function LandingAbout() {
         // window
         const rect = host.getBoundingClientRect();
         const p = Math.min(1, Math.max(0, (vh - rect.top) / (vh + rect.height)));
-        host.style.setProperty('--ab-drift', String(Math.round((p - 0.5) * vh * 0.3)));
+        const swing = narrow ? 0.3 : 0.1;
+        host.style.setProperty('--ab-drift', String(Math.round((p - 0.5) * vh * swing)));
       });
     };
     onScroll();
@@ -352,10 +354,10 @@ export function LandingAbout() {
     return () => io.disconnect();
   }, []);
 
-  // the plate's own gate — it fires on the PLATE's own first pixels
-  // crossing the viewport's bottom edge (the band-gate read held the
-  // fire 25vh above the fold — the rise played while the box was still
-  // below the reader), and the rise's transition carries the fixed
+  // the plate's own gate — it fires as the plate's top edge crosses the
+  // viewport's 80% line (Eliot 11-24's re-pacing: the headline's read
+  // is then past the screen's middle, the box arriving right after its
+  // words), and the rise's transition carries the fixed
   // beat, so the motion starts a fraction of a second after the box
   // scrolls into view. Latched once per F11's contract
   useEffect(() => {
@@ -368,7 +370,7 @@ export function LandingAbout() {
           io.disconnect();
         }
       },
-      { threshold: 0 },
+      { rootMargin: '0px 0px -20% 0px', threshold: 0 },
     );
     io.observe(plate);
     return () => io.disconnect();
@@ -645,6 +647,9 @@ export function LandingAbout() {
              5-line run at the library's 1.3 line-height (the boxes
              hold before, during and after the type) */
           height: var(--ab-widget-seat);
+          /* both machines' parallax swim rides the section's
+             --ab-drift var (the driver writes it per scroll frame) */
+          transform: translateY(calc(var(--ab-drift, 0) * 1px));
           /* D1: the burst rides RAW — every surface retires on this
              instance: fluro surface, border pair, multiply, the
              drop/shadow ladder; the print is dark crimson straight on
@@ -819,7 +824,6 @@ export function LandingAbout() {
                context — the marks swim BEHIND the headline's run, over
                band 3 the plate covers them */
             z-index: -1;
-            transform: translateY(calc(var(--ab-drift, 0) * 1px));
           }
         }
       `}</style>

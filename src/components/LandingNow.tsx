@@ -137,14 +137,15 @@ const NOW_TICKER = [
 /* the bands' separator rails — one marquee after every card on mobile,
    each printing its own project's vocabulary list; every item is its
    OWN ticker entry joining the rail's /// run (the component joins the
-   strings), the mid rail reversed so the three read as a weave */
+   strings), the mid rail reversed so the three read as a weave. The
+   items print in the site's title case (the ticker's shared voice) */
 const NOW_SEPARATORS: readonly string[][] = [
   [
-    'rite: rust', 'tauri', 'vue', 'word processing',
-    'open weights', 'integrated writing environment',
+    'Rite: Rust', 'Tauri', 'Vue', 'Word Processing',
+    'Open Weights', 'Integrated Writing Environment',
   ],
-  ['glaphicUI: design system', 'lit', 'storybook', 'graphic realism', 'acetate'],
-  ['novel: science fiction', 'literature', 'prose', 'inspiration'],
+  ['GlaphicUI: Design System', 'Lit', 'Storybook', 'Graphic Realism', 'Acetate'],
+  ['Novel: Science Fiction', 'Literature', 'Prose', 'Inspiration'],
 ];
 
 // the big name's fit — one advance-width model: a Space Grotesk 700
@@ -546,21 +547,29 @@ export function LandingNow() {
           --glaphic-marquee-text-size: 15px;
           --glaphic-marquee-ink: #242821;
         }
+        /* the desktop foot rail retires (Eliot 11-24): the section's
+           vocabulary rides the mobile rails alone — the desktop cards
+           read clean of a ticker at the foot */
+        @media (min-width: 900px) {
+          .landing-now__marquee { display: none; }
+        }
 
-        /* the separators: the cards' rails, MOBILE-ONLY (the desktop
-           grid's columnar read has no room for horizontal rails between
-           the bands) — parked off the desktop, the shared rail look
-           rides below */
+        /* the separators — the card read's rails. Their tokens mirror
+           the established ticker read (the about and past rails): the
+           component's 4px crimson rules at each edge, crimson 15px
+           type, the 4+8+24 interior — a plain full-bleed band. The
+           desktop grid's columnar read has no room for horizontal
+           rails between the bands; the mobile block shows them */
         .landing-now__sep {
           display: none;
           grid-column: 1 / -1;
           margin-inline: -3.9vw -3.9vw;
           height: 48px;
-          mix-blend-mode: multiply;
-          --glaphic-marquee-rule-size: 0px;
-          --glaphic-marquee-pad-block: 12px;
+          --glaphic-marquee-rule-size: 4px;
+          --glaphic-marquee-pad-block: 8px;
           --glaphic-marquee-text-size: 15px;
-          --glaphic-marquee-ink: #242821;
+          --glaphic-marquee-ink: ${RED};
+          --glaphic-marquee-rule-ink: ${RED};
         }
 
         /* ── the title rail ─────────────────────────────────────────
@@ -622,8 +631,11 @@ export function LandingNow() {
           .landing-now__band-image,
           .landing-now__band-image img { clip-path: none; }
           .landing-now__band-name { font-size: min(24vw, var(--ln-name-fit, 24vw)); }
-          .landing-now__band-content { flex: 0 0 auto; padding: 18px 16px; }
-          .landing-now__band-copy { font-size: 13px; }
+          /* the copy reads a step larger on the card (Eliot 11-24:
+             the 13px read failed the arm's-length test) and the plate
+             breathes on its own air */
+          .landing-now__band-content { flex: 0 0 auto; padding: 22px 18px; }
+          .landing-now__band-copy { font-size: 15px; }
           /* the mobile: the full-bleed rails; the title rides the same
              pull, its type holding the desktop clamp */
           .landing-now__marquee { margin-inline: -6vw; }

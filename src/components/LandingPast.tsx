@@ -664,14 +664,17 @@ export function LandingPast() {
             order: 2;
             width: 100%;
             justify-content: flex-start;
-            padding: 18px 16px;
-            gap: 12px;
+            /* the card's plate breathes a step wider, and the details
+               read at body size (Eliot 11-24: the 12px ladder failed
+               the arm's-length test) */
+            padding: 22px 18px;
+            gap: 14px;
           }
           .landing-past__copy-body { position: relative; }
           /* the member label's ink — inheriting the copy's own dark
              crimson (the fluro plate's tint retired with the plate) */
-          .landing-past__band-member { color: inherit; }
-          .landing-past__band-bullets { font-size: 12px; }
+          .landing-past__band-member { color: inherit; font-size: 11px; }
+          .landing-past__band-bullets { font-size: 14px; line-height: 1.5; }
           /* the post-track space rides 0 (Eliot 11-04): the see-all butts
              the last tray — the plate beneath it retired same-day */
           .landing-past__see-all { margin-top: 0; }
