@@ -377,7 +377,7 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 899px) {
   /* mobile: the MENU BUTTON stays pinned on EVERY page (it is the
      navigation); everything else of the band lives in the flow.
      Journey (landing): the band joins the flow between the hero and

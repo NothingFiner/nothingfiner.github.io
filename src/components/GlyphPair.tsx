@@ -46,7 +46,7 @@ const ECHO_OFFSET = '22%';
 // (one logo width + the echo overhang)
 const PAIR_SHIFT = -(0.5 + parseFloat(ECHO_OFFSET) / 200);
 
-// the in-page copies: mobile's painters (≤767px renders the pair solid,
+// the in-page copies: mobile's painters (≤899px renders the pair solid,
 // logo-masked, blending each other) — on desktop the pair div is the
 // invisible ruler the mirror measures.
 function GlyphDiv({ copy }: { copy: 'base' | 'echo' }) {
@@ -120,7 +120,7 @@ export function GlyphPair() {
             /* round 9: on desktop this div is the RULER — the layout box
                the mirror measures. Its paint retired to the world mirror. */
           }
-          @media (min-width: 768px) {
+          @media (min-width: 900px) {
             .glyph-pair__pair { visibility: hidden; }
           }
           .glyph-pair__glyph {
@@ -191,7 +191,7 @@ export function GlyphPair() {
             }
           }
 
-          @media (max-width: 767px) {
+          @media (max-width: 899px) {
             .glyph-pair__band {
               flex: none;
               /* round 9b: the copy's own var, so the band hugs the ink —

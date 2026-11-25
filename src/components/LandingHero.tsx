@@ -61,7 +61,7 @@ export function LandingHero() {
   // breakpoint so rotation stays correct.
   useEffect(() => {
     const section = document.querySelector('.landing-hero') as HTMLElement | null;
-    const mq = window.matchMedia('(min-width: 768px)');
+    const mq = window.matchMedia('(min-width: 900px)');
     let cancel: (() => void) | null = null;
     const wire = () => {
       if (mq.matches && !cancel) {
@@ -103,7 +103,7 @@ export function LandingHero() {
           /* the section's ink — the fold's copy prints INK on the hatch */
           color: ${INK};
         }
-        @media (max-width: 767px) {
+        @media (max-width: 899px) {
           .landing-hero {
             display: flex;
             flex-direction: column;
@@ -142,7 +142,7 @@ export function LandingHero() {
              the sticky '////' line parked under the copy */
           padding-bottom: 5vh;
         }
-        @media (max-width: 767px) {
+        @media (max-width: 899px) {
           .landing-hero__strip { display: block; margin-top: 20px; padding-bottom: 14px; }
           /* round 9b — CASCADE-PLACED AFTER the ride's base rule above: the
              desktop rows are 8 minmax(0,1fr) over a definite 100vh; with
@@ -169,7 +169,7 @@ export function LandingHero() {
            flash) — they overflow the row instead */
         .landing-hero__copy .landing-hero__title { flex: none; }
         .landing-hero__copy .landing-hero__lead { flex: none; }
-        @media (max-width: 767px) {
+        @media (max-width: 899px) {
           .landing-hero__copy {
             flex-direction: column;
             align-items: flex-start;
@@ -252,7 +252,7 @@ export function LandingHero() {
           bottom: 4.4vh;
           padding-left: 2.3vw;
         }
-        @media (max-width: 767px) {
+        @media (max-width: 899px) {
           /* the hero's own legal retires on the phone (Eliot 11-24: the
              name prints once at the foot — the fold doesn't need it) */
           .landing-hero__legal { display: none; }
